@@ -1,0 +1,4034 @@
+WEBVTT
+
+1
+00:00:01.380 --> 00:00:02.580
+Jae Young Lee: It is now being recorded.
+
+2
+00:00:04.020 --> 00:00:29.130
+Jae Young Lee: So we will begin with chapter for today in the second week here, we will discuss Chapter four chapter five and chapter six, Chapter four is about how to analyze the running time of an algorithm, then a video proof techniques. Chapter five is recursion and chapter six is
+
+3
+00:00:32.970 --> 00:00:34.470
+Jae Young Lee: Sometimes, yeah stacks and
+
+4
+00:00:35.790 --> 00:00:44.850
+Jae Young Lee: I think we will be able to finish the chapter four and five. Today, then maybe a little bit of a chapter six.
+
+5
+00:00:46.500 --> 00:00:50.970
+Jae Young Lee: But we'll see. And then the remaining part will be done this Saturday.
+
+6
+00:00:52.710 --> 00:00:57.540
+Jae Young Lee: Before we begin this lecture. Do you have any questions.
+
+7
+00:00:58.740 --> 00:01:01.650
+Jae Young Lee: Regarding the material we discussed so far.
+
+8
+00:01:06.510 --> 00:01:09.720
+Jae Young Lee: Okay, thank you. So let's begin the chapter fun
+
+9
+00:01:13.170 --> 00:01:27.840
+Jae Young Lee: We use to some algorithm, all the time, but there is no one poem definition of what is, in general, when we say other than what we mean is an algorithm is a way of solving a problem.
+
+10
+00:01:28.470 --> 00:01:37.260
+Jae Young Lee: So we are given a problem, then we want to solve the first I have to write down unless the problem is extremely simple.
+
+11
+00:01:37.800 --> 00:01:53.400
+Jae Young Lee: Write down how I am going to solve that problem. So algorithm is a way of solving a problem and then I will miss expressed is written or spoken in whatever way it is a sequence of steps.
+
+12
+00:01:54.780 --> 00:01:58.170
+Jae Young Lee: It is finite. We can't go on forever.
+
+13
+00:01:59.910 --> 00:02:17.430
+Jae Young Lee: And then we talk about efficiency. So suppose you developed and our wisdom, then you are presenting your wisdom to other people, then your point is that viable them is better than others in terms of many different aspects, but one thing you can say goodbye. I would
+
+14
+00:02:20.670 --> 00:02:43.380
+Jae Young Lee: Guess what we are concerned about here. The efficiency algorithm actually can be analyzed from two perspectives. One is in terms of how much memory meaning main memory space or even a disk space that has to use the other perspective is that how fast or how slow that algorithm is
+
+15
+00:02:46.260 --> 00:02:55.440
+Jae Young Lee: Usually we call this a time efficiency you call this space efficiency in this course we will discuss only
+
+16
+00:02:56.130 --> 00:03:01.440
+Jae Young Lee: Time you features, which means that there will be analyzing running time of an algorithm and then
+
+17
+00:03:02.220 --> 00:03:21.960
+Jae Young Lee: When we do that two things that the fourth thing is that we analyze Ryan time over now we're done with regards to the imprecise. So usually we express writing time as a function of input side, then this is sort of general rotation. We use it just n to indicate
+
+18
+00:03:23.580 --> 00:03:24.870
+Jae Young Lee: The size of an impact.
+
+19
+00:03:29.670 --> 00:03:30.810
+Jae Young Lee: I put a graph.
+
+20
+00:03:32.910 --> 00:03:45.780
+Jae Young Lee: That compares how long it takes to start to sort an array of integers arrays of integers with two different sorting algorithms we discuss certain so
+
+21
+00:03:46.800 --> 00:03:51.510
+Jae Young Lee: Later we will discuss this quick sorta what it is in certain sort
+
+22
+00:03:56.910 --> 00:04:11.250
+Jae Young Lee: I wrote these two programs and then I ran a both of them on a range of different sizes in precise I ran an array with 10,000 integers 27,000 integers answer.
+
+23
+00:04:11.910 --> 00:04:27.210
+Jae Young Lee: Up 200,000 integers and each time I measured left time. So this is not the actual writing time because I can't measure actual running time on my left hand, I just measured elapsed time
+
+24
+00:04:28.350 --> 00:04:29.130
+Jae Young Lee: As you can see,
+
+25
+00:04:30.150 --> 00:04:43.740
+Jae Young Lee: As emphasize grows the running time up in search and sort of grows a lot faster than running time of description compared with this in certain sorts
+
+26
+00:04:44.730 --> 00:05:00.960
+Jae Young Lee: As if running time of kickstart does not grow at all. It's just Flip Horizontal line. But of course, it grows, but it goes so slowly when it is to draw the same graph on the same scale. It looks like it just remains
+
+27
+00:05:03.720 --> 00:05:04.050
+Jae Young Lee: And then
+
+28
+00:05:05.100 --> 00:05:13.980
+Jae Young Lee: From this we can say crikey sorties lot a lot faster than this insert insert. So this is just a visualization of
+
+29
+00:05:14.460 --> 00:05:25.200
+Jae Young Lee: Ellipse the time of to algorithms, but we want to do this, theoretically, without having to write a program then running those programs and measuring those types.
+
+30
+00:05:25.980 --> 00:05:39.480
+Jae Young Lee: by just analyzing the algorithm or could say what we want to determine how fast or how slow the algorithm or the code would run this what we're discussing here.
+
+31
+00:05:42.090 --> 00:05:42.330
+Now,
+
+32
+00:05:46.200 --> 00:05:51.330
+Jae Young Lee: So different algorithms may have different writing times and also
+
+33
+00:05:52.650 --> 00:06:01.200
+Jae Young Lee: The same algorithm may run slow test, depending on the configuration at times depending
+
+34
+00:06:02.220 --> 00:06:07.650
+Jae Young Lee: Depending on the configuration of the components are the contents of a
+
+35
+00:06:09.750 --> 00:06:13.530
+Jae Young Lee: Target. So in this case we are using array as an example.
+
+36
+00:06:18.150 --> 00:06:18.750
+Jae Young Lee: So,
+
+37
+00:06:19.890 --> 00:06:25.470
+Jae Young Lee: Suppose we are sorting an array of hundred thousand integers to Semyon precise and
+
+38
+00:06:29.880 --> 00:06:31.920
+Jae Young Lee: Then in the past case.
+
+39
+00:06:33.210 --> 00:06:42.600
+Jae Young Lee: It takes about one millisecond. Again, this is lives time measured on my laptop. Again, I wrote a program and I just measured this eclipse time
+
+40
+00:06:43.920 --> 00:07:00.210
+Jae Young Lee: If the array is already sorted. So I created an integer array. We are all integers already sorted and then I ran in search and search algorithm. And then I made the last time about two seconds.
+
+41
+00:07:04.620 --> 00:07:05.160
+Jae Young Lee: Later.
+
+42
+00:07:06.990 --> 00:07:16.800
+Jae Young Lee: I sorted integers in that array in the reverse order, then I ran into 10 short, it took about
+
+43
+00:07:18.420 --> 00:07:25.410
+Jae Young Lee: A little bit shorter 25,000 milliseconds. So the best case scenario that is for only in search and sort
+
+44
+00:07:27.840 --> 00:07:32.040
+Jae Young Lee: It takes a very small amount of time when a race or a distorted.
+
+45
+00:07:33.240 --> 00:07:38.250
+Jae Young Lee: already sorted in non Christian water here. Are we are sorting.
+
+46
+00:07:40.140 --> 00:07:43.530
+Jae Young Lee: Array in non decreasing order with this insurgency.
+
+47
+00:07:44.730 --> 00:07:52.830
+Jae Young Lee: The worst case again this is sorted sorted in the reverse order, then it takes a very long time. So best case worst case.
+
+48
+00:07:54.420 --> 00:08:03.540
+Jae Young Lee: On every day. Different just randomly distributed integers about to 12,000 milliseconds. So the point here is that
+
+49
+00:08:04.740 --> 00:08:11.700
+Jae Young Lee: When we analyze the efficiency or running time have an algorithm. We are no less in terms of emphasizing
+
+50
+00:08:12.720 --> 00:08:18.750
+Jae Young Lee: As input grows how fast the running time cross or how slowly because and also
+
+51
+00:08:19.770 --> 00:08:40.080
+Jae Young Lee: For the same input we may have a best case worst case and every case when we have to do thorough analysis, we do all these three of them. But if we want to do only one analysis. Then we always do just worst case analysis. We don't do this case we don't ever which case
+
+52
+00:08:41.280 --> 00:08:44.460
+Jae Young Lee: For two reasons. One reason is that
+
+53
+00:08:45.690 --> 00:09:05.400
+Jae Young Lee: For most practical problems this worst case running time is the same as average case, right, of course, not all, most of the case. So by just doing worst case running time analysis. Basically, we can have a good idea about on average how fast or how long it is.
+
+54
+00:09:06.510 --> 00:09:21.330
+Jae Young Lee: The second reason is that by doing worst case analysis, we know the upper bound in terms of resource CPU time is a resource. So again, you are presenting your world, you can sit
+
+55
+00:09:22.080 --> 00:09:37.590
+Jae Young Lee: In the worst case, by our window one consume more than this much of a CPU time. So it gives you an upper bound on the resource which could be used that information could be used when designing whole system.
+
+56
+00:09:39.960 --> 00:09:40.710
+Jae Young Lee: So in summary,
+
+57
+00:09:42.780 --> 00:09:55.860
+Jae Young Lee: When we do run time analysis, we can do best case analysis every case analysis. But worst case analysis, but if we want to do only one analysis, we always to worst case analysis.
+
+58
+00:10:00.150 --> 00:10:06.600
+Jae Young Lee: So Ryan time is expressed as a function of. And so usually. Of course, there are many different functions to
+
+59
+00:10:07.680 --> 00:10:09.300
+Jae Young Lee: These functions are used a lot
+
+60
+00:10:11.520 --> 00:10:16.110
+Jae Young Lee: This is just function notation. Sometimes they use it is not to have
+
+61
+00:10:18.060 --> 00:10:20.400
+Jae Young Lee: Your tea indicating time
+
+62
+00:10:21.450 --> 00:10:36.210
+Jae Young Lee: Our textbook uses a generic f f of Siemens consent. If running time of an algorithm is see what that means is that the running time of that are within is not dependent on emphasize
+
+63
+00:10:36.780 --> 00:10:49.530
+Jae Young Lee: Whether an array has one element 100 elements or 1 billion elements. The running time is the same. So that's what is meant by this concept. Again, independent of any size.
+
+64
+00:10:51.390 --> 00:11:08.010
+Jae Young Lee: Okay, since this is constant logo running time growth is a lot lower than function or brand. This is Julian Ryan time grows in proportion to emphasize this analog. And this is a quadratic, so we can
+
+65
+00:11:12.030 --> 00:11:17.220
+Jae Young Lee: We say this is just constant. This is login Leah and logo quadratic you
+
+66
+00:11:21.090 --> 00:11:31.350
+Jae Young Lee: Know, so we express writing time as a function of emphasizing now when we do analysis.
+
+67
+00:11:33.390 --> 00:11:34.650
+Let's get back to the graph.
+
+68
+00:11:35.730 --> 00:11:39.600
+Jae Young Lee: Here I measured this time.
+
+69
+00:11:42.150 --> 00:11:47.190
+Jae Young Lee: But we are not really interested in how long an algorithm would take
+
+70
+00:11:48.690 --> 00:11:52.230
+Jae Young Lee: What we're interested in is, is emphasized grows
+
+71
+00:11:53.550 --> 00:12:07.320
+Jae Young Lee: How fast or how slowly the running time often input costs. So in general, we say as imprecise coast impenetrable failed already, then how would the right time grow.
+
+72
+00:12:09.840 --> 00:12:12.390
+Jae Young Lee: So it is this rate of growth.
+
+73
+00:12:17.550 --> 00:12:36.240
+Jae Young Lee: Again, we are not interested in the actual time we are interested rate of growth hope as to how how slowly out that we are interested in as the imprecise coast infinity. So this analysis is called the asymptote analysis.
+
+74
+00:12:39.510 --> 00:12:48.420
+Jae Young Lee: They use a notations Pico the omega and dictator and there's also small, small and small feat.
+
+75
+00:12:49.950 --> 00:12:55.440
+Jae Young Lee: These are called asymptomatic notations that they are symptomatic running types.
+
+76
+00:12:56.610 --> 00:13:02.190
+Jae Young Lee: Our textbook. Yes, or six, or 10 Pico Pico mega data in small, small
+
+77
+00:13:04.020 --> 00:13:04.680
+Small data.
+
+78
+00:13:05.730 --> 00:13:07.380
+Jae Young Lee: Will be focusing on Pico
+
+79
+00:13:08.880 --> 00:13:15.690
+Jae Young Lee: Here and then we'll nation theater and then over, but primarily will be using this
+
+80
+00:13:17.250 --> 00:13:28.440
+Jae Young Lee: And then the in the slides I put definitions mathematical definitions of all the three of them just to help you understand the basic concepts, but mostly when we do
+
+81
+00:13:29.010 --> 00:13:41.910
+Jae Young Lee: Analyze running time of algorithms in this course, mostly will express writing time using this Pico notation. So you need to get used to. You have to get used to, to speak or notation.
+
+82
+00:13:44.100 --> 00:13:46.500
+Jae Young Lee: This is a mathematical definition of it.
+
+83
+00:13:50.790 --> 00:13:52.710
+Jae Young Lee: We said that this is a definition of
+
+84
+00:13:54.000 --> 00:13:55.620
+Jae Young Lee: Certain function to
+
+85
+00:13:56.940 --> 00:13:57.300
+Saurav Banerjee: Know,
+
+86
+00:13:57.660 --> 00:14:00.270
+Jae Young Lee: This is all functions, f of x.
+
+87
+00:14:02.580 --> 00:14:11.010
+Jae Young Lee: satisfies this requirements. So basically, still exists to positive
+
+88
+00:14:12.540 --> 00:14:13.320
+Jae Young Lee: Concerns
+
+89
+00:14:14.730 --> 00:14:20.010
+Jae Young Lee: To see an N zero to satisfy this inequality.
+
+90
+00:14:21.900 --> 00:14:23.100
+Jae Young Lee: So let's look at this graph.
+
+91
+00:14:24.690 --> 00:14:28.980
+Jae Young Lee: This is emphasized, and this is a running time.
+
+92
+00:14:32.970 --> 00:14:38.550
+Jae Young Lee: As far as any is the same as above, and zero so certain threshold in Syria.
+
+93
+00:14:39.960 --> 00:14:43.680
+Jae Young Lee: From here, as far as any great to them.
+
+94
+00:14:44.850 --> 00:14:47.910
+Jae Young Lee: Or equal to this energy last beyond this point.
+
+95
+00:14:49.830 --> 00:14:55.050
+Jae Young Lee: Certain Constants times GN is always above this f of
+
+96
+00:14:57.180 --> 00:14:57.690
+Jae Young Lee: Always
+
+97
+00:14:59.340 --> 00:15:05.880
+Jae Young Lee: Before here as we can see it see times God any smaller than a problem, but we don't care.
+
+98
+00:15:07.290 --> 00:15:12.720
+Jae Young Lee: As far as any is above the same so above a certain threshold and zero.
+
+99
+00:15:14.100 --> 00:15:17.250
+Jae Young Lee: C times to n is always greater than
+
+100
+00:15:18.900 --> 00:15:21.690
+Jae Young Lee: Then we say God and his
+
+101
+00:15:22.920 --> 00:15:40.650
+Jae Young Lee: Upper body literally upper bound because f of can never go above this one. So, this is, this is called I sent 22 examples here. I think to this one up to
+
+102
+00:15:46.620 --> 00:15:52.050
+Jae Young Lee: The post fo Bernie three and placebo. So this is running time over certain
+
+103
+00:15:53.220 --> 00:15:53.940
+Certain
+
+104
+00:15:56.670 --> 00:15:59.670
+Jae Young Lee: Welcome one or System is of course
+
+105
+00:16:01.560 --> 00:16:01.860
+Then
+
+106
+00:16:04.680 --> 00:16:08.940
+Jae Young Lee: So first we look at this, our go to market segments.
+
+107
+00:16:10.020 --> 00:16:19.050
+Jae Young Lee: We understand how it works. We analyze line by line, then we come up with a this expression. Okay, the running time of
+
+108
+00:16:19.590 --> 00:16:34.860
+Jae Young Lee: This segment is three and plus two. And he said imprecise then now call this once we have this one dinner. Oh, always express this using some totally appropriate in this case people notation.
+
+109
+00:16:36.000 --> 00:16:37.440
+Jae Young Lee: So why did you say is that
+
+110
+00:16:38.760 --> 00:16:44.790
+Jae Young Lee: Even dysfunction, the sum total upper bound of these algorithms to pick up
+
+111
+00:16:46.170 --> 00:16:50.010
+Jae Young Lee: Then how do we prove that using this definition.
+
+112
+00:16:57.810 --> 00:17:03.360
+Jae Young Lee: We need to show to exist to constantly see an N zero
+
+113
+00:17:05.250 --> 00:17:26.940
+Jae Young Lee: It can be, they can be any pastor consultant that can be see could be hundred but she could be two and zero could be 0101 or 234 hundred as far as we can show deal exists to concerts. This is focusing on quality, then
+
+114
+00:17:29.880 --> 00:17:31.260
+Jae Young Lee: This is we can argue this
+
+115
+00:17:34.110 --> 00:17:34.980
+Jae Young Lee: This is a proof.
+
+116
+00:17:36.240 --> 00:17:37.560
+Jae Young Lee: There seems to be a question here.
+
+117
+00:17:50.700 --> 00:17:52.350
+Jae Young Lee: Oh, the fourth thing is that
+
+118
+00:17:54.570 --> 00:18:00.780
+Jae Young Lee: We are not interested in accurate running time analysis and then
+
+119
+00:18:04.380 --> 00:18:20.820
+Jae Young Lee: Here, mostly in this course. So we will be discussing relatively simple algorithms, if our algorithms are quite complex. Yeah, a lot of pieces of code. Different parts of code run in different times and then
+
+120
+00:18:21.870 --> 00:18:24.090
+Jae Young Lee: Expressing the running time or debt.
+
+121
+00:18:25.290 --> 00:18:38.820
+Jae Young Lee: Equity using a calculus even gave gifts or anything, it will be extremely complex and then it won't give you any useful information to programmers and circulated Alex test that the call. Okay, so again,
+
+122
+00:18:39.750 --> 00:18:59.700
+Jae Young Lee: Sometimes it could be possible. We can express running time currently using chemicals. But that's not the call what a computer scientist programmers interesting what you're interested in is how fast or how slow it close with a simple function because that gives you
+
+123
+00:19:01.170 --> 00:19:03.060
+Jae Young Lee: Some idea about
+
+124
+00:19:04.140 --> 00:19:19.560
+Jae Young Lee: Again, literally, but if I run this program on an array of hundred million. But if I run this program on an array of 1 billion elements. So it'll be very fast, it'll be very slow.
+
+125
+00:19:21.900 --> 00:19:30.930
+Jae Young Lee: Even dead much actually 10 much idea is sufficient when we analyze running time of your program again from the perspective of your computer scientists
+
+126
+00:19:31.950 --> 00:19:46.410
+Jae Young Lee: And then later we will see at the end of the semester, I will briefly discuss so called the P and NP notion of P and NP there. Again, we don't need a calculus in that accurate.
+
+127
+00:19:48.750 --> 00:19:51.270
+Jae Young Lee: Expression of a running time and
+
+128
+00:19:54.660 --> 00:19:56.580
+Jae Young Lee: Now I see proof here.
+
+129
+00:20:01.350 --> 00:20:14.910
+Jae Young Lee: This can be proved in many different ways. As I mentioned, it is sufficient to show till exist to positive concert like I see an NGO, they could be any number
+
+130
+00:20:16.230 --> 00:20:25.830
+Jae Young Lee: What that means is that there are many different pairs of cn N zero values they satisfy that would satisfy that
+
+131
+00:20:27.030 --> 00:20:27.900
+Jae Young Lee: Inequality.
+
+132
+00:20:28.950 --> 00:20:31.950
+Jae Young Lee: Gap many different barriers and this is just one possible
+
+133
+00:20:35.280 --> 00:20:44.850
+Jae Young Lee: For this again. There are different ways of showing even why for his chosen y AMP z.
+
+134
+00:20:45.900 --> 00:20:58.890
+Jae Young Lee: To his chosen Espana very simple ways that sold this inequality. Actually, we are not really solving that then using this one we determine
+
+135
+00:21:00.000 --> 00:21:06.960
+Jae Young Lee: What we choose the value of CNN tell you when zero they satisfy that equation that inequality.
+
+136
+00:21:08.820 --> 00:21:09.150
+Is
+
+137
+00:21:11.550 --> 00:21:15.930
+Jae Young Lee: Basically, what we do is that we have to show up for n
+
+138
+00:21:17.010 --> 00:21:19.530
+Jae Young Lee: Is less than or equal to see times
+
+139
+00:21:20.580 --> 00:21:25.710
+Jae Young Lee: To end for certain then then for 23 and plus two.
+
+140
+00:21:26.820 --> 00:21:31.620
+Jae Young Lee: And we're trying to determine purposes. See, God is
+
+141
+00:21:33.510 --> 00:21:37.200
+Jae Young Lee: Here to Nice. And so it is
+
+142
+00:21:39.450 --> 00:21:43.050
+Jae Young Lee: Then what we can do we read this one just read write that one.
+
+143
+00:21:46.140 --> 00:21:49.290
+Jae Young Lee: Si n minus three x
+
+144
+00:21:52.110 --> 00:22:03.990
+Jae Young Lee: Is greater than two then and c minus three. Yeah, I'm just rewriting greater than or equal to 10 and
+
+145
+00:22:05.760 --> 00:22:07.230
+Jae Young Lee: To see my
+
+146
+00:22:10.200 --> 00:22:14.550
+Jae Young Lee: Again, once I have this one and then I can pick
+
+147
+00:22:15.570 --> 00:22:22.770
+Jae Young Lee: Any pure values of for a C n n zero debt satisfied. So suppose I pay
+
+148
+00:22:24.210 --> 00:22:32.010
+Jae Young Lee: For as value see then on the right hand side I have four to over four minus three.
+
+149
+00:22:34.410 --> 00:22:36.150
+Jae Young Lee: Is to is to
+
+150
+00:22:37.320 --> 00:22:43.200
+Jae Young Lee: Then if I pick an S to alert here dentist inequalities all is true.
+
+151
+00:22:44.370 --> 00:22:57.270
+Jae Young Lee: That's why for his chosen as value of see to is chosen as value of engine. But as I mentioned, you can pick any number. Suppose you pick five here. I think one of
+
+152
+00:22:59.130 --> 00:23:00.660
+Jae Young Lee: The five minus three.
+
+153
+00:23:02.790 --> 00:23:12.660
+Jae Young Lee: Is to to this is one and then I can enjoy this one. As far as any one or greater than it is. Okay, something
+
+154
+00:23:22.920 --> 00:23:26.100
+Jae Young Lee: I think I just answered your question friend right
+
+155
+00:23:35.670 --> 00:23:36.660
+Jae Young Lee: Now, so
+
+156
+00:23:38.250 --> 00:23:49.380
+Jae Young Lee: Suppose, again, we were given a code segment. Then we analyze it and then we expressed running time of that code segment is like design.
+
+157
+00:23:53.490 --> 00:23:54.810
+Jae Young Lee: Then we argue
+
+158
+00:23:56.220 --> 00:24:02.130
+Jae Young Lee: A simplistic upper bound of this code segment is pico and three and two
+
+159
+00:24:03.870 --> 00:24:04.440
+Jae Young Lee: Previous
+
+160
+00:24:05.970 --> 00:24:08.760
+Jae Young Lee: Google. This one is a little bit simpler than the previous one.
+
+161
+00:24:11.010 --> 00:24:14.760
+Jae Young Lee: Here we use a fact that n is a positive
+
+162
+00:24:19.830 --> 00:24:20.850
+Jae Young Lee: So, which means
+
+163
+00:24:22.140 --> 00:24:24.840
+Jae Young Lee: We have an n squared.
+
+164
+00:24:26.160 --> 00:24:27.240
+Jae Young Lee: And and constant
+
+165
+00:24:28.320 --> 00:24:30.030
+Jae Young Lee: Woody place all this
+
+166
+00:24:31.410 --> 00:24:31.650
+Is
+
+167
+00:24:33.090 --> 00:24:33.660
+With n
+
+168
+00:24:37.500 --> 00:24:41.580
+Jae Young Lee: Since n is a positive integer so
+
+169
+00:24:42.870 --> 00:25:05.910
+Jae Young Lee: This is two times and cube is always great to them to times and script or and cube is always the same, or greater than and script again and cube is the same as or greater than and Kuwait, the same as are created. And so, replace all this week and two, and then we put
+
+170
+00:25:06.960 --> 00:25:11.340
+Jae Young Lee: This because these are greater than or equal to this.
+
+171
+00:25:12.720 --> 00:25:20.040
+Jae Young Lee: Now since we have all just cube terms, we can just add this coefficients. So we have 19 and
+
+172
+00:25:21.330 --> 00:25:22.650
+Jae Young Lee: Then we choose
+
+173
+00:25:23.970 --> 00:25:27.990
+Jae Young Lee: 19 SPL. You see, and one is failure and
+
+174
+00:25:29.400 --> 00:25:29.640
+Then
+
+175
+00:25:31.290 --> 00:25:34.050
+Jae Young Lee: Therefore, n is always
+
+176
+00:25:36.270 --> 00:25:40.440
+Jae Young Lee: The same is or smaller than 19 times
+
+177
+00:25:41.730 --> 00:25:41.970
+And
+
+178
+00:25:43.590 --> 00:25:44.430
+Jae Young Lee: So this is see
+
+179
+00:25:46.380 --> 00:25:49.530
+Jae Young Lee: So basically we just proved. First we argued
+
+180
+00:25:50.700 --> 00:25:55.710
+Jae Young Lee: That upper bound of disease and cure and then we proved it.
+
+181
+00:25:57.780 --> 00:25:58.170
+Okay.
+
+182
+00:26:07.410 --> 00:26:09.450
+Jae Young Lee: So that is a good question.
+
+183
+00:26:10.950 --> 00:26:12.180
+Jae Young Lee: So let me write it here.
+
+184
+00:26:20.460 --> 00:26:22.230
+Jae Young Lee: Let me write it a simple function.
+
+185
+00:26:24.330 --> 00:26:32.400
+Jae Young Lee: three and two first one, then using the same method we just discussed. We can practices people
+
+186
+00:26:34.140 --> 00:26:34.380
+But
+
+187
+00:26:35.910 --> 00:26:45.300
+Jae Young Lee: This is also equal and forth Pico and Keith, for that matter, Pico and
+
+188
+00:26:48.780 --> 00:26:53.670
+Jae Young Lee: So what we are looking at is we say music teacher type of product.
+
+189
+00:27:01.980 --> 00:27:02.940
+Jae Young Lee: These satisfied.
+
+190
+00:27:04.170 --> 00:27:19.320
+Jae Young Lee: As far as we choose appropriate constancy, and then zero, we can show all the satisfied that inequality, which is that this f of any Spiegel Vancouver this f of any Spiegel and forth this awareness big of empty.
+
+191
+00:27:20.550 --> 00:27:20.700
+But
+
+192
+00:27:22.350 --> 00:27:27.570
+Jae Young Lee: What we are looking for, among all these that has the smallest this
+
+193
+00:27:29.130 --> 00:27:37.950
+Jae Young Lee: Sometimes it is not just a matter of this exponent, we are looking at as tight as possible desperately looking for
+
+194
+00:27:43.380 --> 00:27:44.760
+Jae Young Lee: I think I answered your question.
+
+195
+00:27:46.500 --> 00:27:49.140
+Jae Young Lee: So it's cool to hear
+
+196
+00:27:54.390 --> 00:27:54.990
+Jae Young Lee: Which means
+
+197
+00:27:56.550 --> 00:27:58.830
+Jae Young Lee: I can have a graph get calls
+
+198
+00:28:00.210 --> 00:28:24.240
+Jae Young Lee: A lot about here, I can be correct, because in this way supposed to say because three that this could be people this n log entry right. This could be a peaceful end fifth day or satisfy this inequality. So they are all a couple, but really looking for is always so called tight have
+
+199
+00:28:30.510 --> 00:28:31.980
+Jae Young Lee: Any other questions.
+
+200
+00:28:38.730 --> 00:28:49.140
+Jae Young Lee: Now then, we always have to prove in that way, not necessarily with discussing these two examples just to give you an idea.
+
+201
+00:28:51.810 --> 00:29:00.390
+Jae Young Lee: How it is how we could choose the values of cn N zero. And also, just to remind you this definition.
+
+202
+00:29:01.650 --> 00:29:05.160
+Jae Young Lee: Definition Pico TN is a set of functions fo when
+
+203
+00:29:06.630 --> 00:29:07.830
+Jae Young Lee: Such that
+
+204
+00:29:09.120 --> 00:29:19.260
+Jae Young Lee: do exist to constant political concerns see an NCO that says first inequality. So, just to follow so that you may have it that
+
+205
+00:29:21.150 --> 00:29:34.140
+Jae Young Lee: Not exactly written in that way the conceptual so I need, I need to show to positive concept. It says is fighting inequality and for their purpose. I put these two slides.
+
+206
+00:29:35.460 --> 00:29:53.220
+Jae Young Lee: Of course, if you do a serious analysis of algorithms studied and you actually have to do this kind of thing. But for our course we want to deal with this puppy very mathematically what we do is this.
+
+207
+00:29:54.360 --> 00:29:56.670
+Jae Young Lee: But it is actually true or ritual.
+
+208
+00:29:58.470 --> 00:29:58.980
+Jae Young Lee: Because
+
+209
+00:30:00.360 --> 00:30:05.670
+Jae Young Lee: I looked at my algorithm. Then I express writing time open are good in the tree and cluster.
+
+210
+00:30:06.690 --> 00:30:15.780
+Jae Young Lee: What we do is that we do move or drop all lower order terms. So I keep only the highest order and then
+
+211
+00:30:17.220 --> 00:30:19.320
+Jae Young Lee: Discard quotation that people over
+
+212
+00:30:20.580 --> 00:30:22.620
+Jae Young Lee: This one, again, the highest term.
+
+213
+00:30:23.820 --> 00:30:26.430
+Jae Young Lee: Is no cure, so drop all this
+
+214
+00:30:28.440 --> 00:30:32.160
+Jae Young Lee: Discourse quickly show you go and kill here.
+
+215
+00:30:33.870 --> 00:30:39.600
+Jae Young Lee: And square is high strung and then positively and Logan term and Trump this constant
+
+216
+00:30:40.770 --> 00:30:49.380
+Jae Young Lee: We drop all these always keep the highest order then we move quickly. So this one.
+
+217
+00:30:52.140 --> 00:31:10.230
+Jae Young Lee: Of course, first we have to understand that analyze how that code works. That's how that works. And then based on that, we have to express running as a function open date is a four step once we have it, then just discard lower the terms.
+
+218
+00:31:12.870 --> 00:31:17.640
+Jae Young Lee: Dropped quotation. So this algorithm is linear dissolve the miss
+
+219
+00:31:18.690 --> 00:31:23.400
+Jae Young Lee: Cuba discovering is quite ritual. Would you say hello and I would do. We don't
+
+220
+00:31:30.810 --> 00:31:32.580
+Jae Young Lee: Know any larger than locally.
+
+221
+00:31:35.490 --> 00:31:43.530
+Jae Young Lee: So it will be shown here. So, we will see a dentist Logitech look there's a table.
+
+222
+00:31:47.010 --> 00:31:50.460
+Jae Young Lee: Desk Pico or I seem to upper bound
+
+223
+00:31:51.660 --> 00:31:56.640
+Jae Young Lee: Big Omega is a sum total law upon the definition is kind of reverse
+
+224
+00:31:57.900 --> 00:31:58.170
+It.
+
+225
+00:31:59.760 --> 00:32:03.900
+Jae Young Lee: We say god. N is asymptomatic lower bound.
+
+226
+00:32:05.070 --> 00:32:11.280
+Jae Young Lee: If they'll use this to positive constancy, and N zero, such that
+
+227
+00:32:12.900 --> 00:32:17.550
+Jae Young Lee: If you look at this one, the inequalities divorce compete with people.
+
+228
+00:32:19.350 --> 00:32:39.210
+Jae Young Lee: So here, as far as emphasizes the same is or created an N zero it is guaranteed see times you have n is always below this effort, which is fo fo can never go below this, so this is a lot
+
+229
+00:32:40.590 --> 00:32:43.050
+Jae Young Lee: Again, this is a synthetic door.
+
+230
+00:32:47.010 --> 00:32:48.180
+Jae Young Lee: Once we have
+
+231
+00:32:49.500 --> 00:32:50.370
+Jae Young Lee: An expression.
+
+232
+00:32:51.390 --> 00:32:58.860
+Jae Young Lee: The way we determine a simple to lower bound is basically the same. Of course, it is now to all functions. I'm showing a function
+
+233
+00:33:00.240 --> 00:33:20.820
+Jae Young Lee: It happens to be big. Oh, and peak omega are the same but Cuban this one as an upper bound is analog given this one I seem to the upper bound is also and kill but there are so as imploded lower bound data center, but that is not true always, I'm just showing you simple examples.
+
+234
+00:33:22.320 --> 00:33:26.280
+Jae Young Lee: Okay, no big theater is called the sum total title.
+
+235
+00:33:27.600 --> 00:33:29.490
+Jae Young Lee: It kind of puts him so
+
+236
+00:33:32.670 --> 00:33:35.490
+Jae Young Lee: Therefore, when you sandwiched between
+
+237
+00:33:37.320 --> 00:33:41.520
+Jae Young Lee: One constancy, two times GN and another concert see wanted
+
+238
+00:33:43.050 --> 00:34:02.190
+Jae Young Lee: To prove that this is this is a definition. So again, Quito to me is a set of functions and for when we're still exists three part of concern, this is c one c n n zero such that, therefore, when is between this
+
+239
+00:34:04.980 --> 00:34:10.230
+Jae Young Lee: It is smaller than see two times your brand and larger than see one time.
+
+240
+00:34:11.640 --> 00:34:14.550
+Jae Young Lee: As far as any is above this certain threshold.
+
+241
+00:34:15.630 --> 00:34:20.340
+Jae Young Lee: Again, I put a simple example here where do justice to say
+
+242
+00:34:22.200 --> 00:34:26.820
+Jae Young Lee: It for this can be expressed it, or even dysfunction.
+
+243
+00:34:28.440 --> 00:34:38.940
+Jae Young Lee: N log N is a sum total upper bound. I think lower bound, and also I think dictated by the same given this running time expression.
+
+244
+00:34:40.230 --> 00:34:54.480
+Jae Young Lee: I sum total of all of this algorithm is too simple to do around the school then as tight bond is or so again I'm just emphasizing again. It is not always the same. They could be different for many different language.
+
+245
+00:34:56.520 --> 00:35:12.300
+Jae Young Lee: So these are mathematical definitions of three asymptote notations Pico Pico mega and big data for our course will be focusing on expressing running time of algorithm or cold segment.
+
+246
+00:35:13.620 --> 00:35:27.120
+Jae Young Lee: Using Big O notation not peak omega not big data, but the textbooks and then a in the slides here in their peak omega dictator will be used, but we're not going to the
+
+247
+00:35:28.650 --> 00:35:30.690
+Jae Young Lee: Details of how they were derived
+
+248
+00:35:36.480 --> 00:35:36.780
+Jae Young Lee: So,
+
+249
+00:35:38.100 --> 00:35:39.210
+Jae Young Lee: This table shows
+
+250
+00:35:40.860 --> 00:35:45.900
+Jae Young Lee: How different functions grow as input cross at this is the input.
+
+251
+00:35:49.350 --> 00:35:50.190
+Jae Young Lee: Just twice.
+
+252
+00:35:51.930 --> 00:35:53.370
+816 32
+
+253
+00:35:54.840 --> 00:36:00.930
+Jae Young Lee: This is a log. And this is just n function. This is Logan puncture this a linear function. So this is a
+
+254
+00:36:02.310 --> 00:36:03.510
+Jae Young Lee: Legal like it.
+
+255
+00:36:05.100 --> 00:36:07.560
+Look at people and so
+
+256
+00:36:09.360 --> 00:36:09.750
+Jae Young Lee: Of course,
+
+257
+00:36:12.510 --> 00:36:29.340
+Jae Young Lee: In this table constants are not involved that included, but usually it is a concern, but this table is just for the purpose of compares. So the numbers don't involve any longer low page 283
+
+258
+00:36:30.960 --> 00:36:36.990
+Jae Young Lee: When we analyze running time open algorithm we use low function a lot
+
+259
+00:36:38.070 --> 00:36:43.260
+Jae Young Lee: And that always it is a paste to. We don't want to hear, but it is always
+
+260
+00:36:44.580 --> 00:36:52.860
+Jae Young Lee: Open to open, which is a little and and Logan and Q and screwed and kill. Notice it's called exponential function.
+
+261
+00:37:00.540 --> 00:37:01.140
+Jae Young Lee: Grows
+
+262
+00:37:03.240 --> 00:37:03.780
+Jae Young Lee: And grows
+
+263
+00:37:06.810 --> 00:37:15.390
+Jae Young Lee: And grows in proportion to the synthesizer and Logan goes a little bit faster, but still slow quite ready yeah pastor
+
+264
+00:37:16.470 --> 00:37:17.400
+Jae Young Lee: To look at
+
+265
+00:37:20.250 --> 00:37:21.180
+Jae Young Lee: Extremely fast.
+
+266
+00:37:22.650 --> 00:37:24.690
+Jae Young Lee: Now look at this exponential
+
+267
+00:37:27.600 --> 00:37:31.050
+Jae Young Lee: Guess as active to just Curtis and this extreme, extreme, extreme
+
+268
+00:37:32.400 --> 00:37:32.730
+Jae Young Lee: This is
+
+269
+00:37:34.050 --> 00:37:37.170
+Jae Young Lee: 1.3 times 10 to the one
+
+270
+00:37:45.750 --> 00:37:46.890
+Jae Young Lee: We will discuss
+
+271
+00:37:48.330 --> 00:37:51.540
+Jae Young Lee: Later, when we discuss n and n p
+
+272
+00:37:52.920 --> 00:38:02.520
+Jae Young Lee: We say if the running time open our worthiness exposure we say it is exponential them, then we don't consider that as an efficient algorithm.
+
+273
+00:38:04.020 --> 00:38:10.740
+Jae Young Lee: Is running time over an argument exposure, then even a very fastest supercomputer.
+
+274
+00:38:11.790 --> 00:38:18.420
+Jae Young Lee: Then we make it literally years probably in months and years to get this old so
+
+275
+00:38:19.770 --> 00:38:22.620
+Jae Young Lee: Let's talk about that for now we're just focusing on
+
+276
+00:38:23.850 --> 00:38:24.390
+Jae Young Lee: The cross
+
+277
+00:38:44.640 --> 00:38:46.800
+Jae Young Lee: Tight lower bound is envelope.
+
+278
+00:38:48.510 --> 00:38:52.890
+Jae Young Lee: As tight low around this and look again Logan is also
+
+279
+00:38:54.150 --> 00:38:54.780
+Jae Young Lee: Lower bound
+
+280
+00:38:55.920 --> 00:38:56.760
+Jae Young Lee: For that matter,
+
+281
+00:38:58.740 --> 00:39:01.860
+Jae Young Lee: As constant is also lower again we're looking at
+
+282
+00:39:03.480 --> 00:39:19.260
+Jae Young Lee: I sent her tight so when you're discussing. If you remember that a proponent we said we are always looking for some 30 tighter proponent so it is the same week as we are looking for protect tight law.
+
+283
+00:39:23.430 --> 00:39:24.360
+shawn.lefebre: First, have a question.
+
+284
+00:39:24.480 --> 00:39:26.910
+Jae Young Lee: Oh, we know
+
+285
+00:39:28.080 --> 00:39:33.630
+Jae Young Lee: How to do analysis using actual code, the most, of course, a simple
+
+286
+00:39:40.200 --> 00:39:43.440
+Jae Young Lee: This method receives array of double numbers.
+
+287
+00:39:44.970 --> 00:39:52.260
+Jae Young Lee: And it finds and returns the largest number. So any is the capacity or the length of the array.
+
+288
+00:39:53.820 --> 00:39:59.280
+Jae Young Lee: This current mix is variable. It keeps track of to learn this number.
+
+289
+00:40:00.690 --> 00:40:09.450
+Jae Young Lee: At a certain point in time, then 30 different ways of finding the max simplest ways that we just scan array.
+
+290
+00:40:11.070 --> 00:40:12.090
+Jae Young Lee: From here to here.
+
+291
+00:40:13.500 --> 00:40:14.790
+Jae Young Lee: It's time when see
+
+292
+00:40:15.810 --> 00:40:25.380
+Jae Young Lee: A number that is larger than current Max, then we just replace. That's what it is. So follow begins into one, which means that we begins with Islam.
+
+293
+00:40:26.220 --> 00:40:44.100
+Jae Young Lee: Initially to first element. This one is set to current projects that beginning with the second element we compare this with current best it is smaller than we just move on. If this is larger than this one then this would be discreet becomes your current max.
+
+294
+00:40:45.360 --> 00:40:50.700
+Jae Young Lee: A data Jay is larger than current max then data comes current
+
+295
+00:40:51.930 --> 00:41:11.280
+Jae Young Lee: So we proceed in this way after we have processed the last element. What we have in this current specs is the largest number in disarray. So that's what this code is to him no analysis when we analyze
+
+296
+00:41:12.360 --> 00:41:12.990
+Jae Young Lee: A quote
+
+297
+00:41:17.040 --> 00:41:17.520
+Jae Young Lee: Basically
+
+298
+00:41:19.170 --> 00:41:19.740
+Jae Young Lee: Force.
+
+299
+00:41:20.790 --> 00:41:38.700
+Jae Young Lee: Always what we're interested in is how long would it take to execute a line of code or piece of code or whole algorithm in terms of n. So, we are interested in the relationship between running time and
+
+300
+00:41:40.230 --> 00:41:43.560
+Jae Young Lee: Sometimes it is necessary to quantify.
+
+301
+00:41:45.990 --> 00:42:03.690
+Jae Young Lee: Quantify still at a higher level, how long it would take if it is needed, we count the number of primitive operations, but in our course. We don't even to them. So we just look at the piece of code a line of code. And then if
+
+302
+00:42:05.400 --> 00:42:12.000
+Jae Young Lee: Execution of that line of code has nothing to do with imprecise then we just say, okay, it takes concept.
+
+303
+00:42:13.770 --> 00:42:17.520
+Jae Young Lee: Yeah, this one actually do multiple
+
+304
+00:42:18.840 --> 00:42:35.340
+Jae Young Lee: primitive operations are involved. One, it is assignment, but data that lends itself unless it is retrieved by the system as a constant, then it may involve execution of a lower level functions, but we don't really care. So
+
+305
+00:42:36.450 --> 00:42:55.290
+Jae Young Lee: Assuming data lengthy stare then tell us to retrieve data science to it so that itself alone has nothing to do with emphasize, so we say it takes constant Matata see one. Is there some just constant. We don't care. It is a 10 or 20 just cancel.
+
+306
+00:42:56.880 --> 00:43:09.810
+Jae Young Lee: This one, again, retrieve the first element of disarray and then assign that to disappear you at the lower level do multiple primitive operations involved. But again, since
+
+307
+00:43:11.340 --> 00:43:17.790
+Jae Young Lee: It doesn't depend on the input side, we say it is and that constant amount of time.
+
+308
+00:43:21.930 --> 00:43:26.730
+Jae Young Lee: Now, so this is a fall when we have a low, then
+
+309
+00:43:27.900 --> 00:43:32.910
+Jae Young Lee: What we want to know is how many times Lewy bodies executed.
+
+310
+00:43:34.770 --> 00:43:35.340
+Look at here.
+
+311
+00:43:36.510 --> 00:43:37.170
+Integer
+
+312
+00:43:38.370 --> 00:43:43.440
+Jae Young Lee: index j begins with one that it goes all the way up to n minus one.
+
+313
+00:43:47.280 --> 00:43:53.190
+Jae Young Lee: When Jay is equal to one this is executed loop body and when case equal to disagree.
+
+314
+00:43:54.570 --> 00:43:58.680
+Jae Young Lee: With Mr loop by the expertise is executed n minus one times
+
+315
+00:44:00.120 --> 00:44:09.180
+Jae Young Lee: Now then we look at how long does it take to execute this loop body this loop body involves one comparison.
+
+316
+00:44:10.350 --> 00:44:26.370
+Jae Young Lee: Against that we have to retrieve value from this data. Jay, but since there's nothing to do with emphasize just we ignore their part. This is one comparison one assignment so constant tomato and it has nothing to do with the input side.
+
+317
+00:44:28.770 --> 00:44:30.300
+Jae Young Lee: Now return statement.
+
+318
+00:44:31.560 --> 00:44:34.260
+Jae Young Lee: Returning is considered to take
+
+319
+00:44:35.940 --> 00:44:39.690
+Jae Young Lee: Time. So we can express to the running time in display.
+
+320
+00:44:41.730 --> 00:44:45.780
+Jae Young Lee: See one plus c two plus
+
+321
+00:44:47.490 --> 00:45:03.360
+Jae Young Lee: C three is the amount of time to execute the party just once, then we decided it takes n minus loop bodies executed n minus one. So she three times n minus one then finally return statement to support
+
+322
+00:45:05.070 --> 00:45:11.580
+Jae Young Lee: So as we talked about we purchased this is CS three
+
+323
+00:45:12.780 --> 00:45:15.000
+Jae Young Lee: Times n minus c three.
+
+324
+00:45:17.100 --> 00:45:20.250
+Jae Young Lee: We just discard all law or the terms.
+
+325
+00:45:21.660 --> 00:45:28.080
+Jae Young Lee: This is the highest order term, then we drop quotation so peak or or
+
+326
+00:45:29.250 --> 00:45:33.900
+Jae Young Lee: So we say this is what this method is a linear, linear
+
+327
+00:45:37.980 --> 00:45:38.520
+Jae Young Lee: Questions.
+
+328
+00:46:00.930 --> 00:46:12.090
+Jae Young Lee: First, I don't get your question, Frank. Ooh, what do you mean by if x is greater than or equal to y returns a of x. What does me
+
+329
+00:46:12.570 --> 00:46:14.040
+Frank: Okay, can you hear me.
+
+330
+00:46:14.400 --> 00:46:21.600
+Jae Young Lee: What is the context of your question, I don't. It doesn't matter. But essentially, they see three and minus two.
+
+331
+00:46:22.110 --> 00:46:23.160
+Frank: Can you hear me, sir.
+
+332
+00:46:23.910 --> 00:46:27.480
+Jae Young Lee: Oh, n minus one again here.
+
+333
+00:46:28.920 --> 00:46:33.840
+Jae Young Lee: JP, is it one goes all the way up to n minus one.
+
+334
+00:46:34.920 --> 00:46:40.410
+Jae Young Lee: So when change equal to one this is executed when chase equal to two pieces.
+
+335
+00:46:41.880 --> 00:46:45.480
+Jae Young Lee: And Wednesdays m&s what this is executed. So it is
+
+336
+00:46:45.690 --> 00:46:47.580
+Pawan Rijhwani: Very girls able to hear you but
+
+337
+00:46:47.640 --> 00:46:50.880
+Jae Young Lee: In terms of syntactic analysis. So,
+
+338
+00:46:50.910 --> 00:46:52.230
+Jae Young Lee: We will get the eagle.
+
+339
+00:46:52.590 --> 00:46:54.030
+Jae Young Lee: Whether it is n minus to
+
+340
+00:46:58.590 --> 00:46:59.130
+Lynn Long: Your boss.
+
+341
+00:46:59.910 --> 00:47:00.840
+Frank: Sir, can you hear me.
+
+342
+00:47:04.530 --> 00:47:07.560
+Pawan Rijhwani: We can I don't think the professor's Mike us. Oh.
+
+343
+00:47:07.590 --> 00:47:09.960
+Jae Young Lee: Yeah, but I think I can hear you now. I think
+
+344
+00:47:10.980 --> 00:47:13.140
+Frank: Okay, here's my question he
+
+345
+00:47:13.500 --> 00:47:24.750
+Frank: Looking at your, your, find a largest element function, you have the length of the Dr. Ray, you said it is a constant, it is concerned, time to run right
+
+346
+00:47:25.110 --> 00:47:28.140
+Jae Young Lee: Okay, so, which we which parts are you talking about
+
+347
+00:47:28.260 --> 00:47:30.960
+Frank: This slide the wall you have open sir this
+
+348
+00:47:31.260 --> 00:47:32.790
+Jae Young Lee: Beauty line. I'm talking about
+
+349
+00:47:33.000 --> 00:47:33.600
+Frank: Line two
+
+350
+00:47:33.870 --> 00:47:35.610
+Jae Young Lee: Okay, yes. Okay.
+
+351
+00:47:35.910 --> 00:47:59.940
+Frank: So if that's the case. So now with this function. Let's say I'm just comparing an array that do have two pointers. Right. So why, which is the high and a low. So, and I'm trying to see if the law is greater down costs to why just return this. So, what will be the running time of this statement.
+
+352
+00:48:02.160 --> 00:48:03.210
+Jae Young Lee: This constant amount of
+
+353
+00:48:04.230 --> 00:48:08.580
+Jae Young Lee: Talking about just a piece of code. So it has nothing to do with this quote right so you
+
+354
+00:48:09.060 --> 00:48:10.170
+Frank: got just a quarter.
+
+355
+00:48:11.100 --> 00:48:14.130
+Jae Young Lee: If, let's say X is why, then,
+
+356
+00:48:15.330 --> 00:48:17.430
+Jae Young Lee: return something, whatever that is.
+
+357
+00:48:18.090 --> 00:48:18.600
+Frank: Right.
+
+358
+00:48:18.720 --> 00:48:29.130
+Jae Young Lee: It takes one comparison one return statement comparison takes constant amount of time return takes constant amount of time. So combined. It takes constant tomato.
+
+359
+00:48:30.240 --> 00:48:31.080
+Frank: All right. Thank you.
+
+360
+00:48:36.810 --> 00:48:40.710
+Dhiraj Totwani: So, so the constant amount of time would be that would be, oh no oh one.
+
+361
+00:48:41.520 --> 00:48:43.620
+Jae Young Lee: A. It is a pickle and
+
+362
+00:48:44.910 --> 00:48:52.830
+Jae Young Lee: I'm going to answer people. What if you use a sum total notation equal one. So this is a concert tomato.
+
+363
+00:48:53.040 --> 00:48:54.660
+Dhiraj Totwani: Yeah yeah
+
+364
+00:49:01.530 --> 00:49:01.890
+Jae Young Lee: Okay.
+
+365
+00:49:05.160 --> 00:49:07.470
+Jae Young Lee: Okay, I think I answered all your questions.
+
+366
+00:49:15.840 --> 00:49:17.610
+Jae Young Lee: It depends on so
+
+367
+00:49:22.530 --> 00:49:35.580
+Jae Young Lee: If you are just keeping an array, just a row race. So it is not a part of any data structure, Jenna. If you have to decide how many elements are there, then you have to scan it, you have to county than it is because
+
+368
+00:49:37.890 --> 00:49:56.190
+Jae Young Lee: In this case, this array dysfunction is already there. Then simply the length is already determined by this data structure. This is a part of a chopper then simply data length returns the size so that that takes constant
+
+369
+00:49:57.390 --> 00:50:08.520
+Jae Young Lee: Again, if you are keeping just simple array, then you have to count. You have to determine size, then you have to scan it so it takes people
+
+370
+00:50:20.970 --> 00:50:29.040
+Jae Young Lee: And next example, but you're all these examples of from our textbook. So, if necessary, you can we do our textbook later.
+
+371
+00:50:30.720 --> 00:50:48.030
+Jae Young Lee: My slice, sometimes I use a different example but it possible, I'm trying to use the same example just to be consistent and so also so that you may not be overloaded. If I discuss use different examples, then you have to start both of them. So it will take more time.
+
+372
+00:50:49.380 --> 00:50:52.320
+Jae Young Lee: But sometimes tragedy different examples later was any
+
+373
+00:50:53.430 --> 00:51:14.760
+Jae Young Lee: At this problem is like this. We are keeping three sets, then here, this is your Java implementation three sets expressed as a represented a three a race, a way of integer so Group A re croupier a group series three a race, but the three sets.
+
+374
+00:51:15.990 --> 00:51:20.490
+Jae Young Lee: This is a set, which means that the initial array all elements are distinct.
+
+375
+00:51:21.600 --> 00:51:22.020
+Jae Young Lee: Then
+
+376
+00:51:23.370 --> 00:51:29.160
+Jae Young Lee: To learn to Saudi Arabia, all the same, if there are 10 elements yeah 1010 elements.
+
+377
+00:51:31.380 --> 00:51:46.260
+Jae Young Lee: The sizes Atlanta said, all the same, then the problem is if there's any element, element, whatever that is less x belongs to all three. Okay, then it returns ports.
+
+378
+00:51:47.760 --> 00:51:49.140
+Jae Young Lee: Otherwise, it returns true
+
+379
+00:51:50.160 --> 00:52:03.810
+Jae Young Lee: In other words, this method returns true only if there is no no limit that belongs to all three of them that this is district for of solving that problem.
+
+380
+00:52:07.440 --> 00:52:17.220
+Jae Young Lee: This notation means that group A is a real integers in a group A is A, is it just temporary or dummy variable.
+
+381
+00:52:17.880 --> 00:52:38.160
+Jae Young Lee: That we present each element in Group A array KP is again just dummy variable representing each element here each element sees like for each element in a day for each element in be for each element and see. So we have three araiza three
+
+382
+00:52:39.210 --> 00:52:46.410
+Jae Young Lee: Group A group direct groups here, basically we are comparing the three elements.
+
+383
+00:52:47.490 --> 00:52:48.660
+Jae Young Lee: This one, this one is on
+
+384
+00:52:50.820 --> 00:53:10.920
+Jae Young Lee: If this is a this SP see it as the same as P and P is the same as see then that element belongs all three of them. So return for us. Otherwise, we move on for each day for HP purchasing so 10 x will be considering this one considering this and
+
+385
+00:53:11.970 --> 00:53:16.080
+Jae Young Lee: Then once we are done here, then we will be considered this
+
+386
+00:53:17.640 --> 00:53:21.720
+Jae Young Lee: For each a pole position. So effectively, we are
+
+387
+00:53:23.100 --> 00:53:23.880
+Jae Young Lee: Comparing
+
+388
+00:53:25.320 --> 00:53:32.010
+Jae Young Lee: We do this comparison for all three parts, all three reports, whenever we see
+
+389
+00:53:33.270 --> 00:53:41.340
+Jae Young Lee: As the same sp and then piece does MSA, then he found such elements of return ports if we exit is follow
+
+390
+00:53:42.450 --> 00:53:48.510
+Jae Young Lee: That means there's no such element. So we return to the running time of this one is n
+
+391
+00:54:03.540 --> 00:54:05.520
+Jae Young Lee: Might be easier if I write in this way.
+
+392
+00:54:07.140 --> 00:54:09.750
+Jae Young Lee: Again, I'm not falling in particular syntax.
+
+393
+00:54:11.790 --> 00:54:13.440
+Jae Young Lee: Is zero through
+
+394
+00:54:15.240 --> 00:54:17.820
+Jae Young Lee: The size of race and I and
+
+395
+00:54:19.350 --> 00:54:20.700
+I plus plus.
+
+396
+00:54:23.580 --> 00:54:25.830
+Jae Young Lee: Or j zero
+
+397
+00:54:27.240 --> 00:54:30.660
+Jae Young Lee: j and j plus plus.
+
+398
+00:54:31.920 --> 00:54:32.430
+Four.
+
+399
+00:54:34.350 --> 00:54:37.950
+Jae Young Lee: Is zero K and
+
+400
+00:54:39.060 --> 00:54:45.330
+Jae Young Lee: K plus plus. And then just loop, but this is Lou party line and license.
+
+401
+00:54:46.620 --> 00:54:53.490
+Jae Young Lee: So basically what you're trying to decide here is that how many times this loop bodies executed.
+
+402
+00:55:01.590 --> 00:55:08.190
+Jae Young Lee: For each i zero through n minus 27 times good poetry j zero through ma n times
+
+403
+00:55:09.300 --> 00:55:15.990
+Jae Young Lee: N zero, N minus one. And so, and times and times.
+
+404
+00:55:17.640 --> 00:55:19.170
+Jae Young Lee: This how we get into
+
+405
+00:55:22.410 --> 00:55:30.210
+Jae Young Lee: Our textbook is another solution to solve this problem, the same problem, but with a smaller running time.
+
+406
+00:55:32.850 --> 00:55:34.230
+Jae Young Lee: Issue in here because
+
+407
+00:55:38.370 --> 00:55:41.820
+Jae Young Lee: This problem solves in a slightly different way.
+
+408
+00:55:43.410 --> 00:55:52.320
+Jae Young Lee: So again, we have a group A array for each element here a again AZ just dummy variable. He
+
+409
+00:55:54.930 --> 00:55:57.210
+Jae Young Lee: With you and then they say, if a
+
+410
+00:55:58.410 --> 00:56:02.400
+Jae Young Lee: Then there's a pole to wait for for for
+
+411
+00:56:03.420 --> 00:56:06.810
+Jae Young Lee: Brief all loose so that it follows the structure since
+
+412
+00:56:08.280 --> 00:56:16.350
+Jae Young Lee: Same as the previous one. We had three poles nested 444444 but here it is different.
+
+413
+00:56:17.490 --> 00:56:19.860
+Jae Young Lee: One difference is that the inner for loop here.
+
+414
+00:56:21.030 --> 00:56:22.140
+Jae Young Lee: The inner multiple
+
+415
+00:56:23.310 --> 00:56:26.250
+Jae Young Lee: Is executed only if this condition is satisfied.
+
+416
+00:56:27.780 --> 00:56:31.680
+Jae Young Lee: This for see Lou.
+
+417
+00:56:34.020 --> 00:56:45.900
+Jae Young Lee: This policy this policy Lucas executed for all possible combinations of AI engine. So always created for all possible values of
+
+418
+00:56:47.520 --> 00:56:48.720
+Jae Young Lee: That in this code.
+
+419
+00:56:51.210 --> 00:57:02.430
+Jae Young Lee: This for seal is executed only if this condition is satisfied. So basically running time is decrease the analysis is like this.
+
+420
+00:57:05.190 --> 00:57:10.260
+Jae Young Lee: This follows all possible combinations of a's and b's are
+
+421
+00:57:12.210 --> 00:57:17.430
+Jae Young Lee: Executed which means that, but there are n squared comparisons.
+
+422
+00:57:19.410 --> 00:57:30.510
+Jae Young Lee: The first one first one first. One second one first. One third one. So next, second one first, one second one second answer. So, number of times comparisons is made is and
+
+423
+00:57:31.860 --> 00:57:32.070
+Now,
+
+424
+00:57:34.080 --> 00:57:37.500
+Jae Young Lee: Along this n cubed. How many times, this becomes
+
+425
+00:57:41.190 --> 00:57:42.870
+Jae Young Lee: Say this is a
+
+426
+00:57:44.010 --> 00:57:49.590
+Jae Young Lee: This is a one, a two, a three, A four this NSA
+
+427
+00:57:51.750 --> 00:57:56.070
+Jae Young Lee: P one P two P three people.
+
+428
+00:57:58.020 --> 00:58:11.820
+Jae Young Lee: This is a set. Again, this is a set, which means that all these four elements are distinct all these four elements are distinct which Mr an element here is the same as an element there but this condition becomes true.
+
+429
+00:58:15.450 --> 00:58:16.020
+Jae Young Lee: Most
+
+430
+00:58:19.230 --> 00:58:19.800
+Times.
+
+431
+00:58:21.990 --> 00:58:30.120
+Jae Young Lee: Which means that, at most, this is the same as the same as this one the same as this one because they're all testings
+
+432
+00:58:31.410 --> 00:58:32.280
+Jae Young Lee: In the worst case,
+
+433
+00:58:33.900 --> 00:58:39.330
+Jae Young Lee: For players or demo. So here, for discussion at most n times
+
+434
+00:58:41.910 --> 00:58:49.170
+Jae Young Lee: N comparisons are made among doors and competitors in the worst case, this becomes true only n times
+
+435
+00:58:52.560 --> 00:58:59.130
+Jae Young Lee: Then for each of them. We have to compare to be particularly suppose
+
+436
+00:59:00.150 --> 00:59:09.510
+Jae Young Lee: This was the same as Tisha, just one time there and such times then for that the value we have to compare this with
+
+437
+00:59:10.620 --> 00:59:17.580
+Jae Young Lee: All the values in see to see whether it is any matching if there is then we return for us but
+
+438
+00:59:19.050 --> 00:59:22.950
+Jae Young Lee: For issue. So we have to do, how many comparisons.
+
+439
+00:59:24.150 --> 00:59:28.920
+Jae Young Lee: Again, P is fixed. Once we found this metric AMB.
+
+440
+00:59:30.210 --> 00:59:34.470
+Jae Young Lee: Then there are elements here. So we do end compared
+
+441
+00:59:39.270 --> 00:59:42.330
+Jae Young Lee: In the worst case, we have to the s curve right this is
+
+442
+00:59:43.710 --> 00:59:44.610
+Jae Young Lee: For each of this one.
+
+443
+00:59:45.840 --> 00:59:55.740
+Jae Young Lee: This becomes true. In the worst case, and times for each of this one, we have to to encompass so this n squared and square
+
+444
+00:59:56.850 --> 01:00:15.030
+Jae Young Lee: Plus, so it becomes Pico and of course we're dropping all other concerns there could be some certain concepts here another concept here, so see one and screwed. So let's see, to and screw it is just ask at this is how
+
+445
+01:00:16.320 --> 01:00:18.990
+Jae Young Lee: We analyze this code and then
+
+446
+01:00:20.340 --> 01:00:28.830
+Jae Young Lee: Running time or this one is N squared algorithm source, the same problem as the previous code, but this one is test.
+
+447
+01:00:29.550 --> 01:00:34.290
+shawn.lefebre: Professor if yeah if a group. See where lists.
+
+448
+01:00:35.520 --> 01:00:35.820
+shawn.lefebre: And
+
+449
+01:00:37.140 --> 01:00:37.800
+Jae Young Lee: Now this isn't
+
+450
+01:00:39.030 --> 01:00:42.300
+Jae Young Lee: A. Say that again. If
+
+451
+01:00:42.330 --> 01:00:45.540
+shawn.lefebre: A, B and C. We're not sets.
+
+452
+01:00:46.020 --> 01:00:46.890
+shawn.lefebre: Oh, no.
+
+453
+01:00:47.430 --> 01:00:48.660
+shawn.lefebre: No, so be n cubed.
+
+454
+01:00:49.770 --> 01:00:53.160
+Jae Young Lee: Yes, it is. It can't be n squared desk.
+
+455
+01:00:54.330 --> 01:00:54.540
+Jae Young Lee: Okay.
+
+456
+01:00:57.150 --> 01:01:08.010
+Pawan Rijhwani: Professor, there's a question on the chat also. So if A and B are saying exactly the same and C is not exactly the same, then wouldn't that be en que
+
+457
+01:01:08.550 --> 01:01:09.810
+Jae Young Lee: Uno see again.
+
+458
+01:01:10.890 --> 01:01:15.900
+Jae Young Lee: If a beer exactly the same again in the worst case,
+
+459
+01:01:17.190 --> 01:01:20.190
+Jae Young Lee: This becomes true n times for this country and times.
+
+460
+01:01:21.960 --> 01:01:26.040
+Jae Young Lee: For each of these End Times. We have to end competitors.
+
+461
+01:01:27.210 --> 01:01:28.410
+Jae Young Lee: That's what you have asked
+
+462
+01:01:28.890 --> 01:01:29.130
+Pawan Rijhwani: This
+
+463
+01:01:29.160 --> 01:01:33.450
+Jae Young Lee: N squared comparison is independent of this n squared comparison. So we
+
+464
+01:01:35.430 --> 01:01:36.210
+Jae Young Lee: That's what we have
+
+465
+01:01:53.190 --> 01:01:54.150
+Jae Young Lee: This problem.
+
+466
+01:01:55.740 --> 01:01:58.080
+Jae Young Lee: Is similar to that on what different
+
+467
+01:01:59.610 --> 01:02:07.980
+Jae Young Lee: We are given and just a single array, then we are trying to find whether all elements in this array or distinct or unique
+
+468
+01:02:09.870 --> 01:02:16.740
+Jae Young Lee: This is a simple, simple, straightforward solution. We have two loops follow and a one nested loop.
+
+469
+01:02:18.060 --> 01:02:19.140
+Jae Young Lee: A begins here.
+
+470
+01:02:20.880 --> 01:02:24.360
+Jae Young Lee: So Jay is starts here.
+
+471
+01:02:25.800 --> 01:02:27.240
+Jae Young Lee: We go all the way up to
+
+472
+01:02:28.260 --> 01:02:29.100
+Jae Young Lee: N minus two.
+
+473
+01:02:30.780 --> 01:02:34.020
+Jae Young Lee: Which was Jay begins here and then up to hear
+
+474
+01:02:37.110 --> 01:02:44.070
+Jae Young Lee: That for each j k begins the next one here that it goes all the way up to
+
+475
+01:02:45.600 --> 01:02:55.320
+Jae Young Lee: When Jay is equal to zero 10 K begins at one, one more to all the way up to n minus one.
+
+476
+01:02:56.760 --> 01:02:58.770
+Jae Young Lee: When Jay Z's equal to one.
+
+477
+01:02:59.820 --> 01:03:03.840
+Jae Young Lee: K begins to all the way up to my desktop so
+
+478
+01:03:05.220 --> 01:03:10.950
+Jae Young Lee: So let me rewrite the Liberty. Liberty space erase this one.
+
+479
+01:03:13.560 --> 01:03:16.740
+Jae Young Lee: When Jason equal to zero.
+
+480
+01:03:17.820 --> 01:03:22.440
+Jae Young Lee: K begins at one that it goes to n minus one.
+
+481
+01:03:23.460 --> 01:03:31.830
+Jae Young Lee: And Chase equal to one, get K begins. One more than Jason to through n minus one. So,
+
+482
+01:03:33.270 --> 01:03:38.580
+Jae Young Lee: When Jay becomes n minus two. Eventually, then k
+
+483
+01:03:39.780 --> 01:03:41.100
+Jae Young Lee: And my ass. I just once.
+
+484
+01:03:43.830 --> 01:03:47.970
+Jae Young Lee: For each of the is just loop bodies executing
+
+485
+01:03:51.120 --> 01:04:02.280
+Jae Young Lee: executing this loop, but he wants takes a constant amount of time status equals one. If I use big O notation is just one comparison. And then one time. So content.
+
+486
+01:04:03.480 --> 01:04:14.280
+Jae Young Lee: Now we have to decide how many times this new bodies executed when JJ equal to zero loop bodies executed n minus one times this corresponds to chase
+
+487
+01:04:16.320 --> 01:04:23.760
+Jae Young Lee: Chase equal to one loop bodies executed n minus two times here K begins to all the way up.
+
+488
+01:04:26.250 --> 01:04:29.400
+Jae Young Lee: All the way up to you. So, this corresponds to this when chasing
+
+489
+01:04:31.440 --> 01:04:41.880
+Jae Young Lee: So this one. There's one plus two plus old way. This is the summation. It is half of n minus one and
+
+490
+01:04:44.910 --> 01:04:46.590
+Jae Young Lee: This is a quadratic function.
+
+491
+01:04:48.990 --> 01:04:52.530
+Jae Young Lee: For n squared minus hippo and
+
+492
+01:04:53.640 --> 01:04:57.810
+Jae Young Lee: Drop Lord just discard this one we have
+
+493
+01:04:59.370 --> 01:04:59.790
+Jae Young Lee: Quadrant
+
+494
+01:05:01.080 --> 01:05:06.030
+Jae Young Lee: So this method which tries to determine whether the
+
+495
+01:05:07.230 --> 01:05:11.520
+Jae Young Lee: Given array is unique elements, it takes
+
+496
+01:05:12.990 --> 01:05:13.230
+Jae Young Lee: Time.
+
+497
+01:05:20.820 --> 01:05:23.310
+Jae Young Lee: Okay, that's it. There are a couple questions.
+
+498
+01:05:25.980 --> 01:05:34.230
+Jae Young Lee: Relevant in Java and Python all set is a data structure. It has nothing to do with any language studies and mathematical concept.
+
+499
+01:05:35.340 --> 01:05:45.660
+Jae Young Lee: Set can be implemented in different languages, even in Java, using many different data structures so set a set is a mathematical concept. It has nothing to do with problem.
+
+500
+01:05:50.460 --> 01:05:55.380
+Jae Young Lee: Why wasn't that if statement considered the concept. Yes, if statement is a concept.
+
+501
+01:05:57.510 --> 01:05:57.690
+Jae Young Lee: That
+
+502
+01:05:58.950 --> 01:06:02.610
+Jae Young Lee: Again, as I said, this takes constant amount of time.
+
+503
+01:06:04.590 --> 01:06:05.970
+Jae Young Lee: To be go one constant
+
+504
+01:06:07.530 --> 01:06:10.650
+Jae Young Lee: That you're counting how many times
+
+505
+01:06:11.700 --> 01:06:15.150
+Jae Young Lee: This loop buddies and then our conclusion is that
+
+506
+01:06:17.070 --> 01:06:22.470
+Jae Young Lee: It is executed this many types. So this is all and script.
+
+507
+01:06:28.800 --> 01:06:40.860
+Jae Young Lee: Slide 16 yes, this takes constant or more time. Yes.
+
+508
+01:06:42.360 --> 01:06:43.320
+Jae Young Lee: But again,
+
+509
+01:06:44.520 --> 01:06:52.020
+Jae Young Lee: This takes constant, constant amount of time we will try to determine how many times this is executed.
+
+510
+01:06:55.980 --> 01:07:07.890
+Jae Young Lee: This becomes and this one the same here. I don't know which if statement, you're already pulling to just executing one if statement. It takes constant amount of time this constant amount of time.
+
+511
+01:07:09.870 --> 01:07:10.470
+Jae Young Lee: Get alone.
+
+512
+01:07:13.620 --> 01:07:16.500
+Jae Young Lee: Now, second solution in our textbook is
+
+513
+01:07:19.560 --> 01:07:21.270
+Jae Young Lee: The first we sort
+
+514
+01:07:23.610 --> 01:07:34.770
+Jae Young Lee: The previous approach. What we did was that we compare this with this one, this one, this one is with this one. So, and that is with this one. This is we compared
+
+515
+01:07:36.060 --> 01:07:38.460
+Jae Young Lee: Tears industry as we move forward.
+
+516
+01:07:39.600 --> 01:07:44.250
+Jae Young Lee: Instead of doing that this method foot sorts all
+
+517
+01:07:45.720 --> 01:07:46.380
+Jae Young Lee: Elements.
+
+518
+01:07:48.120 --> 01:08:00.420
+Jae Young Lee: So five 810 9091 once elements are sorted to find out whether they are autistic. We just need to compare
+
+519
+01:08:01.500 --> 01:08:02.490
+Jae Young Lee: Just consecutive
+
+520
+01:08:04.320 --> 01:08:18.630
+Jae Young Lee: Pretty much complete this with this, if they're identical then return for us if they are different than compare this with this and that is with this. This. So, number of convergence is small once so
+
+521
+01:08:19.680 --> 01:08:21.660
+Jae Young Lee: So that's what this solution.
+
+522
+01:08:24.150 --> 01:08:24.420
+Jae Young Lee: For
+
+523
+01:08:25.860 --> 01:08:35.460
+Jae Young Lee: Us to keep the original array intact so it may say caught me this temp arrays and copy of this data, just to keep away and change.
+
+524
+01:08:36.390 --> 01:08:55.950
+Jae Young Lee: And then there's a sort method implemented in this race, class in Java. So if you just invoke the sort method on this temporary, then it is sorted once sorted. Then we do comparison in this manner. So Jay begins at
+
+525
+01:08:57.690 --> 01:09:05.400
+Jae Young Lee: JP and said zero, then each time we just compare temp Shay with tempt a plus one.
+
+526
+01:09:06.870 --> 01:09:09.330
+Jae Young Lee: Is British initially chase here.
+
+527
+01:09:11.490 --> 01:09:20.460
+Jae Young Lee: If they are identical then returned immediately otherwise. Now we can kill this one is JP comes one. This one is
+
+528
+01:09:22.350 --> 01:09:28.140
+Jae Young Lee: zero through n minus two. So in terms of big all cases, a Pico
+
+529
+01:09:29.760 --> 01:09:42.780
+Jae Young Lee: Since equals zero through n minus to the exact number of times loop bodies executed is n minus one times, but now we know that a minus one times just peek over
+
+530
+01:09:45.000 --> 01:09:50.610
+Jae Young Lee: Now we have to take into consideration how long it takes the sorting.
+
+531
+01:09:52.590 --> 01:09:53.550
+Jae Young Lee: We saw
+
+532
+01:09:55.500 --> 01:10:01.350
+Jae Young Lee: That in search and sort of the running time. Oh, in search. And so TCP cope and screw it is quite right.
+
+533
+01:10:03.750 --> 01:10:11.310
+Jae Young Lee: There are different. So try this, or try that applied to an array of integers. It takes an log and
+
+534
+01:10:13.080 --> 01:10:14.400
+Jae Young Lee: We will discuss later.
+
+535
+01:10:17.010 --> 01:10:23.730
+Jae Young Lee: Which is the total running time. Is this a concert, the amount of time constant amount of actual just takes people
+
+536
+01:10:24.780 --> 01:10:31.740
+Jae Young Lee: Because we are copying and elements. It takes people and this one takes people n log n.
+
+537
+01:10:34.770 --> 01:10:36.420
+Jae Young Lee: Then this takes people
+
+538
+01:10:38.010 --> 01:10:49.650
+Jae Young Lee: So I think you ought to put here that they can copy text speak of. So we have making a copy kick off and sorting to go and Logan.
+
+539
+01:10:50.280 --> 01:11:05.040
+Jae Young Lee: And this follow people and Logan does a constant, constant but we just ignore them, that again we discard all Lord Trump's. This is the highest auditorium. So running time on this one is en lo
+
+540
+01:11:06.510 --> 01:11:07.590
+Jae Young Lee: The previous slides.
+
+541
+01:11:08.910 --> 01:11:13.230
+Jae Young Lee: It was n squared, and then we know that n log n is faster than n squared.
+
+542
+01:11:21.930 --> 01:11:22.170
+Jae Young Lee: Oh,
+
+543
+01:11:23.400 --> 01:11:27.000
+Jae Young Lee: Once we discuss the different sorting algorithms, basically, so that
+
+544
+01:11:30.030 --> 01:11:33.900
+Jae Young Lee: It uses a so called a Kickstarter Java using
+
+545
+01:11:34.110 --> 01:11:36.330
+Jae Young Lee: Look, when he started very
+
+546
+01:11:36.600 --> 01:11:37.650
+Jae Young Lee: very primitive
+
+547
+01:11:38.040 --> 01:11:42.360
+Jae Young Lee: Types. It is a Kickstarter within runs with en lo
+
+548
+01:11:44.850 --> 01:11:45.930
+Jae Young Lee: And so will
+
+549
+01:11:46.980 --> 01:11:56.100
+Jae Young Lee: You will see certain discuss later. But in general, we have to know by reading the documentation of the language.
+
+550
+01:12:02.490 --> 01:12:04.080
+Jae Young Lee: Any other questions.
+
+551
+01:12:13.260 --> 01:12:14.250
+Jae Young Lee: Okay, so let's
+
+552
+01:12:19.980 --> 01:12:21.000
+Jae Young Lee: Now proof technical
+
+553
+01:12:24.780 --> 01:12:27.210
+Jae Young Lee: So there are different ways of proving
+
+554
+01:12:28.530 --> 01:12:30.570
+Jae Young Lee: A certain statements prove or disprove
+
+555
+01:12:32.190 --> 01:12:32.580
+Let's
+
+556
+01:12:34.170 --> 01:12:36.390
+Before we move on to different topics.
+
+557
+01:12:37.440 --> 01:12:41.760
+Jae Young Lee: Let me ask you. Is there any questions about the material. We talked about
+
+558
+01:12:44.070 --> 01:12:44.370
+Jae Young Lee: Okay.
+
+559
+01:12:49.320 --> 01:12:50.850
+Jae Young Lee: When we have to prove
+
+560
+01:12:52.260 --> 01:12:59.280
+Jae Young Lee: When here to disprove a certain statement and it is sufficient to show a counterexample.
+
+561
+01:13:02.730 --> 01:13:16.260
+Jae Young Lee: So disproven. Something is not difficult, as far as we can find a one counter example. You don't have to show it is not true for all our case just want counterexample dissipation
+
+562
+01:13:17.130 --> 01:13:27.300
+Jae Young Lee: But to prove a certain statement is true, then we have to show it is true for all objects in that domain, like if if I'm arguing
+
+563
+01:13:28.710 --> 01:13:28.890
+Jae Young Lee: That
+
+564
+01:13:30.720 --> 01:13:38.670
+Jae Young Lee: Twice a certain positive integer is always larger than that integer. If I approve that
+
+565
+01:13:39.750 --> 01:13:51.630
+Jae Young Lee: Then just tell just showing that Paul is greater than to this. One example is not enough. I have to show in general it is true for all posted vintage
+
+566
+01:13:53.100 --> 01:13:54.660
+Jae Young Lee: That's why we need proof technique.
+
+567
+01:13:56.850 --> 01:13:58.800
+Jae Young Lee: Different techniques, I think.
+
+568
+01:14:00.390 --> 01:14:02.370
+Jae Young Lee: Different disparate techniques, I think.
+
+569
+01:14:05.250 --> 01:14:11.220
+Jae Young Lee: Might've in subjects should have discussed in some of the courses, not necessarily here in our curriculum. Some, yeah.
+
+570
+01:14:12.840 --> 01:14:22.440
+Jae Young Lee: There are existing proof, proof, proof by contract position and proof by contradiction and mathematical induction, but we will discuss on the test.
+
+571
+01:14:24.600 --> 01:14:32.130
+Jae Young Lee: Then our textbook also discusses a loop ingredient method. This method is used to prove
+
+572
+01:14:35.520 --> 01:14:53.700
+Jae Young Lee: It called segments or an algorithm or a program is correct. So sometimes I have an algorithm. Well, I have a piece of code, then I have to prove that by algorithms correct demand. Dr. Williams involved loops, then we can use a so called the loop in the method.
+
+573
+01:14:55.170 --> 01:15:11.610
+Jae Young Lee: It uses a actually just mathematical induction, but the in our class. I don't think we will discuss this loop in there too. So, I will discuss on the new proof by contradiction and proof by induction. Both of them are very powerful and they are used a lot
+
+574
+01:15:15.420 --> 01:15:20.070
+Jae Young Lee: Suppose I want to prove it is true and true is true.
+
+575
+01:15:21.360 --> 01:15:28.350
+Jae Young Lee: The proof statement and then a couple contradiction begins with delegating
+
+576
+01:15:29.850 --> 01:15:46.020
+Jae Young Lee: But the left hand side is called the antecedents or precondition right hand side is called a consequence. So football contradiction begins with the gating this consequence. So we assume cues force.
+
+577
+01:15:48.060 --> 01:15:55.710
+Jae Young Lee: And we start from depth assumption and we proceed logically and we find a contradiction.
+
+578
+01:15:56.970 --> 01:16:12.750
+Jae Young Lee: I assume so. I want to prove cues. True, but I assume choose not to 10. I see. Oh, if we can use that to them. I have something that is completely wrong. So you must be true. So there's a contradiction.
+
+579
+01:16:13.920 --> 01:16:15.300
+Jae Young Lee: I put an example here.
+
+580
+01:16:17.460 --> 01:16:24.090
+Jae Young Lee: So what we want to prove is that if an even integers led to another even integer, then
+
+581
+01:16:25.170 --> 01:16:28.320
+Jae Young Lee: The result is and even integer. So this is an
+
+582
+01:16:29.400 --> 01:16:31.890
+Jae Young Lee: antecedent. This is consequence.
+
+583
+01:16:33.240 --> 01:16:43.380
+Jae Young Lee: First, we have to formulate or rewrite the statements in appropriate format we are, we can apply by contradiction. So we use a this notation.
+
+584
+01:16:44.520 --> 01:16:49.770
+Jae Young Lee: Let's say x and y, or to even integers that z is x plus y
+
+585
+01:16:51.090 --> 01:16:55.770
+Jae Young Lee: Then statement can be x plus y
+
+586
+01:16:57.600 --> 01:17:03.150
+Jae Young Lee: The that if x is even wise, even then z is
+
+587
+01:17:04.770 --> 01:17:14.430
+Jae Young Lee: This, this is it consequent apart. So now we negate this one says, If so, we assume since thought
+
+588
+01:17:17.040 --> 01:17:25.110
+Jae Young Lee: Oh, this is a proof since access even or we can rewrite it says it twice up certain intention.
+
+589
+01:17:26.550 --> 01:17:32.850
+Jae Young Lee: We can do this for any even integer that we do. Same with why why is it twice, have some other intention.
+
+590
+01:17:34.230 --> 01:17:48.900
+Jae Young Lee: We assumed disease or so z can be rewritten industry to k plus one or two k minus. It is the same twice, some integer plus one, submit teacher. Then we plug in
+
+591
+01:17:52.440 --> 01:18:00.810
+Jae Young Lee: X plus Y z x is replaced with to him. Why is replaced with to end this is pleased with two k plus one.
+
+592
+01:18:03.750 --> 01:18:13.470
+Jae Young Lee: Then we just made for like edge break. This is really turn this in this way it Factor to our practice, then we see contradiction.
+
+593
+01:18:15.240 --> 01:18:26.460
+Jae Young Lee: On the left hand side, what we have is an even number, but on the right hand side, we have one which is odd. So this can't be true. So this is a contradiction.
+
+594
+01:18:27.780 --> 01:18:36.120
+Jae Young Lee: So Z must be art this how we prove this given statement using proof by contradiction.
+
+595
+01:18:37.350 --> 01:18:44.880
+Jae Young Lee: This is a simple message, but it is a very powerful it is used to prove many different properties of in many different outcomes.
+
+596
+01:18:47.970 --> 01:18:48.900
+Jae Young Lee: Any questions.
+
+597
+01:18:54.960 --> 01:18:57.030
+Jae Young Lee: Okay, go ahead. If you have any questions. Yeah.
+
+598
+01:19:11.010 --> 01:19:14.370
+Jae Young Lee: Okay. Yes, miss. No question. Why is that the word sense can put
+
+599
+01:19:20.970 --> 01:19:28.860
+Jae Young Lee: That on the left hand side we have even integer is not right hand side is can be through this whole thing can't be true.
+
+600
+01:19:31.980 --> 01:19:42.120
+Jae Young Lee: On the left hand side we have even because it is towards something on the right hand side it is one which is odd. So even number, can't be that one. So this whole thing.
+
+601
+01:19:43.200 --> 01:19:44.340
+Jae Young Lee: Is a contradiction.
+
+602
+01:19:52.230 --> 01:19:56.370
+Jae Young Lee: We will see examples of using proofs when analyzing the runtime of our wouldn't
+
+603
+01:19:58.590 --> 01:20:05.280
+Jae Young Lee: Usually when we analyze the running tiger open algorithm that doesn't usually involve
+
+604
+01:20:06.420 --> 01:20:07.200
+Jae Young Lee: A proof.
+
+605
+01:20:08.520 --> 01:20:24.780
+Jae Young Lee: When we want to prove a certain property of an algorithm for the correctness and I will the correctness of the whole world. And then we may need a proof technique but running time analysis usually doesn't involve a proof.
+
+606
+01:20:26.400 --> 01:20:32.100
+shawn.lefebre: Professor Yeah, so is this proof trying to say that it is not true. The premise.
+
+607
+01:20:33.780 --> 01:20:34.980
+Jae Young Lee: And no, but it is a
+
+608
+01:20:36.990 --> 01:20:37.560
+Jae Young Lee: Proven
+
+609
+01:20:38.790 --> 01:20:40.200
+Jae Young Lee: Ultimately, you're proving this one.
+
+610
+01:20:43.860 --> 01:20:44.460
+Jae Young Lee: So the
+
+611
+01:20:45.690 --> 01:20:47.070
+Jae Young Lee: Proof. So if
+
+612
+01:20:48.270 --> 01:21:02.220
+Jae Young Lee: If we had to even integers to justice even integer. Yes. Will you want to prove. But one way of proving is that first we dedicate this one we assume that is not true, right hand side is not true. This is we assume that
+
+613
+01:21:03.270 --> 01:21:11.220
+Jae Young Lee: Then we logically proceed and then we show there's a contradiction. So it must be true.
+
+614
+01:21:12.330 --> 01:21:13.260
+Jae Young Lee: That's how it works.
+
+615
+01:21:22.350 --> 01:21:25.470
+shawn.lefebre: The contradiction because when you finish in the next slide.
+
+616
+01:21:26.730 --> 01:21:30.570
+shawn.lefebre: Some of those integers equals one half which cannot be true.
+
+617
+01:21:33.090 --> 01:21:45.210
+Jae Young Lee: One have no this is a this is self this equality itself is a contradiction because on the left hand side, we have an even number is two.
+
+618
+01:21:46.260 --> 01:21:48.180
+Jae Young Lee: Times something, whatever that might be.
+
+619
+01:21:48.600 --> 01:21:53.340
+shawn.lefebre: Understand that but if you simplify if you divide both sides by two.
+
+620
+01:21:54.450 --> 01:21:57.420
+shawn.lefebre: Then you have some of integers that equals one half which cannot be done.
+
+621
+01:21:58.170 --> 01:22:00.450
+Jae Young Lee: Oh yeah, you can argue that way too. Yeah.
+
+622
+01:22:03.330 --> 01:22:08.640
+Jae Young Lee: But tend to just, it's not the entity, but then you we don't have to go that far here.
+
+623
+01:22:09.780 --> 01:22:13.080
+Jae Young Lee: Because it is alone itself shows there's a contradiction.
+
+624
+01:22:22.560 --> 01:22:23.670
+Jae Young Lee: Any other questions.
+
+625
+01:22:32.010 --> 01:22:32.550
+Jae Young Lee: Induction.
+
+626
+01:22:35.100 --> 01:22:36.480
+Jae Young Lee: This mathematical induction.
+
+627
+01:22:38.130 --> 01:22:41.160
+Jae Young Lee: As a base case. And then inductive step.
+
+628
+01:22:45.840 --> 01:22:52.020
+Jae Young Lee: We're going to prove with certain predicted by certain property is true for all positive integers.
+
+629
+01:22:53.160 --> 01:22:53.490
+So,
+
+630
+01:22:55.440 --> 01:23:05.310
+Jae Young Lee: So pure one is true pure true is true in jail for in general, pure is true for any integers test will you
+
+631
+01:23:08.310 --> 01:23:11.280
+Jae Young Lee: So in the base case we show this is true.
+
+632
+01:23:22.710 --> 01:23:23.670
+Jae Young Lee: Then next
+
+633
+01:23:26.880 --> 01:23:28.110
+Jae Young Lee: Inductive stair.
+
+634
+01:23:29.250 --> 01:23:30.090
+Jae Young Lee: We assume
+
+635
+01:23:31.770 --> 01:23:36.630
+Jae Young Lee: This is an assumption. It is called inductive hypothesis we assume this is true.
+
+636
+01:23:44.190 --> 01:23:50.250
+Jae Young Lee: Then using this assumption by using this hypothesis we show this is also
+
+637
+01:23:53.160 --> 01:23:54.120
+Jae Young Lee: Show. This is
+
+638
+01:23:58.980 --> 01:24:04.770
+Jae Young Lee: This is how this induction once again two steps first base case.
+
+639
+01:24:06.960 --> 01:24:19.830
+Jae Young Lee: We show it is true for the small is that argument, smallest of object in that domain. In this case, it says all positive integers smallest positive integers was so kill
+
+640
+01:24:20.880 --> 01:24:28.320
+Jae Young Lee: It says all positive integers greater than or equal to two, then that basically says, peel off to
+
+641
+01:24:29.910 --> 01:24:32.580
+Jae Young Lee: The base case is determined by the problems take
+
+642
+01:24:33.840 --> 01:24:38.730
+Jae Young Lee: All positive integers, the smallest positive integers run into problems so
+
+643
+01:24:39.810 --> 01:24:43.320
+Jae Young Lee: Pure end is true for all posts the integers.
+
+644
+01:24:44.460 --> 01:24:49.590
+Jae Young Lee: Greater than or equal to 10 our base case is pure so that is for
+
+645
+01:24:51.030 --> 01:25:02.910
+Jae Young Lee: The inductive said, first we state inductive hypothesis, it is we assume it is true for certain integer k certain possibilities pure case.
+
+646
+01:25:03.660 --> 01:25:18.000
+Jae Young Lee: Which is just assumption we are making or hypothesizing then using their hypothesis we show this is also true that combine these two, we are cooking it is true for all positive integers.
+
+647
+01:25:21.810 --> 01:25:28.230
+Jae Young Lee: An example, our texts movies more examples, but I put one example. So we want to prove
+
+648
+01:25:29.310 --> 01:25:39.420
+Jae Young Lee: To to the nth power is always great to them and for all positive integers. So all positive integer. So he missed all base cases and is equal to our
+
+649
+01:25:43.800 --> 01:25:44.790
+Jae Young Lee: First base case.
+
+650
+01:25:46.350 --> 01:25:49.290
+Jae Young Lee: And it's once a plugin, one here, one here on
+
+651
+01:25:50.640 --> 01:25:54.060
+Jae Young Lee: The left hand side is to to the one is to
+
+652
+01:25:55.080 --> 01:26:03.420
+Jae Young Lee: Where it can side, it's just one so left hand side is greater than right hand side. So we just proved this is true for the base case.
+
+653
+01:26:04.680 --> 01:26:06.150
+Jae Young Lee: Now inductive step.
+
+654
+01:26:07.530 --> 01:26:31.950
+Jae Young Lee: Views assume it is true for certain K which is one creator, which means that we assume to to decay is greater than k. So, instead of when we just put k. So, we assume this and we want to show it is also true any escape clause, which means that we want to prove this one.
+
+655
+01:26:34.560 --> 01:26:45.720
+Jae Young Lee: This is a nice K carries this is an is k plus one case. So we assume this is true, then use this one to prove this to Texas. What we're doing here.
+
+656
+01:26:46.380 --> 01:26:57.300
+Jae Young Lee: So we're gonna prove this one. So we begin with left hand side of this one. So, left hand side to the k plus one to the k plus one is two times to get
+
+657
+01:26:59.640 --> 01:27:04.380
+Jae Young Lee: Here, but the inductive hypothesis says is a tooth decay. This one.
+
+658
+01:27:06.360 --> 01:27:17.010
+Jae Young Lee: Is greater than K so we can replace to to the k with k and then change this equality. Read it is inequality, because there's inequality.
+
+659
+01:27:18.090 --> 01:27:19.650
+Jae Young Lee: By the inductive hypothesis.
+
+660
+01:27:21.480 --> 01:27:24.180
+Jae Young Lee: Then it two times case k plus k
+
+661
+01:27:28.050 --> 01:27:33.600
+Jae Young Lee: The domain of k is one or greater. So we replace K with one
+
+662
+01:27:34.830 --> 01:27:35.040
+Jae Young Lee: Yeah.
+
+663
+01:27:36.600 --> 01:27:38.190
+Jae Young Lee: We, again, we put
+
+664
+01:27:39.810 --> 01:27:42.330
+Jae Young Lee: This greater than or equal to here.
+
+665
+01:27:43.800 --> 01:27:46.950
+Jae Young Lee: So if we collect the first one and the last one.
+
+666
+01:27:48.390 --> 01:27:50.130
+Jae Young Lee: To 20 k plus one is
+
+667
+01:27:51.150 --> 01:27:54.570
+Jae Young Lee: Greater than k plus one. So this right hand side.
+
+668
+01:27:56.760 --> 01:27:57.630
+Jae Young Lee: We just proved
+
+669
+01:27:58.950 --> 01:28:01.020
+Jae Young Lee: Using this inductive hypothesis.
+
+670
+01:28:02.310 --> 01:28:05.190
+Jae Young Lee: It is also true and n is equal to a plus. Right.
+
+671
+01:28:06.270 --> 01:28:10.470
+Jae Young Lee: So by combining this base case. And then inductive said we proved
+
+672
+01:28:11.850 --> 01:28:17.820
+Jae Young Lee: This is always true for all parts of integers. So this is how this medical induction works.
+
+673
+01:28:20.370 --> 01:28:21.660
+Jae Young Lee: Any questions.
+
+674
+01:28:34.380 --> 01:28:35.610
+Jae Young Lee: For is
+
+675
+01:28:36.780 --> 01:28:45.300
+Jae Young Lee: Our texts, who is a lot more mature than we discuss. But as far as you understand what we discussed today, then you have
+
+676
+01:28:47.220 --> 01:28:54.510
+Jae Young Lee: Basically the foundation based on which you can do further study or you can use this knowledge when you work on other
+
+677
+01:28:56.430 --> 01:28:56.790
+Jae Young Lee: Such
+
+678
+01:29:02.340 --> 01:29:04.890
+Jae Young Lee: Okay, I think this is last slide.
+
+679
+01:29:13.020 --> 01:29:17.160
+Jae Young Lee: How far do we need to know about this topic for your exams.
+
+680
+01:29:21.600 --> 01:29:39.870
+Jae Young Lee: Actually said it's not easy for me to answer her with a very some accuracy, because it's not that kind of thing can't be answered with a certain accuracy. Let's let me put it this way for analysis of our words.
+
+681
+01:29:43.260 --> 01:29:55.350
+Jae Young Lee: If you can determine running times, of course, we will see, we will do running time analysis later more with a different types of code base data collection because of code and some articles.
+
+682
+01:29:55.980 --> 01:30:09.390
+Jae Young Lee: But as far as this chapter is concerned, then we put in music. If you can determine running times of the code was called segments. And so we discussed here. This example then
+
+683
+01:30:10.410 --> 01:30:18.090
+Jae Young Lee: That is sufficient, as far as this part is concerned, but later we will discuss more complex running time analysis.
+
+684
+01:30:19.200 --> 01:30:19.440
+Now,
+
+685
+01:30:20.640 --> 01:30:21.270
+Jae Young Lee: To proof.
+
+686
+01:30:26.190 --> 01:30:34.920
+Jae Young Lee: Proof. Okay, this is a once you know the concept of the proof by contradiction and mathematical induction.
+
+687
+01:30:35.970 --> 01:30:44.700
+Jae Young Lee: Technically, you should be able to prove anything that can be proved by any of those two methods so
+
+688
+01:30:46.710 --> 01:30:54.360
+Jae Young Lee: I can't put any bound or how much you have to know because this is a kind of principle. So if you know like a
+
+689
+01:30:55.200 --> 01:31:06.000
+Jae Young Lee: Two plus three is pi dinner. Basically you can sue you can add any two possibilities. Like this. So if you know how to prove these two simple
+
+690
+01:31:06.840 --> 01:31:19.830
+Jae Young Lee: Examples using my contradiction and then mathematical induction and then you understand the steps we discussed that you should we have to do the same thing for any statement that can be provable by teaching method.
+
+691
+01:31:42.510 --> 01:31:42.840
+Jae Young Lee: Okay.
+
+692
+01:31:44.160 --> 01:31:48.240
+Jae Young Lee: So let's go over the second part inductive hypothesis part
+
+693
+01:31:49.980 --> 01:31:56.130
+Jae Young Lee: Assume this is true for any is equal to. Okay, so which means the view. So this one is true.
+
+694
+01:31:57.330 --> 01:32:03.690
+Jae Young Lee: Now we want to prove it is also true for k plus one, which means that we want to prove this already.
+
+695
+01:32:04.800 --> 01:32:07.380
+Jae Young Lee: So this is given, because we assumed
+
+696
+01:32:10.560 --> 01:32:13.380
+Jae Young Lee: So this one, we need to prove
+
+697
+01:32:17.310 --> 01:32:20.550
+Jae Young Lee: So we begin with left hand side of this, it is
+
+698
+01:32:21.930 --> 01:32:28.170
+Jae Young Lee: From here to here is just as public manipulation to the k plus one is two times two.
+
+699
+01:32:29.520 --> 01:32:33.750
+Jae Young Lee: Oh, here we use mathematical inductive hypothesis.
+
+700
+01:32:35.970 --> 01:32:41.730
+Jae Young Lee: The hypothesis is to to the case greater than k. So really place to to the k with
+
+701
+01:32:43.080 --> 01:32:52.380
+Jae Young Lee: Then we change this equality to this inequality, again using inductive hypothesis, then two times case k plus k
+
+702
+01:32:57.150 --> 01:32:58.290
+Jae Young Lee: One or greater.
+
+703
+01:32:59.310 --> 01:33:03.000
+Jae Young Lee: That is given. So we replace K with one
+
+704
+01:33:04.290 --> 01:33:15.840
+Jae Young Lee: And we put this inequality in this case remains the same, just a few minutes, so we just replace this cave with one that using this property is always one or great
+
+705
+01:33:17.580 --> 01:33:20.190
+Jae Young Lee: And this one is right hand side of what we want.
+
+706
+01:33:22.050 --> 01:33:24.900
+Jae Young Lee: And I'm not what this k plus one is right hand side.
+
+707
+01:33:25.980 --> 01:33:38.010
+Jae Young Lee: So we began with this left hand side that we reach this right hand side that in between there's inequality. So, left hand side is created right hand side.
+
+708
+01:33:56.340 --> 01:33:58.200
+Jae Young Lee: Oh yeah, this is last slide.
+
+709
+01:34:02.400 --> 01:34:04.380
+Jae Young Lee: After five years about recursion.
+
+710
+01:34:06.330 --> 01:34:09.060
+Jae Young Lee: I think homework. This week's homework SQ.
+
+711
+01:34:11.280 --> 01:34:18.870
+Jae Young Lee: homework problems, some problems. Let me say to say, I think I asked you to write two small recursive
+
+712
+01:34:19.980 --> 01:34:23.490
+Jae Young Lee: Implement to small recursive algorithms and methods so
+
+713
+01:34:27.660 --> 01:34:30.300
+Jae Young Lee: In mathematics recursive function is a function
+
+714
+01:34:32.700 --> 01:34:38.100
+Jae Young Lee: It is defined in terms of itself. So when we define certain function f of n.
+
+715
+01:34:39.540 --> 01:34:40.590
+Jae Young Lee: Severe here.
+
+716
+01:34:41.610 --> 01:34:49.170
+Jae Young Lee: The same function is involved, but with a smaller argument like one small. It was too small or even
+
+717
+01:34:51.750 --> 01:34:55.410
+Jae Young Lee: Therefore, n and becomes small and small
+
+718
+01:34:57.810 --> 01:35:07.410
+Jae Young Lee: Excuse me. So in general, recursive function is a function it is defined, which is defined in terms of itself, but with smaller
+
+719
+01:35:11.490 --> 01:35:12.390
+Jae Young Lee: In programming.
+
+720
+01:35:14.370 --> 01:35:22.410
+Jae Young Lee: defining a function in terms of itself means a method course in itself but method invokes is
+
+721
+01:35:24.570 --> 01:35:30.120
+Jae Young Lee: One of the simplest you curse recursion example is a pictorial function. So,
+
+722
+01:35:31.500 --> 01:35:34.290
+Jae Young Lee: N factorial is n times
+
+723
+01:35:35.580 --> 01:35:36.930
+Jae Young Lee: N minus one times
+
+724
+01:35:38.610 --> 01:35:47.310
+Jae Young Lee: All the way up to one, so five factorial is five times four times three times two times
+
+725
+01:35:49.230 --> 01:36:00.120
+Jae Young Lee: This factorial can be defined in this way when n is equal to zero desert definition of editorial so zero factorial is what it is defined to
+
+726
+01:36:01.410 --> 01:36:15.570
+Jae Young Lee: When any is one or two or any stats equal to zero, then n factorial is n times n minus one, which means that fighter tutorial is five times.
+
+727
+01:36:16.830 --> 01:36:18.810
+Jae Young Lee: This one, it is for factorial
+
+728
+01:36:20.190 --> 01:36:21.030
+Jae Young Lee: It is what it is.
+
+729
+01:36:22.230 --> 01:36:24.900
+Jae Young Lee: So this factorial function is used
+
+730
+01:36:26.640 --> 01:36:32.880
+Jae Young Lee: To define itself or definition of a pictorial is defined in terms of itself, but smaller
+
+731
+01:36:36.870 --> 01:36:38.460
+Jae Young Lee: This is a Java implementation.
+
+732
+01:36:40.410 --> 01:36:41.160
+Jae Young Lee: This
+
+733
+01:36:42.180 --> 01:36:45.360
+Jae Young Lee: So when we wrote a precursor. I thought
+
+734
+01:36:46.500 --> 01:36:58.980
+Jae Young Lee: It was valuable to most important thing is that this base case. Sometimes this is called the base condition or termination condition or return condition because we return in programming languages terms.
+
+735
+01:37:00.990 --> 01:37:12.750
+Jae Young Lee: We have to make sure any recursive implementation has a displaced condition and we have to make sure that pace condition is satisfied, eventually, if it is not satisfied, then
+
+736
+01:37:13.980 --> 01:37:19.560
+Jae Young Lee: We said that recurs that recursion goes into infinity. Oh, you go to
+
+737
+01:37:20.850 --> 01:37:23.430
+Jae Young Lee: infinite recursion. So when
+
+738
+01:37:25.710 --> 01:37:34.860
+Jae Young Lee: Oh, yeah. So unless stuff that is not the best case this is an air conditioned error checking. This is a base case.
+
+739
+01:37:36.660 --> 01:37:41.070
+Jae Young Lee: This one, since pictorial is defined only for
+
+740
+01:37:44.070 --> 01:37:48.150
+Jae Young Lee: positive numbers in nature lovers is zero.
+
+741
+01:37:50.040 --> 01:37:53.910
+Jae Young Lee: Including zero is a natural, natural numbers. So if
+
+742
+01:37:55.290 --> 01:37:59.610
+Jae Young Lee: The value of entities prestigious inherited numbers, then we throw an exception.
+
+743
+01:38:00.810 --> 01:38:09.450
+Jae Young Lee: So this is a base case when n is zero, then we return one that is this definition. When any zero return, like this one.
+
+744
+01:38:10.620 --> 01:38:11.310
+Jae Young Lee: Otherwise,
+
+745
+01:38:13.470 --> 01:38:14.520
+Jae Young Lee: And times
+
+746
+01:38:15.900 --> 01:38:17.790
+Jae Young Lee: That to real and minestrone.
+
+747
+01:38:19.320 --> 01:38:26.760
+Jae Young Lee: The same method with a smaller. So this is called recursive case, it is a base case you Chris case.
+
+748
+01:38:44.220 --> 01:38:45.900
+Dhiraj Totwani: Yeah, it seems like you got disconnected.
+
+749
+01:38:54.780 --> 01:38:56.640
+ion: He didn't have any power so I
+
+750
+01:38:56.880 --> 01:38:59.670
+ion: Wanted to save. I didn't want to interrupt him. Sorry.
+
+751
+01:39:03.540 --> 01:39:05.310
+Frank: Like you know what you guys should go home.
+
+752
+01:39:11.310 --> 01:39:11.520
+Lynn Long: We're
+
+753
+01:39:14.850 --> 01:39:16.020
+Christine Grosso: Like. Wait, what happened.
+
+754
+01:39:16.890 --> 01:39:18.030
+Hannah S: Really not impressed.
+
+755
+01:39:21.630 --> 01:39:23.010
+ion: Let's bet, how long it's gonna take
+
+756
+01:39:24.090 --> 01:39:24.720
+Frank: Hours.
+
+757
+01:39:29.880 --> 01:39:31.230
+Jeff O'Connell: We all should be at home.
+
+758
+01:39:32.010 --> 01:39:32.760
+Frank: Exactly.
+
+759
+01:39:33.000 --> 01:39:35.610
+Lynn Long: So should be at home. Yes. Right. Stay inside
+
+760
+01:39:35.910 --> 01:39:36.600
+Lynn Long: I'm trying to go
+
+761
+01:39:38.460 --> 01:39:40.020
+Chen: Yeah, we all your home.
+
+762
+01:39:41.010 --> 01:39:44.640
+Frank: If you're sleepy, just go home and sleep man close to you.
+
+763
+01:39:47.190 --> 01:39:51.570
+Christine Grosso: I drove around today. I never saw so many families out walking around on the street.
+
+764
+01:39:52.830 --> 01:39:55.530
+Frank: Or you drive into she'd be acquired in yourself.
+
+765
+01:39:57.210 --> 01:40:04.560
+Christine Grosso: Well, yeah, but I guess they were with each other and walking the dog, and most people stay inside and now they're all outside
+
+766
+01:40:05.190 --> 01:40:05.730
+Well people
+
+767
+01:40:06.810 --> 01:40:07.440
+ion: Can happen.
+
+768
+01:40:09.540 --> 01:40:11.340
+Chen: At 2000 cases.
+
+769
+01:40:11.340 --> 01:40:12.510
+jlee: Today and you hear me.
+
+770
+01:40:13.830 --> 01:40:15.360
+ion: Yes. Yes. Professor
+
+771
+01:40:15.480 --> 01:40:16.140
+Yes.
+
+772
+01:40:17.310 --> 01:40:17.670
+Joseph Monk: We got
+
+773
+01:40:22.500 --> 01:40:24.150
+Frank: We thought we lost you for a minute, sir.
+
+774
+01:40:29.910 --> 01:40:34.110
+Karen Palmer: Professor, this is Karen, are you, are you able to are you out there.
+
+775
+01:40:38.070 --> 01:40:39.540
+Frank: Oh, gee. Professor left
+
+776
+01:40:40.260 --> 01:40:42.420
+Karen Palmer: No, he's not leaving. Come on, be
+
+777
+01:40:42.420 --> 01:40:43.740
+Karen Palmer: sensible people
+
+778
+01:40:46.860 --> 01:40:48.180
+Karen Palmer: Leaving
+
+779
+01:40:51.330 --> 01:40:52.140
+Lynn Long: Although we can
+
+780
+01:40:53.220 --> 01:40:57.060
+Karen Palmer: All white, fair enough. I'm only a facilitator about whatever
+
+781
+01:40:59.760 --> 01:41:08.310
+Karen Palmer: He'll be back. And, you know, yeah, there, there have been a lot of, you know, I'm outages and whatnot. But he'll be back.
+
+782
+01:41:11.730 --> 01:41:13.140
+Christine Grosso: Looks like it's still recording
+
+783
+01:41:14.040 --> 01:41:14.610
+Lynn Long: Yeah, this
+
+784
+01:41:15.660 --> 01:41:16.890
+Lynn Long: One is part of the recording.
+
+785
+01:41:18.450 --> 01:41:19.500
+Karen Palmer: Just imagine
+
+786
+01:41:25.050 --> 01:41:26.100
+ucokoro: Hey Karen, can you hear me.
+
+787
+01:41:26.910 --> 01:41:27.810
+Karen Palmer: I do hear you.
+
+788
+01:41:28.230 --> 01:41:31.020
+ucokoro: Hey, real quick before the professor gets back. I was gonna be on quiz.
+
+789
+01:41:35.070 --> 01:41:35.790
+Karen Palmer: Quiz. Yeah.
+
+790
+01:41:38.520 --> 01:41:40.320
+Karen Palmer: You guys, fine, don't worry.
+
+791
+01:41:41.700 --> 01:41:41.940
+ion: Good.
+
+792
+01:41:42.540 --> 01:41:43.080
+Karen Palmer: luck with it.
+
+793
+01:41:45.420 --> 01:41:48.840
+Karen Palmer: Oh, I think Professor Jay Jay Ollie is back.
+
+794
+01:41:56.610 --> 01:41:57.090
+Karen Palmer: I think
+
+795
+01:41:58.110 --> 01:41:59.430
+Jae Young Lee: Oh, yes. Can you hear me.
+
+796
+01:42:00.300 --> 01:42:01.320
+Karen Palmer: Yes, I can hear you.
+
+797
+01:42:01.620 --> 01:42:03.510
+Jae Young Lee: Okay, so for some recent
+
+798
+01:42:05.250 --> 01:42:05.760
+Jae Young Lee: Loss.
+
+799
+01:42:08.610 --> 01:42:09.210
+Jae Young Lee: Close.
+
+800
+01:42:09.780 --> 01:42:13.260
+Karen Palmer: You had quite an unruly bunch here, I have to tell you, JAE young Lee.
+
+801
+01:42:15.570 --> 01:42:16.950
+Karen Palmer: We're all still here. So,
+
+802
+01:42:17.790 --> 01:42:18.480
+Jae Young Lee: Let me see.
+
+803
+01:42:19.650 --> 01:42:23.580
+Jae Young Lee: Oh yeah, we were discussing this one, right. So Victoria. Okay, so
+
+804
+01:42:24.240 --> 01:42:25.230
+Frank: We can see your screen.
+
+805
+01:42:26.160 --> 01:42:29.910
+Jae Young Lee: Oh yeah, just give me me I have to share and then also I have to
+
+806
+01:42:31.110 --> 01:42:33.330
+Jae Young Lee: Start Recording. Again, I suppose.
+
+807
+01:42:38.070 --> 01:42:40.590
+Christine Grosso: Hello red recording button is flashing
+
+808
+01:42:45.180 --> 01:42:47.820
+Jae Young Lee: Can you see the screen now. Yes.
+
+809
+01:42:48.120 --> 01:42:49.680
+Lynn Long: Yes, sir. No, sir.
+
+810
+01:42:49.980 --> 01:42:51.000
+Karen Palmer: Yes, we see it.
+
+811
+01:42:51.600 --> 01:42:54.210
+Jae Young Lee: I have to make sure that it is still being recorded.
+
+812
+01:42:55.680 --> 01:42:56.670
+Jae Young Lee: It looks like it is being
+
+813
+01:42:57.900 --> 01:43:00.420
+Jae Young Lee: Recorded as a blinking red
+
+814
+01:43:00.480 --> 01:43:02.550
+Lynn Long: Dots in the cloud recording. Oh, done.
+
+815
+01:43:03.060 --> 01:43:03.750
+Karen Palmer: Oh yeah, I think.
+
+816
+01:43:03.900 --> 01:43:09.570
+Karen Palmer: I'm recording because I think because I'm a facilitator. I think that I kept it recording. Whoops.
+
+817
+01:43:10.140 --> 01:43:11.880
+Jae Young Lee: Okay. Okay. Thank you. Okay.
+
+818
+01:43:13.500 --> 01:43:18.750
+Jae Young Lee: So we just looked at the Java implementation with Victoria, then
+
+819
+01:43:21.540 --> 01:43:31.350
+Jae Young Lee: Sometimes it helps if we visualize the success of recursive calls that that's what this is showing, then people call it recursive recursion trace
+
+820
+01:43:34.770 --> 01:43:39.420
+Jae Young Lee: Suppose I invoke the territorial nestled with the argument for
+
+821
+01:43:42.060 --> 01:43:48.390
+Jae Young Lee: Then since again the pace condition is based cases and is equal to zero. So, it is not zero.
+
+822
+01:43:49.410 --> 01:43:57.480
+Jae Young Lee: So idiot invoke four times Victoria three then pictorial three again three is not zero. So,
+
+823
+01:43:58.050 --> 01:44:10.830
+Jae Young Lee: It didn't go into three times took two years to the two times Victoria one one time shot to zero, then this is based condition, our base case victorious zero will return one. So it will be returned to hear
+
+824
+01:44:11.970 --> 01:44:25.860
+Jae Young Lee: That one times one is return to that one times two digit return to two times three is returned and three times. Paul is returned that for
+
+825
+01:44:27.150 --> 01:44:31.650
+Jae Young Lee: Three times 266 is returned that six times five return
+
+826
+01:44:33.900 --> 01:44:47.760
+Jae Young Lee: This is the recursion tracer is factorial function in general, unless the given function is extremely complex. You should be able to show this question trace. But actually,
+
+827
+01:44:49.740 --> 01:44:59.340
+Jae Young Lee: Almost all the time when we are trying to understand a precursor method, then it always helps if you just write down this, you couldn't trust.
+
+828
+01:44:59.790 --> 01:45:18.600
+Jae Young Lee: Now, we don't have to use a very large argument like small arguments like a four or smaller, depending on the context, the ones we draw is Christian Christian almost all the time. We can have a full understanding of how that occurs recursive metal the recursive code works.
+
+829
+01:45:20.010 --> 01:45:20.190
+Well,
+
+830
+01:45:29.370 --> 01:45:44.610
+Jae Young Lee: It shows what happens internally. This is a local typical the typical, typical so when a method is invoked what the language system does is that it allocate a certain piece of memory, it is actually, it is called the step.
+
+831
+01:45:46.770 --> 01:45:54.030
+Jae Young Lee: Then is towards so called AR AR AR I sense for activation record instance, then
+
+832
+01:45:55.590 --> 01:45:56.040
+Jae Young Lee: When
+
+833
+01:45:57.330 --> 01:45:57.900
+Jae Young Lee: We
+
+834
+01:46:00.120 --> 01:46:22.770
+Jae Young Lee: Invoke actually are for then AI is created and it is short in the mail. Okay, this is just a part of my memory that pictorial for inbox peculiar 310 eight or 10 three is created is put on this step again just it's takes up certain memory space in this manner.
+
+835
+01:46:24.420 --> 01:46:26.760
+Jae Young Lee: So we say steady growth.
+
+836
+01:46:28.380 --> 01:46:31.290
+Jae Young Lee: Eventually factory or zero is invoked.
+
+837
+01:46:33.450 --> 01:46:33.960
+Then
+
+838
+01:46:35.610 --> 01:46:50.520
+Jae Young Lee: As we saw from the question trace it returns one then this one is used by this Victoria one then it returns one that curious to uses one, it returns to maybe 10 six and we transport.
+
+839
+01:46:52.050 --> 01:46:53.910
+Jae Young Lee: As we coming down.
+
+840
+01:46:55.320 --> 01:47:07.350
+Jae Young Lee: The memory located for this AR is basically released so that other programs can use the reason I put this diagram is that just to visualize
+
+841
+01:47:09.540 --> 01:47:15.330
+Jae Young Lee: That recursive method or execution of a recursive program requires memory extra
+
+842
+01:47:19.440 --> 01:47:39.150
+Jae Young Lee: When certain things have to be repeated, we can implement that repetition. We they look like a follow while or we can implement that repetition of something with a recursion. So theoretically, any recursive algorithm can be rewritten using a looks like a polo
+
+843
+01:47:40.740 --> 01:47:48.330
+Jae Young Lee: So, which means that there's no difference in terms of the functionality, but one difference is that recursion. Nice. A lot of men. Men are
+
+844
+01:47:49.170 --> 01:48:04.410
+Jae Young Lee: Supposed recursive qualities. Suppose I in bulk Victoria 1000 then there will be 1000 a year, right, the whole bunch of time it'll take a lot of main memory. So there's a trade off.
+
+845
+01:48:08.970 --> 01:48:09.240
+Jae Young Lee: Now,
+
+846
+01:48:10.290 --> 01:48:23.340
+Jae Young Lee: Writing time analysis. So previously we analyzed running time or called segments which mostly involved loops. Now we are analyzing running time of a recursive method.
+
+847
+01:48:24.540 --> 01:48:28.050
+Jae Young Lee: This is hope. And the way we do is like this one.
+
+848
+01:48:34.110 --> 01:48:41.820
+Jae Young Lee: Again, we know this is constant amount of time just, you know, it has sentimental time constant amount of time. Now let's do get here.
+
+849
+01:48:43.230 --> 01:48:50.790
+Jae Young Lee: So eventually dismissal must be invoked. So the territorial must be executed, but
+
+850
+01:48:51.840 --> 01:48:55.740
+Jae Young Lee: Ignoring the running time or execution of it is part
+
+851
+01:48:57.150 --> 01:49:15.390
+Jae Young Lee: It is just one multiplication. So assuming pictorial n minus one returns something once a certain values return what is needed at this code is just one multiplication, which means excluding the execution of it is recursive call.
+
+852
+01:49:16.590 --> 01:49:28.080
+Jae Young Lee: Running time always in this way, we say in this executing this method once takes people constant amount of time again constant, constant
+
+853
+01:49:28.800 --> 01:49:41.130
+Jae Young Lee: Constant one multiplication. Again, excluding this one that's cutter, then we have to decide how many times does pictorial his inbox. Actually it is shown here.
+
+854
+01:49:44.940 --> 01:49:50.580
+Jae Young Lee: This is the initial call so 12345 n minus one and plus one times
+
+855
+01:49:52.290 --> 01:49:54.270
+Jae Young Lee: You know n plus one is
+
+856
+01:49:56.640 --> 01:50:00.450
+Jae Young Lee: In terms of asymptote notation Pico so we say
+
+857
+01:50:02.280 --> 01:50:16.560
+Jae Young Lee: Executing dismissals once excluding recursive called part takes peak or one time. So constant amount of times that this picture is in books because the End Times.
+
+858
+01:50:18.450 --> 01:50:19.170
+Guess what we have
+
+859
+01:50:24.960 --> 01:50:26.010
+Jae Young Lee: So it is because
+
+860
+01:50:31.320 --> 01:50:37.560
+Jae Young Lee: Again, depending on the factorial algorithm we have sometimes we use a different techniques but
+
+861
+01:50:39.030 --> 01:50:40.380
+Jae Young Lee: Usually for simple
+
+862
+01:50:40.620 --> 01:50:57.270
+Jae Young Lee: recursive algorithms. This technique was first figure out how long would it take to execute that message just was excluding the critical path then determine how many times that recursive method is caught and multiplied it took
+
+863
+01:50:59.640 --> 01:51:00.630
+Jae Young Lee: Any questions.
+
+864
+01:51:08.850 --> 01:51:09.150
+Jae Young Lee: Okay.
+
+865
+01:51:10.110 --> 01:51:16.440
+Pawan Rijhwani: One question professor, so I know recursion takes more space than time are you gonna go where the space complexity.
+
+866
+01:51:17.760 --> 01:51:18.030
+Jae Young Lee: Against
+
+867
+01:51:19.410 --> 01:51:25.110
+Jae Young Lee: Sometimes we might mentioned here in there, but that is our primary focus now.
+
+868
+01:51:26.340 --> 01:51:28.290
+Jae Young Lee: But in when you are doing extra
+
+869
+01:51:29.370 --> 01:51:30.780
+Jae Young Lee: Analysis. Actually, you have to
+
+870
+01:51:35.430 --> 01:51:48.270
+Jae Young Lee: So even though we want to take into consideration the space requirement of recursive method, but you have to know that kept recursive method requires additional storage in the main memory.
+
+871
+01:51:51.660 --> 01:51:53.730
+Jae Young Lee: Okay, no. Binary search.
+
+872
+01:51:57.210 --> 01:52:06.480
+Jae Young Lee: Given a data structure. It could be anything. Here we are considering in linear data structure which is a sequence of NLP months.
+
+873
+01:52:07.980 --> 01:52:21.240
+Jae Young Lee: Then we want to search that data structure. In this case, the sequence of elements for some value. So I see suppose this is an array of integers. I want to see whether it is a 10 day or 400 here.
+
+874
+01:52:22.500 --> 01:52:22.770
+Jae Young Lee: So,
+
+875
+01:52:25.920 --> 01:52:27.210
+Jae Young Lee: Straightforward way is
+
+876
+01:52:29.340 --> 01:52:31.890
+Jae Young Lee: The stores integers and looking 400 and
+
+877
+01:52:32.910 --> 01:52:39.240
+Jae Young Lee: Then just scan this array and then compare one at a time. Hundred with the first element.
+
+878
+01:52:40.800 --> 01:52:47.580
+Jae Young Lee: If I'm lucky it is there. So did his best case scenario with one comparison. I'm done. So running time you speak off.
+
+879
+01:52:48.990 --> 01:53:04.050
+Jae Young Lee: In the worst case, hundred is here or hundred is not there at all, which means that I must have done in comparisons. So worst case because. So on average, when integers randomly.
+
+880
+01:53:05.370 --> 01:53:11.280
+Jae Young Lee: arrange it on their video, it is take half of n comparisons. So, so it is equal
+
+881
+01:53:13.080 --> 01:53:20.670
+Jae Young Lee: So we say genius or two takes people again, usually. So we use it this worst case scenario.
+
+882
+01:53:21.840 --> 01:53:24.510
+Jae Young Lee: Worst case is the same as average case.
+
+883
+01:53:25.980 --> 01:53:38.070
+Jae Young Lee: So now binary search. It takes smaller amount of time it takes only login. But there's a precondition there to be able to perform a buyer searching the sequence must be sorted
+
+884
+01:53:39.990 --> 01:53:48.780
+Jae Young Lee: If given sequence is not sorted. We can't use it by necessity. So this your shirt is the only way to fight. But if something is to
+
+885
+01:53:49.920 --> 01:53:54.510
+Jae Young Lee: Expand your search. This is illustration and then we will see a cold.
+
+886
+01:54:00.060 --> 01:54:13.320
+Saurav Banerjee: Professor if the if the if the story is not sorted. If we could do a quick sort over it. That's an login. And then we have a login so I think we could still active with with an end login
+
+887
+01:54:15.450 --> 01:54:19.470
+Saurav Banerjee: Which is greater than lot of big often anyway so
+
+888
+01:54:20.580 --> 01:54:25.830
+Jae Young Lee: Okay, yeah, of course. Okay, so the if it is already sorted
+
+889
+01:54:27.270 --> 01:54:27.720
+Jae Young Lee: Then
+
+890
+01:54:29.190 --> 01:54:42.780
+Jae Young Lee: Assuming so it is already sorted. If we begin from the scratch just initial array. Then of course we have to take into consideration how long it takes to sort. Let's say it takes and low and
+
+891
+01:54:43.200 --> 01:54:50.010
+Jae Young Lee: Then a total searches time would be unlocked that you are correct in that sense. But here we are assuming it is already sorted
+
+892
+01:54:50.880 --> 01:55:00.750
+Jae Young Lee: Because in many applications, sometimes given data structure or the new data structures already sorted. Then in that case we can use to find their search test what we're discussing
+
+893
+01:55:03.270 --> 01:55:03.540
+Okay.
+
+894
+01:55:04.770 --> 01:55:14.490
+Jae Young Lee: So this is an example where we have a way of integers in their circuit so 2357 as against yesterday.
+
+895
+01:55:16.440 --> 01:55:18.300
+Jae Young Lee: We are looking for 17
+
+896
+01:55:19.350 --> 01:55:19.620
+Then
+
+897
+01:55:22.680 --> 01:55:33.210
+Jae Young Lee: First we determine so called the middle elements. We will talk about this. These are pointers. So we talk about these pointers. When we discuss a quote, but let's just focus on
+
+898
+01:55:33.690 --> 01:55:44.280
+Jae Young Lee: The high level description. First we pick a middle point middle element lithium could be just literally, literally much if there are a number of elements.
+
+899
+01:55:45.330 --> 01:55:54.000
+Jae Young Lee: If it is not the case, then if you're an even number of integers, then it could be not exactly middle just one of these two middle once
+
+900
+01:55:56.250 --> 01:56:01.710
+Jae Young Lee: Once we have a video elements we compare that be the ultimate with what we are looking for.
+
+901
+01:56:03.180 --> 01:56:16.650
+Jae Young Lee: In this example, it is smaller than this middle. What that means is that since elements are sorted, what we are looking for must be some you're here, which means that we can just forget about all this.
+
+902
+01:56:19.290 --> 01:56:19.590
+So,
+
+903
+01:56:22.230 --> 01:56:32.430
+Jae Young Lee: This is our. This is our new searches place. Initially, we had to search this whole array, but after this comparison we've progressed about this.
+
+904
+01:56:33.570 --> 01:56:36.420
+Jae Young Lee: That was sort of space is reduced by half.
+
+905
+01:56:37.470 --> 01:56:50.040
+Jae Young Lee: And then from then on, we just repeat the same process. So we get the middle elements from this lower half to the comparison, in this case 17 is larger than seven so
+
+906
+01:56:51.240 --> 01:56:56.010
+Jae Young Lee: What we are looking for must be here. So we forget the qualities left here.
+
+907
+01:57:01.530 --> 01:57:14.730
+Jae Young Lee: This is our search space again a size is about to have this is the middle month 70 is greater than 13 so we forget about this one. We go into
+
+908
+01:57:16.290 --> 01:57:17.940
+Jae Young Lee: Right death or upper half
+
+909
+01:57:20.430 --> 01:57:24.570
+Jae Young Lee: There's only one element so that all element itself is a middle of the month.
+
+910
+01:57:25.710 --> 01:57:33.750
+Jae Young Lee: Then 17 years compared with this metal remix. We found it. So this is how binary search works.
+
+911
+01:57:34.800 --> 01:57:35.610
+Jae Young Lee: As you can see,
+
+912
+01:57:36.780 --> 01:58:02.220
+Jae Young Lee: If we did the linear search, assuming elements were not sorted, then we had to do 15 comparisons in the worst case, but here that will comparisons is 12345 number convergence of a small that it is located. We will do that analysis.
+
+913
+01:58:06.000 --> 01:58:07.680
+Jae Young Lee: Any questions.
+
+914
+01:58:10.950 --> 01:58:14.970
+Jae Young Lee: Okay, so there's a description. Now this is a code.
+
+915
+01:58:16.560 --> 01:58:22.110
+Jae Young Lee: So to implement that idea we maintain three pointers.
+
+916
+01:58:23.280 --> 01:58:29.400
+Jae Young Lee: It receives two pointers as argument middle is calculated within this method.
+
+917
+01:58:31.050 --> 01:58:34.590
+Jae Young Lee: By there certain method can be written in slightly different ways.
+
+918
+01:58:36.840 --> 01:58:39.990
+Jae Young Lee: The one used in our textbook resist poor arguments.
+
+919
+01:58:41.280 --> 01:58:41.700
+Jae Young Lee: Data
+
+920
+01:58:42.780 --> 01:59:02.460
+Jae Young Lee: Then target. This is what we are looking for that low is smallest index of the sub. This is largest index or the subway Teddy's being searched, as we saw certain space gets smaller and smaller. So the low and high or not fixed failure state change.
+
+921
+01:59:03.480 --> 01:59:04.950
+Jae Young Lee: This is base case will return
+
+922
+01:59:06.240 --> 01:59:06.480
+To
+
+923
+01:59:07.980 --> 01:59:12.630
+Jae Young Lee: Now let's look at this one small now in terms of high and low
+
+924
+01:59:24.810 --> 01:59:26.670
+Jae Young Lee: Initially low is zero.
+
+925
+01:59:28.620 --> 01:59:37.950
+Jae Young Lee: Which means that when we invoke this method, initially we perceive as low. This is a n minus one, or just already length minus
+
+926
+01:59:40.020 --> 01:59:43.200
+Jae Young Lee: F to one comparison high has been moved into here.
+
+927
+01:59:44.640 --> 01:59:46.980
+Jae Young Lee: So this is now new low you
+
+928
+01:59:49.950 --> 01:59:52.500
+Jae Young Lee: Have to another comparison law has been moved.
+
+929
+01:59:54.060 --> 01:59:58.050
+Jae Young Lee: In general, low and high moved towards each other.
+
+930
+02:00:01.410 --> 02:00:06.870
+Jae Young Lee: Eventually, either they coincide. Like in this case.
+
+931
+02:00:14.160 --> 02:00:18.000
+Jae Young Lee: They coincide low and high or they cross each other.
+
+932
+02:00:23.730 --> 02:00:33.150
+Jae Young Lee: So if they cross each other. What that means is that what you're looking for is not there. So, that is the base case. So we return
+
+933
+02:00:34.860 --> 02:00:38.100
+Jae Young Lee: Otherwise we take a little bit so
+
+934
+02:00:44.520 --> 02:00:48.240
+Jae Young Lee: This is a pseudo code when you implement with each other code, you just
+
+935
+02:00:49.530 --> 02:00:59.490
+Jae Young Lee: Add high to low. Low plus high and they divided by two. You can do just integer division, since this is a pseudo code. It uses a flow function, but if
+
+936
+02:01:00.660 --> 02:01:03.360
+Jae Young Lee: We just want to get the index of the middle
+
+937
+02:01:04.860 --> 02:01:12.150
+Jae Young Lee: Then we compare our target with with early months if they're identical, then we found the potential
+
+938
+02:01:14.820 --> 02:01:30.660
+Jae Young Lee: Then if what we are looking for smaller than that middle element, then we have to be cursed on the left hand side. So the cursing. Left hand side means that we have to move that high pointer to right before this week.
+
+939
+02:01:32.580 --> 02:01:41.250
+Jae Young Lee: This is low. This is a hi this is me to work. What you're looking for is here. So I should be moved into
+
+940
+02:01:43.020 --> 02:01:51.300
+Jae Young Lee: This is all new searches place so low, and with my national so to hear. Otherwise, we have to search here.
+
+941
+02:01:53.220 --> 02:01:55.290
+Jae Young Lee: With plus one. Why
+
+942
+02:01:57.540 --> 02:02:01.320
+Jae Young Lee: Okay, so this is the code that this is Java implementation.
+
+943
+02:02:03.420 --> 02:02:05.940
+Jae Young Lee: Exactly the same. I think this is the only
+
+944
+02:02:07.170 --> 02:02:09.660
+Jae Young Lee: We just integer division. Yeah.
+
+945
+02:02:10.770 --> 02:02:11.700
+Jae Young Lee: This is because
+
+946
+02:02:18.840 --> 02:02:21.030
+Jae Young Lee: We curse on the left hand side.
+
+947
+02:02:22.410 --> 02:02:43.410
+Jae Young Lee: Data target their teachers remained the same. Yet when we cursed on the left hand side, low remains the same, but high is replaced with with might as well as we saw previously when we curse on the right hand side high remains the same, but low now becomes mid plus
+
+948
+02:02:45.870 --> 02:02:49.590
+Jae Young Lee: This is a implementation of the previous to the
+
+949
+02:02:51.420 --> 02:02:53.280
+Jae Young Lee: Any questions.
+
+950
+02:02:57.120 --> 02:03:00.540
+Jae Young Lee: Okay, now we have to do analysis, but I think
+
+951
+02:03:02.700 --> 02:03:03.510
+Jae Young Lee: I keep telling
+
+952
+02:03:05.610 --> 02:03:08.820
+Jae Young Lee: You, your facilitators time. So, I think. Yeah.
+
+953
+02:03:14.520 --> 02:03:15.420
+Jae Young Lee: Yeah, let me start
+
+954
+02:03:16.920 --> 02:03:26.250
+Jae Young Lee: The next chapter is relatively small chapter it discusses page itself a second q i think we can finish this one and that one together on Saturday.
+
+955
+02:03:29.190 --> 02:03:36.030
+Jae Young Lee: With discussed binary search it, but we didn't discuss analysis of the running time or with this binary search so that
+
+956
+02:03:37.200 --> 02:03:38.910
+Jae Young Lee: We will discuss the Saturday.
+
+957
+02:03:41.550 --> 02:03:42.960
+Jae Young Lee: Any questions so far.
+
+958
+02:03:47.490 --> 02:03:53.550
+Dhiraj Totwani: So this Saturday, by any chance, could you do a little recap of the binary search before you start discussing
+
+959
+02:03:54.720 --> 02:03:55.320
+The
+
+960
+02:03:56.700 --> 02:03:58.080
+Jae Young Lee: Yes, we can do
+
+961
+02:04:01.740 --> 02:04:02.580
+Jae Young Lee: Oh, not this one.
+
+962
+02:04:03.630 --> 02:04:04.980
+Jae Young Lee: I would just briefly.
+
+963
+02:04:06.690 --> 02:04:08.520
+Jae Young Lee: I think you must have sent his homework to
+
+964
+02:04:11.820 --> 02:04:32.100
+Jae Young Lee: The first two problems asks asks you to write a code to basic recursive muscle recursive code, the part one, part part one, I think you won't have any problem. Part two is more about design or recursive program.
+
+965
+02:04:33.480 --> 02:04:48.360
+Jae Young Lee: Once you have a design writing a code is very trivial. So you may have to spend how am I going to implement this method using the corrosion in part two is and more with design problem.
+
+966
+02:04:50.370 --> 02:04:57.540
+Jae Young Lee: Part three is a practice for analyzing the running time of small called segments.
+
+967
+02:04:58.710 --> 02:04:59.610
+So,
+
+968
+02:05:01.470 --> 02:05:03.330
+Jae Young Lee: There's one method two
+
+969
+02:05:07.200 --> 02:05:13.170
+Joseph Monk: And Part three, you say justification. Does that mean you want to see proofs are just as explained
+
+970
+02:05:13.380 --> 02:05:15.540
+Jae Young Lee: Not proof explain
+
+971
+02:05:16.980 --> 02:05:17.190
+So,
+
+972
+02:05:18.810 --> 02:05:22.950
+Jae Young Lee: You can just say TCP Cove and scripts. So you have to describe
+
+973
+02:05:23.970 --> 02:05:25.650
+Jae Young Lee: Locally so
+
+974
+02:05:26.910 --> 02:05:27.240
+Frank: So,
+
+975
+02:05:27.330 --> 02:05:29.370
+Jae Young Lee: What about why script.
+
+976
+02:05:30.600 --> 02:05:40.110
+Frank: What about part for this part for. Do you want us to pretty much show the the call trust that they call stack of the
+
+977
+02:05:40.680 --> 02:05:53.580
+Jae Young Lee: You don't have a commercial those the only requirement is written. It is is that it is efficient if you show the return values, but to be able to do that. Probably you may want to join that
+
+978
+02:05:54.660 --> 02:06:04.620
+Jae Young Lee: Recursion trace if you draw the Christian trace then tell you help you to answer these questions, then if you include that in your assignments, then that would be perfect.
+
+979
+02:06:05.580 --> 02:06:06.300
+Frank: All those
+
+980
+02:06:07.350 --> 02:06:07.770
+Frank: Go ahead.
+
+981
+02:06:08.520 --> 02:06:11.520
+Lynn Long: So basically all we just kind of putting him.
+
+982
+02:06:12.960 --> 02:06:19.470
+Lynn Long: On a print statement showing the the the inputs for the recursion. Each time he goes in.
+
+983
+02:06:19.860 --> 02:06:21.720
+Jae Young Lee: Which part I'll talk about part for
+
+984
+02:06:21.750 --> 02:06:22.050
+Frank: For
+
+985
+02:06:22.410 --> 02:06:23.190
+Lynn Long: Part four. Yes.
+
+986
+02:06:23.520 --> 02:06:23.760
+Oh,
+
+987
+02:06:24.840 --> 02:06:29.130
+Jae Young Lee: So the against input arguments are given here. You have to return values.
+
+988
+02:06:29.640 --> 02:06:30.600
+Lynn Long: Yes, yeah.
+
+989
+02:06:30.810 --> 02:06:34.650
+Jae Young Lee: With them. Yes, yes, yes. What is problems, looking for. Yeah.
+
+990
+02:06:34.770 --> 02:06:35.100
+Okay.
+
+991
+02:06:37.350 --> 02:06:41.460
+Jae Young Lee: Apart from five will discuss tag and Q's next Saturday.
+
+992
+02:06:42.750 --> 02:06:48.210
+Jae Young Lee: This is actually a lot simpler. A lot easier than the previous questions. I think you live in a typical to the park. Fine.
+
+993
+02:06:50.160 --> 02:06:50.460
+Jae Young Lee: Okay.
+
+994
+02:06:50.490 --> 02:06:51.630
+Jae Young Lee: So any questions.
+
+995
+02:06:54.810 --> 02:06:55.380
+Jae Young Lee: Korea.
+
+996
+02:06:55.650 --> 02:06:57.240
+Frank: Korea coin is all right sir
+
+997
+02:06:57.450 --> 02:06:58.440
+Frank: I'm good. Okay.
+
+998
+02:06:59.400 --> 02:07:04.140
+Jae Young Lee: Tara questions on the screen. So, part three is a text or Word document.
+
+999
+02:07:07.110 --> 02:07:07.830
+Jae Young Lee: Part four
+
+1000
+02:07:10.920 --> 02:07:21.030
+Jae Young Lee: Oh, in any way you want. So the you can draw manually and then you can take a screenshot of that one. And then you can copy and paste or you can just describe it, it doesn't really matter.
+
+1001
+02:07:22.500 --> 02:07:29.520
+Jae Young Lee: As far as your answers are correct, as far as your facilitator can see you did in the right way, as far
+
+1002
+02:07:30.000 --> 02:07:42.990
+Frank: So how, what will be the grading criteria for this platform because if it's just the solution that you want us to print out i mean the the return values. What will be the grading criteria, it is
+
+1003
+02:07:43.020 --> 02:07:46.590
+Jae Young Lee: All return values are correct, you get the full credit
+
+1004
+02:07:47.340 --> 02:07:47.640
+Okay.
+
+1005
+02:07:59.970 --> 02:08:01.560
+Jae Young Lee: Any other questions.
+
+1006
+02:08:05.910 --> 02:08:11.640
+Jae Young Lee: Okay, thank you everybody and good night and the current. I'm sorry, I'm always giving your time.
+
+1007
+02:08:13.650 --> 02:08:16.230
+Karen Palmer: I'm happy to be here. Thank you. So
+
+1008
+02:08:16.620 --> 02:08:17.580
+Frank: We enjoy hearing
+

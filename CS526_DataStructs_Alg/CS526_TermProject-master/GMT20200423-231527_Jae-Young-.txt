@@ -1,0 +1,25 @@
+01:23:30	ahad:	yes
+01:23:50	Frank:	Yes
+01:40:41	Frank wu:	A forest is a graph without cycles. A tree is a connected forest—that is, a connected graph without cycles.
+01:40:51	Shawn:	Tree is:- connected (able to traverse from any node to any other node)- acyclic (no cycles - no way to "loop" around a path- undirected (edges are bi-directional)
+01:40:52	Frank wu:	Is this?
+02:18:03	Henry Choy:	DFS tree is still considered a tree even if it can loop?
+02:19:58	Frank wu:	The order is based on comparison? 
+02:20:43	Shawn:	Henry - the resulting DFS tree will not loop (red lines after traversal)
+02:21:21	Frank wu:	Ok, thanks! 
+02:37:11	Franklyn:	Okay thanks
+02:45:02	Molly Rice:	are we skipping over topological ordering?
+02:47:13	Christine Grosso:	Does that mean it won't be visited on the quiz 6 or the final?
+02:47:28	Christine Grosso:	Topological ordering, that is?
+02:57:21	Christine Grosso:	ok thx.
+03:32:01	dhegde:	Prof. how many questions will be there in the Final exam
+03:32:25	dhegde:	ok thanks
+03:35:50	Shawn:	Same here
+03:36:23	Franklyn:	Not sure if I'm missing anything but I don't think we discussed the assignment
+03:36:23	ion:	Thanks professor!
+03:36:28	ahad:	Thanks
+03:36:30	Christine Grosso:	Thank you, Prof. Lee!
+03:36:32	Shawn:	Thank you, Professor
+03:36:32	charlesmbugua:	Thank you!
+03:36:32	Padmaja Simhambhatla:	Thank you!
+03:36:35	Saurav Banerjee:	Thanks
