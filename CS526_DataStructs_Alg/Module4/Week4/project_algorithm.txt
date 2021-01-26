@@ -1,0 +1,9 @@
+1. Go forward choosing the "shortest" path in accordance with Alg1 or Alg2 that you have not yet been to.
+
+2. When you can no longer go forward (either no connecting nodes or all connecting nodes have been exhausted),
+then you backtrack even if it's a node you've already been to.
+
+3. Do #1 again.
+
+TIP: Going forward should NEVER go to a node you've been to before.
+
