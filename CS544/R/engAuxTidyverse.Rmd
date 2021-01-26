@@ -1,0 +1,45 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+```{r}
+library(tidyverse)
+
+
+```
+1. Select the data
+```{r Read in File, include=FALSE}
+podinsData <- read_table("eng_aux_podins.dat")
+
+```
+
+2. Select only the timestamp, valid, east, north and down velocity columns
+```{r Select Columns}
+eastNorthDown <- select(podinsData,1,2,10,11,12)
+```
+3. Rename the columns
+```{r}
+eastNorthDown <- rename(eastNorthDown,'timeStamp' = '245.941425','valid_data' = '00','eastV_ms' = '0.77811175465','northV_ms' = '-0.03077548956','downV_ms' = '-0.00997087512')
+
+```
+
+4. Filter only on valid data
+```{r Filter Valid DAta}
+eastNorthDownFiltered <- filter(eastNorthDown,valid_data == '01')
+```
+
+5. Add column for combined east/ north
+```{r}
+eastNorthDownFiltered <- mutate(eastNorthDownFiltered, comb_ms = sqrt(eastNorthDownFiltered[c(3)]^2 + eastNorthDownFiltered[c(4)]^2))
+
+```
+
+
+
+
+
+

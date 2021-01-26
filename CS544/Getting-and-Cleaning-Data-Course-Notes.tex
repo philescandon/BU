@@ -1,0 +1,2545 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={Getting and Cleaning Data Course Notes},
+  pdfauthor={Xing Su},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable,booktabs}
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+
+\title{Getting and Cleaning Data Course Notes}
+\author{Xing Su}
+\date{}
+
+\begin{document}
+\maketitle
+
+{
+\setcounter{tocdepth}{3}
+\tableofcontents
+}
+\(\pagebreak\)
+
+\hypertarget{overview}{%
+\subsection{Overview}\label{overview}}
+
+\begin{itemize}
+\tightlist
+\item
+  finding and extracting raw data
+\item
+  today any how to make data tiny
+\item
+  Raw data \(\rightarrow\) processing script \(\rightarrow\) tidy data
+  \(\rightarrow\) data analysis \(\rightarrow\) data communication
+\end{itemize}
+
+\hypertarget{raw-and-processed-data}{%
+\subsection{Raw and processed data}\label{raw-and-processed-data}}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Data} = values of qualitative/quantitative, variables,
+  belonging to a set of items
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \textbf{variables} = measurement of characteristic of an item
+  \end{itemize}
+\item
+  \textbf{Raw data} = original source of data, often hard to use,
+  processing must be done before analysis, may need to be processed only
+  once
+\item
+  \textbf{Processed data} = ready for analysis, processing done
+  (merging, transforming, etc.), all steps should be recorded
+\item
+  Sequencing DNA: \$1B for Human Genome Project \(\rightarrow\) \$10,000
+  in a week with Illumina
+\end{itemize}
+
+\hypertarget{tidy-data}{%
+\subsection{Tidy Data}\label{tidy-data}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Raw Data}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    no software processing has been done
+  \item
+    did not manipulate, remove, or summarize in anyway
+  \end{itemize}
+\item
+  \textbf{Tidy data set}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    end goal of cleaning data process
+  \item
+    each variable should be in one column
+  \item
+    each observation of that variable should be in a different row
+  \item
+    one table for each kind of variable
+
+    \begin{itemize}
+    \tightlist
+    \item
+      if there are multiple tables, there should be a column to link
+      them
+    \end{itemize}
+  \item
+    include a row at the top of each file with variable names (variable
+    names should make sense)
+  \item
+    in general data should be save in one file per table
+  \end{itemize}
+\item
+  \textbf{Code book describing each variable and its values in the tidy
+  data set}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    information about the variables (w/ units) in dataset
+    \textbf{\emph{NOT}} contained in tidy data
+  \item
+    information about the summary choice that were made (median/mean)
+  \item
+    information about experimental study design (data collection
+    methods)
+  \item
+    common format for this document = markdown/Word/text
+
+    \begin{itemize}
+    \tightlist
+    \item
+      \textbf{\emph{``study design''}} section = thorough description of
+      how data was collected
+    \item
+      \textbf{\emph{``code book''}} section = describes each variable
+      and units
+    \end{itemize}
+  \end{itemize}
+\item
+  \textbf{Explicit steps and exact recipe to get through 1 - 3
+  (instruction list)}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    ideally a computer script (no parameters)
+  \item
+    output = processed tidy data
+  \item
+    in addition to script, possibly may need steps to run files, how
+    script is run, and explicit instructions
+  \end{itemize}
+\end{enumerate}
+
+\(\pagebreak\)
+
+\hypertarget{download-files}{%
+\subsection{Download files}\label{download-files}}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Set working directory}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \textbf{\emph{Relative}}: \texttt{setwd("./data")},
+    \texttt{setwd("../")} = move up in directory
+  \item
+    \textbf{\emph{Absolute}}: \texttt{setwd("/User/Name/data")}
+  \end{itemize}
+\item
+  \textbf{Check if file exists and download file}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{if(!file.exists("./data"))\ \{dir.create("./data")\}}
+  \end{itemize}
+\item
+  \textbf{Download file}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{download.file(url,\ destfile=\ "directory/filname.extension",\ method\ =\ "curl")}
+
+    \begin{itemize}
+    \tightlist
+    \item
+      \texttt{method\ =\ "curl"} {[}mac only for https{]}
+    \end{itemize}
+  \item
+    \texttt{dateDownloaded\ \textless{}-\ date()} = record the download
+    date
+  \end{itemize}
+\item
+  \textbf{Read file and load data}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{read.table()} = need to specify \texttt{file},
+    \texttt{header}, \texttt{sep}, \texttt{row.names}, \texttt{nrows}
+
+    \begin{itemize}
+    \tightlist
+    \item
+      \texttt{read.csv()} = automatically set \texttt{sep\ =\ ","} and
+      \texttt{header\ =\ TRUE}
+    \end{itemize}
+  \item
+    \texttt{quote\ =\ ""} = no quotes (extremely helpful, common
+    problem)
+  \item
+    \texttt{na.strings} = set the character that represents missing
+    value
+  \item
+    \texttt{nrows} = how many rows to read
+  \item
+    \texttt{skip} = how many lines to skip
+  \item
+    \texttt{col.names} = specifies column names
+  \item
+    \texttt{check.names\ =\ TRUE/FALSE} = If TRUE then the names of the
+    variables in the data frame are checked to ensure that they are
+    syntactically valid variable names and are not duplicated. If
+    necessary they are adjusted appropriately to be syntactically valid
+    names
+  \end{itemize}
+\end{itemize}
+
+\hypertarget{reading-excel-files}{%
+\subsection{Reading Excel files}\label{reading-excel-files}}
+
+\begin{itemize}
+\tightlist
+\item
+  xlsx package: \texttt{read.xlsx(path,\ sheetIndex\ =\ 1,\ ...)}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{colIndex}, \texttt{rowIndex} = can be used to read certain
+    rows and columns
+  \end{itemize}
+\item
+  \texttt{write.xlsx()} = write out excel file
+\item
+  \texttt{read.xlsx2()} = faster than \texttt{read.xlsx()} but unstable
+  for reading subset of rows
+\item
+  \texttt{XLConnect} package has more options for writing/manipulating
+  Excel files
+\item
+  generally good to store data in database/csv/tab separated files
+  (.tab/.txt), easier to distribute
+\end{itemize}
+
+\(\pagebreak\)
+
+\hypertarget{reading-xml}{%
+\subsection{Reading XML}\label{reading-xml}}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{XML} = extensible markup language
+\item
+  frequented used to store structured data, widely used in Internet apps
+\item
+  extracting XML = basis for most of web scraping
+\item
+  components
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \textbf{\emph{markup}} = labels that give text structure
+  \item
+    \textbf{\emph{content}} = actual text of document
+  \end{itemize}
+\item
+  tags = \texttt{\textless{}section\textgreater{}},
+  \texttt{\textless{}/section\textgreater{}},
+  \texttt{\textless{}line-break\ /\textgreater{}}
+\item
+  elements = \texttt{\textless{}Greeting\textgreater{}} test
+  \texttt{\textless{}/Greeting\textgreater{}}
+\item
+  attributes =
+  \texttt{\textless{}image\ src\ ="a.jpg"\ alt\ =\ "b"\textgreater{}}
+\item
+  reading file into R
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{library(XML)}
+  \item
+    \texttt{doc\ \textless{}-\ xmlTreeParse(fileUrl,\ useInternal\ =\ TRUE)}
+    = loads data
+  \item
+    \texttt{rootNode\ \textless{}-\ xmlRoot(doc)} = wrapper element for
+    entire document
+  \item
+    \texttt{xmlName(rootNode)} = returns name of the document
+  \item
+    \texttt{names(rootNode)} = return names of elements
+  \item
+    \texttt{rootNode{[}{[}1{]}{]}} = access first elements, similar to
+    list
+  \item
+    \texttt{rootNode{[}{[}1{]}{]}{[}{[}1{]}{]}} = first sub component in
+    the first element
+  \item
+    \texttt{xmlSApply(rootNode,\ xmlValue)} = returns every single
+    tagged element in the doc
+  \end{itemize}
+\item
+  \textbf{XPath}
+  (\href{http://www.stat.berkeley.edu/~statcur/Workshop2/Presentations/XML.pdf}{new
+  language})
+
+  \begin{itemize}
+  \tightlist
+  \item
+    get specific elements of document
+  \item
+    \texttt{/node} = top level node
+  \item
+    \texttt{//node} = node at any level
+  \item
+    \texttt{node{[}@attr-name\ =\ \textquotesingle{}bob\textquotesingle{}{]}}
+    = node with attribute name
+
+    \begin{itemize}
+    \tightlist
+    \item
+      \texttt{xpathSApply(rootNode,\ "//name",\ xmlValue)} = get the
+      values of all elements with tag ``name''
+    \item
+      \texttt{xpathSApply(rootNode,\ "//price",\ xmlValue)} = get the
+      values of all elements with tag ``price''
+    \end{itemize}
+  \end{itemize}
+\item
+  \textbf{extract content by attributes}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{doc\ \textless{}-\ htmlTreeParse(url,\ useInternal\ =\ True)}
+  \item
+    \texttt{scores\ \textless{}-\ xpathSApply(doc,\ "//li{[}@class=\textquotesingle{}score\textquotesingle{}{]}",\ xmlvalue)}
+    = look for li elements with \texttt{class\ =\ "score"} and return
+    their value
+  \end{itemize}
+\end{itemize}
+
+\(\pagebreak\)
+
+\hypertarget{reading-json}{%
+\subsection{Reading JSON}\label{reading-json}}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{JSON} = JavaScript Object Notation
+\item
+  lightweight data storage, common format for data from application
+  programming interfaces (API)
+\item
+  similar to XML in structure but different in syntax/format
+\item
+  data can be stored as:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    numbers (double)
+  \item
+    strings (double quoted)
+  \item
+    boolean (true/false)
+  \item
+    array (ordered, comma separated enclosed in \texttt{{[}{]}})
+  \item
+    object (unordered, comma separated collection of key/value pairs
+    enclosed in \texttt{\{\}})
+  \end{itemize}
+\item
+  \texttt{jsonlite} package (json vignette can be found in help)
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{library(jsonlite)} = loads package
+  \item
+    \texttt{data\ \textless{}-\ fromJSON(url)} = strips data
+
+    \begin{itemize}
+    \tightlist
+    \item
+      \texttt{names(data\$owner)} = returns list of names of all columns
+      of owner data frame
+    \item
+      \texttt{data\$owner\$login} = returns login instances
+    \end{itemize}
+  \item
+    \texttt{data\ \textless{}-\ toJSON(dataframe,\ pretty\ =\ TRUE)} =
+    converts data frame into JSON format
+
+    \begin{itemize}
+    \tightlist
+    \item
+      \texttt{pretty\ =\ TRUE} = formats the code nicely
+    \end{itemize}
+  \item
+    \texttt{cat(data)} = prints out JSON code from the converted data
+    frame
+  \item
+    \texttt{fromJSON()} = converts from JSON object/code back to data
+    frame
+  \end{itemize}
+\end{itemize}
+
+\(\pagebreak\)
+
+\hypertarget{data.table}{%
+\subsection{data.table}\label{data.table}}
+
+\begin{itemize}
+\tightlist
+\item
+  inherits from \texttt{data.frame} (external package) \(\rightarrow\)
+  all functions that accept \texttt{data.frame} work on
+  \texttt{data.table}
+\item
+  can be much faster (written in C), \textbf{\emph{much much faster}} at
+  subsetting/grouping/updating
+\item
+  \textbf{syntax}:
+  \texttt{dt\ \textless{}-\ data.table(x\ =\ rnorm(9),\ y\ =\ rep(c("a","b","c"),\ each\ =\ 3),\ z\ =\ rnorm(9))}
+\item
+  \texttt{tables()} = returns all data tables in memory
+
+  \begin{itemize}
+  \tightlist
+  \item
+    shows name, nrow, MB, cols, key
+  \end{itemize}
+\item
+  some subset works like before =
+  \texttt{dt{[}2,\ {]},\ dt{[}dt\$y=="a",{]}}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{dt{[}c(2,\ 3){]}} = subset by rows, rows 2 and 3 in this
+    case
+  \end{itemize}
+\item
+  \textbf{column subsetting} (modified for \texttt{data.table})
+
+  \begin{itemize}
+  \tightlist
+  \item
+    argument after comma is called an \textbf{\emph{expression}}
+    (collection of statements enclosed in \texttt{\{\}})
+  \item
+    \texttt{dt{[},\ list(mean(x),\ sum(z)){]}} = returns mean of x
+    column and sum of z column (no \texttt{""} needed to specify column
+    names, x and z in example)
+  \item
+    \texttt{dt{[},\ table(y){]}} = get table of y value (perform any
+    functions)
+  \end{itemize}
+\item
+  \textbf{add new columns}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{dt{[},\ w:=z\^{}2{]}}
+
+    \begin{itemize}
+    \tightlist
+    \item
+      when this is performed, a new data.table is created and data
+      copied over (not good for large datasets)
+    \end{itemize}
+  \item
+    \texttt{dt2\ \textless{}-\ dt;\ dt{[},\ y:=\ 2{]}}
+
+    \begin{itemize}
+    \tightlist
+    \item
+      when changes are made to dt, changes get translated to dt2
+    \item
+      \emph{\textbf{Note}: if copy must be made, use the \texttt{copy()}
+      function instead }
+    \end{itemize}
+  \end{itemize}
+\item
+  \textbf{multiple operations}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{dt{[},\ m:=\ \{temp\ \textless{}-\ (x+z);\ log2(temp\ +5)\}{]}}
+    \(\rightarrow\) adds a column that equals log2(x+z + 5)
+  \end{itemize}
+\item
+  \textbf{plyr like operations}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{dt{[},a:=x\textgreater{}0{]}} = creates a new column a that
+    returns TRUE if x \textgreater{} 0, and FALSE other wise
+  \item
+    \texttt{dt{[},b:=mean(x+w),\ by=a{]}} = creates a new column b that
+    calculates the aggregated mean for \texttt{x\ +\ w} for when a =
+    TRUE/FALSE, meaning every b value is gonna be the same for TRUE, and
+    others are for FALSE
+  \end{itemize}
+\item
+  \textbf{special variables}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{.N} = returns integer, length 1, containing the number
+    (essentially count)
+
+    \begin{itemize}
+    \tightlist
+    \item
+      \texttt{dt\ \textless{}-\ data.table\ (x=sample(letters{[}1:3{]},\ 1E5,\ TRUE))}
+      = generates data table
+    \item
+      \texttt{dt{[},\ .N,\ by\ =x{]}} = creates a table to count
+      observations by the value of x
+    \end{itemize}
+  \end{itemize}
+\item
+  \textbf{keys} (quickly filter/subset)
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \emph{example}:
+    \texttt{dt\ \textless{}-\ data.table(x\ =\ rep(c("a",\ "b",\ "c"),\ each\ =\ 100),\ y\ =\ rnorm(300))}
+    = generates data table
+
+    \begin{itemize}
+    \tightlist
+    \item
+      \texttt{setkey(dt,\ x)} = set the key to the x column
+    \item
+      \texttt{dt{[}\textquotesingle{}a\textquotesingle{}{]}} = returns a
+      data frame, where x = `a' (effectively filter)
+    \end{itemize}
+  \end{itemize}
+\item
+  \textbf{joins} (merging tables)
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \emph{example}:
+    \texttt{dt1\ \textless{}-\ data.table(x\ =\ c(\textquotesingle{}a\textquotesingle{},\ \textquotesingle{}b\textquotesingle{},\ ...),\ y\ =\ 1:4)}
+    = generates data table
+
+    \begin{itemize}
+    \tightlist
+    \item
+      \texttt{dt2\ \textless{}-\ data.table(x=\ c(\textquotesingle{}a\textquotesingle{},\ \textquotesingle{}d\textquotesingle{},\ ...),\ z\ =\ 5:7)}
+      = generates data table
+    \item
+      \texttt{setkey(dt1,\ x);\ setkey(dt2,\ x)} = sets the keys for
+      both data tables to be column x
+    \item
+      \texttt{merge(dt1,\ dt2)} = returns a table, combine the two
+      tables using column x, filtering to only the values that match up
+      between common elements the two x columns (i.e.~`a') and the data
+      is merged together
+    \end{itemize}
+  \end{itemize}
+\item
+  \textbf{fast reading of files}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \emph{example}:
+    \texttt{big\_df\ \textless{}-\ data.frame(rnorm(1e6),\ rnorm(1e6))}
+    = generates data table
+
+    \begin{itemize}
+    \tightlist
+    \item
+      \texttt{file\ \textless{}-\ tempfile()} = generates empty temp
+      file
+    \item
+      \texttt{write.table(big\_df,\ file=file,\ row.names=FALSE,\ col.names\ =\ TRUE,\ sep\ =\ "\textbackslash{}t",\ quote\ =\ FALSE)}
+      = writes the generated data from big.df to the empty temp file
+    \item
+      \texttt{fread(file)} = read file and load data = much faster than
+      \texttt{read.table()}
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+
+\(\pagebreak\)
+
+\hypertarget{reading-from-mysql}{%
+\subsection{Reading from MySQL}\label{reading-from-mysql}}
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{install.packages("RMySQL");\ library(RMySQL)} = load MySQL
+  package
+\item
+  free/widely used open sources database software, widely used for
+  Internet base applications
+\item
+  each row = record
+\item
+  data are structured in databases \(\rightarrow\) series tables
+  (dataset) \(\rightarrow\) fields (columns in dataset)
+\item
+  \texttt{dbConnect(MySQL(),\ user\ =\ "genome",\ db\ =\ "hg19",\ host\ =\ "genome-mysql.cse.ucsc.edu")}
+  = open a connection to the database
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{db\ =\ "hg19"} = select specific database
+  \item
+    \texttt{MySQL()} can be replaced with other arguments to use other
+    data structures
+  \end{itemize}
+\item
+  \texttt{dbGetQuery(db,\ "show\ databases;")} = return the result from
+  the specified SQL query executed through the connection
+
+  \begin{itemize}
+  \tightlist
+  \item
+    any SQL query can be substituted here
+  \end{itemize}
+\item
+  \texttt{dbDisconnect(db)} = disconnects the open connection
+
+  \begin{itemize}
+  \tightlist
+  \item
+    crucial to disconnect as soon as all queries are performed
+  \end{itemize}
+\item
+  \texttt{dbListFields(db,\ "name")} = returns the list of fields
+  (columns) from the specified table
+\item
+  \texttt{dbReadTable(db,\ "name")} = returns the the specified table
+\item
+  \texttt{query\ \textless{}-\ dbSendQuery(db,\ "query")} = send query
+  to MySQL database and store it remotely
+\item
+  \texttt{fetch(query,\ n\ =\ 10)} = executes query and returns the
+  result
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{n\ =\ 10} = returns the first 10 rows
+  \end{itemize}
+\item
+  \texttt{dbClearResult(query)} = clears query from remote database,
+  important
+\item
+  \texttt{sqldf} package example
+\end{itemize}
+
+\(\pagebreak\)
+
+\hypertarget{hdf5}{%
+\subsection{HDF5}\label{hdf5}}
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{source("http://bioconductor.org/biocLite.R");\ biocLite("rhdf5");\ library(rhdf5)}
+  (\href{http://www.bioconductor.org/packages/release/bioc/vignettes/rhdf5/inst/doc/rhdf5.pdf}{tutorial})
+\item
+  used for storing large datasets, supports range of data types, can be
+  used optimize reading/writing from disc to R
+\item
+  \textbf{hierarchical format}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    groups containing 0 or more datasets and metadata
+
+    \begin{itemize}
+    \tightlist
+    \item
+      each group has group header with group name and list of attributes
+    \item
+      each group has group symbol table with a list of objection in the
+      group
+    \end{itemize}
+  \item
+    datasets = multidimensional array of data elements with metadata
+
+    \begin{itemize}
+    \tightlist
+    \item
+      each dataset has a header with name, datatype, data space, storage
+      layout
+    \item
+      each dataset has a data array (similar to data frame) with the
+      data
+    \end{itemize}
+  \end{itemize}
+\item
+  \texttt{h5createFile("filename")} = creates HDF5 file and returns
+  TRUE/FALSE
+\item
+  \texttt{h5createGroup("filename",\ "group1/subgroup1/...")} = creates
+  group within the specified file
+
+  \begin{itemize}
+  \tightlist
+  \item
+    groups are created at the root \texttt{/} by default, but subgroups
+    can be created by providing the path AFTER the parent group is
+    created
+  \end{itemize}
+\item
+  \texttt{h5ls("filename")} = prints out contents of the file by group,
+  name, otype, etc
+\item
+  \texttt{h5write(A,\ "filename",\ "groupname")} = writes A (could be
+  array, matrix, etc.) to the file under the specific group
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{h5write(A,\ "filename",\ "A")} = writes A directly at the
+    top level
+  \item
+    \texttt{h5write(values,\ "filename",\ "group/subgroupname/obj",\ index\ =\ list(1:3,\ 1))}
+    = writes values in the specified obj at the specific location
+
+    \begin{itemize}
+    \tightlist
+    \item
+      \emph{example}:
+      \texttt{h5write(c(12,\ 13,\ 14),\ "ex.h5",\ "foo/A",\ index\ =\ list(1:3,\ 1))}
+      = writes values 12, 13, 14 in the object A at the first 3 rows of
+      the first column in the /foo group
+    \end{itemize}
+  \end{itemize}
+\item
+  \texttt{h5read("filename",\ "groupname/A")} = reads A from specified
+  group of the file
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{h5read("filename",\ "A")} = reads A directly from the top
+    level of the file
+  \item
+    \texttt{h5read("filename",\ "group/subgroupname/obj",\ index\ =\ list(1:3,\ 1))}
+    = writes specified values in the specified obj at the group within
+    the file
+  \end{itemize}
+\end{itemize}
+
+\(\pagebreak\)
+
+\hypertarget{web-scraping-tutorial}{%
+\subsection{\texorpdfstring{Web Scraping
+(\href{http://www.r-bloggers.com/?=Web+Scraping}{tutorial})}{Web Scraping (tutorial)}}\label{web-scraping-tutorial}}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{webscraping} = programmatically extracting data from the HTML
+  code of websites
+\item
+  \texttt{con\ =\ url("website")} = opens connection from URL
+\item
+  \texttt{htmlCode\ =\ readLines(con)} = reads the HTML code from the
+  URL
+
+  \begin{itemize}
+  \tightlist
+  \item
+    always remember to \texttt{close(con)} after using it
+  \item
+    the htmlCode return here is a bit unreadable
+  \end{itemize}
+\item
+  \textbf{Parsing with XML}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{library(XML)}
+  \item
+    \texttt{url\ \textless{}-\ "http://..."} = sets the desired URL as a
+    character variable
+  \item
+    \texttt{html\ \textless{}-\ htmlTreeParse(url,\ useInternalNodes\ =\ T)}
+    = reads and parses the html code
+  \item
+    \texttt{xpathSApply(html,\ "//title",\ xmlValue)} = returns the
+    value of the \texttt{//title\ node}/element
+  \item
+    \texttt{xpathSApply(html,\ "//td{[}@id=\textquotesingle{}col-citedBy\textquotesingle{}{]}",\ xmlValue)}
+    = returns the value of the \texttt{//td} element where the
+    \texttt{id\ =\ \textquotesingle{}col-citedBy\textquotesingle{}} in
+    the html code
+  \end{itemize}
+\item
+  \textbf{Parsing with \texttt{httr} package}
+  (\href{http://cran.r-project.org/web/packages/httr/httr.pdf}{tutorial})
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{library(httr)}
+  \item
+    \texttt{html2\ \textless{}-\ GET(url)} = reads the HTML code from
+    the URL
+  \item
+    \texttt{cont\ =\ content(html2,\ as\ =\ "text")} = extracts the HTML
+    code as a long string
+  \item
+    \texttt{parsedHtml\ =\ htmlParse(cont,\ asText\ =\ TRUE)} = parses
+    the text into HTML (same output as the XML package function
+    htmlTreeParse)
+  \item
+    \texttt{xpathSApply(html,\ "//title",\ xmlValue)} = returns the
+    value of the //title node/element
+  \item
+    accessing websites with passwords
+
+    \begin{itemize}
+    \tightlist
+    \item
+      \texttt{pg\ =\ GET("url")} = this would return a status 401 if the
+      website requires log in without authenticating
+    \item
+      \texttt{pg2\ =\ GET("url",\ authenticate("username",\ "password"))}
+      = this authenticates before attempting to access the website, and
+      the result would return a status 200 if authentication was
+      successful
+    \item
+      \texttt{names2(pg2)} = returns names of different components
+    \end{itemize}
+  \item
+    using handles (username/login information)
+
+    \begin{itemize}
+    \tightlist
+    \item
+      using handles allows you to save authentication across multiple
+      parts of the website (only authenticate once for different
+      requests)
+    \item
+      \emph{example}: \texttt{google\ =\ handle("http://google.com")}
+    \item
+      \texttt{pg1\ =\ GET(handle\ =\ google,\ path\ =\ "/")}
+    \item
+      \texttt{pg2\ =\ GET(handle\ =\ google,\ path\ =\ "search")}
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+
+\(\pagebreak\)
+
+\hypertarget{working-with-api}{%
+\subsection{Working with API}\label{working-with-api}}
+
+\begin{itemize}
+\tightlist
+\item
+  load \texttt{http} package first: \texttt{library(httr)}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    allows GET, POST, PUT, DELETE requests if you are authorized
+  \end{itemize}
+\item
+  \texttt{myapp\ =\ oath\_app("app",\ key\ =\ "consumerKey",\ secret\ =\ "consumerSecret")}
+  = start authorization process for the app
+\item
+  \texttt{sig\ =\ sign\_oauth1.0(myapp,\ token\ =\ "tokenGenerated",\ token\_secret\ =\ "tokenSecret")}
+  = login using the token information (sets up access so you can use it
+  to get data)
+\item
+  \texttt{homeTL\ =\ get("url",\ sig)} = use the established
+  authentication (instead of username/password) to get the data (usually
+  in JSON format)
+
+  \begin{itemize}
+  \tightlist
+  \item
+    use the url to specify what data you would like to get
+  \item
+    use the documentation to get information and parameters for the url
+    and data you have access to
+  \end{itemize}
+\item
+  \texttt{json1\ =\ content(homeTL)} = recognizes the data in JSON
+  format and converts it to a structured R object {[}a bit hard to
+  read{]}
+\item
+  \texttt{json2\ =\ jsonlite::fromJSON(toJSON(json1))} = converts data
+  back into JSON format and then use the \texttt{fromJSON} function from
+  the \texttt{jsonlite} package to read the data into a data frame
+
+  \begin{itemize}
+  \tightlist
+  \item
+    each row corresponds to a line of the data you received
+  \end{itemize}
+\item
+  \textbf{GitHub example
+  (\href{https://github.com/hadley/httr/blob/master/demo/oauth2-github.r}{tutorial})}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{library(httr)}
+  \item
+    \texttt{myapp\ \textless{}-\ oauth\_app("github",\ key\ =\ "clientID",\ secret\ =\ "clientSecret")}
+
+    \begin{itemize}
+    \tightlist
+    \item
+      an application must be registered with GitHub first to generate
+      the client ID and secrets
+    \end{itemize}
+  \item
+    \texttt{github\_token\ \textless{}-\ oauth2.0\_token(oauth\_endpoints("github"),\ myapp)}
+
+    \begin{itemize}
+    \tightlist
+    \item
+      \texttt{oauth\_endpoints()} = returns the the authorize/access
+      url/endpoints for some common web applications (GitHub, Facebook,
+      google, etc)
+    \item
+      \texttt{oauth2.0\_token(endPoints,\ app)} = generates an oauth2.0
+      token with the credentials provided
+    \end{itemize}
+  \item
+    \texttt{gtoken\ \textless{}-\ config(token\ =\ github\_token)} =
+    sets up the configuration with the token for authentication
+  \item
+    \texttt{req\ \textless{}-\ with\_config(gtoken,\ GET("https://api.github.com/rate\_limit"))}
+    = executes the configuration set to send a get request from the
+    specified URL, and returns a response object
+  \item
+    \texttt{library(jsonlite);\ json1\ \textless{}-\ fromJSON(toJSON(content(req)))}
+    = converts the content of the response object, to JSON format, and
+    converts it again to data frame format
+  \item
+    \texttt{names(json1)} = returns all the column names for the data
+    frame
+  \item
+    \texttt{json1{[}json1\$name\ ==\ "datasharing",{]}\$created\_at} =
+    returns the create date for the data sharing repo
+  \end{itemize}
+\end{itemize}
+
+\(\pagebreak\)
+
+\hypertarget{reading-from-other-sources}{%
+\subsection{Reading from Other
+Sources}\label{reading-from-other-sources}}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{interacting directly with files}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{file} = open a connection to a text file
+  \item
+    \texttt{url} = opens a connection to a URL
+  \item
+    \texttt{gzfile/bzfile} = opens a connection to a .gz/.bz2 file
+  \item
+    \texttt{?connections} = for more information about opening/closing
+    connections in R
+  \end{itemize}
+\item
+  \textbf{\texttt{foreign} package}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    loads data from Minitab/S/SAS/SPSS/Stat/Systat
+  \item
+    basic functions
+
+    \begin{itemize}
+    \tightlist
+    \item
+      \texttt{read.arff} (Weka)
+    \item
+      \texttt{read.dta} (Stata)
+    \item
+      \texttt{read.mtp} (Minitab)
+    \item
+      \texttt{read.octave} (Octave)
+    \item
+      \texttt{read.spss} (SPSS)
+    \item
+      \texttt{read.xport} (SAS)
+    \item
+      \texttt{read.fwf} (fixed width files, {[}.for{]})
+    \item
+      \emph{example}:
+      \texttt{data\ \textless{}-\ read.fwf(file\ =\ "quiz02q5.for",\ skip\ =\ 4,\ widths\ =\ c(-1,\ 9,-5,\ 4,\ 4,\ -5,\ 4,\ 4,-5,\ 4,\ 4,-5,\ 4,\ 4))}
+    \item
+      \texttt{widths\ =\ c()} = specifies the width of each variable
+    \item
+      the negative numbers indicate the space to disregard/take out
+    \end{itemize}
+  \end{itemize}
+\item
+  \textbf{Other packages/functions}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{RPostresSQL} = provides DBI-compliant database connection
+    from R
+  \item
+    \texttt{RODBC} = provides interfaces to multiple databases including
+    PostgreQL, MySQL, Microsoft Access, SQLite
+  \item
+    \texttt{RMongo/rmongodb} = provides interfaces to MongoDb
+
+    \begin{itemize}
+    \tightlist
+    \item
+      similar to MySQL, except send queries in the database's syntax
+    \end{itemize}
+  \item
+    reading images (functions)
+
+    \begin{itemize}
+    \tightlist
+    \item
+      \texttt{jpeg}, \texttt{readbitmap}, \texttt{png}, \texttt{EBImage}
+      (Bioconductor)
+    \end{itemize}
+  \item
+    reading (GIS Geographical Information Systems) data (packages)
+
+    \begin{itemize}
+    \tightlist
+    \item
+      \texttt{rdgal}, \texttt{rgeos}, \texttt{raster}
+    \end{itemize}
+  \item
+    reading music data (packages)
+
+    \begin{itemize}
+    \tightlist
+    \item
+      \texttt{tuneR}, \texttt{seewave}
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+
+\(\pagebreak\)
+
+\hypertarget{dplyr}{%
+\subsection{dplyr}\label{dplyr}}
+
+\begin{itemize}
+\tightlist
+\item
+  external package, load by \texttt{library(dplyr)}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    developed by Hadley Wickham of RStudio
+  \item
+    optimized/distilled version of the \texttt{plyr} package, does not
+    provide new functionality but greatly simplifies existing R
+    functionality
+  \item
+    very fast, many key operations coded in C++
+  \item
+    \texttt{dplyr} package also works on data.table and SQL interface
+    for relational databases (DBI package)
+  \end{itemize}
+\item
+  load data into \texttt{tbl\_df} (data frame table) by
+  \texttt{data\ \textless{}-\ tbl\_df(rawData)}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    main advantage to using a \texttt{tbl\_df} over a regular data frame
+    is printing
+  \item
+    more compact output/informative = similar to a combination of
+    \texttt{head}/\texttt{str}
+
+    \begin{itemize}
+    \tightlist
+    \item
+      displays class, dimension, preview of data (10 rows and as many
+      columns as it can fit), undisplayed variables and their class
+    \end{itemize}
+  \end{itemize}
+\item
+  \textbf{functions}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \emph{\textbf{Note}: for all functions, first argument always the
+    data frame, and result is always a data frame }
+  \item
+    \texttt{select()}
+
+    \begin{itemize}
+    \tightlist
+    \item
+      \emph{example}:
+      \texttt{select(dataFrameTable,\ var1,\ var2,\ var3)} = returns a
+      table (similar in format as calling the actual data frame table)
+    \item
+      no need to use \texttt{\$} as we would normally, since
+      \texttt{select()} understands that the variables are from the
+      dataFrameTable
+    \item
+      columns are returns in order specified
+    \item
+      \texttt{:} operator (normally reserved for numbers) can be used to
+      select a range of columns (from this column to that column), works
+      in reverse order as well =
+      \texttt{select(dataFrameTable,\ var1:var5)}
+    \item
+      \texttt{"-column"} can be used to specify columns to throw away =
+      \texttt{select(dataFrameTable,\ -var1)} = but this does not modify
+      original dataFrameTable
+    \item
+      \texttt{-(var1:size)} = eliminate all columns
+    \item
+      normally this can be accomplished by finding the indices of names
+      using the \texttt{match("value",\ vector)} function
+    \end{itemize}
+  \item
+    \texttt{filter()}
+
+    \begin{itemize}
+    \tightlist
+    \item
+      \emph{example}: \texttt{filter(cran,\ package\ ==\ "swirl")} =
+      returns a table (similar in format as calling the actual data
+      frame table)
+    \item
+      returns all rows where the condition evaluates to TRUE
+    \item
+      automatically recognized that package is a column without
+      \texttt{\$}
+    \item
+      able to specify as many conditions as you want, separated by
+      \texttt{,}, \texttt{\textbar{}} and \texttt{\&} work here as well
+    \item
+      multiple conditions specified by \texttt{,} is equivalent to
+      \texttt{\&}
+    \item
+      \texttt{is.na(var1)} also works here
+    \item
+      \emph{\textbf{Note}: \texttt{?Comparison} brings up relevant
+      documentation for relational comparators }
+    \end{itemize}
+  \item
+    \texttt{arrange()}
+
+    \begin{itemize}
+    \tightlist
+    \item
+      \emph{example}: \texttt{arrange(dataFrameTable,\ var)} = order the
+      data frame table by specified column/variable
+    \item
+      \texttt{desc(var)} = arrange in descending order by column value
+    \item
+      can specify multiple values to sort by by using \texttt{,}
+    \item
+      order listed in the call will be the order that the data is sorted
+      by (can use in conjunction with \texttt{desc()})
+    \end{itemize}
+  \item
+    \texttt{rename()}
+
+    \begin{itemize}
+    \tightlist
+    \item
+      \emph{example}:
+      \texttt{rename(dataFrameTable,\ newColName\ =\ colName)} = renames
+      the specified column with new name
+    \item
+      capable of renaming multiple columns at the same time, no quotes
+      needed
+    \end{itemize}
+  \item
+    \texttt{mutate()}
+
+    \begin{itemize}
+    \tightlist
+    \item
+      create a new variable based on the value of one or more existing
+      variables in the dataset
+    \item
+      capable of modifying existing columns/variables as well
+    \item
+      \emph{example}:
+      \texttt{mutate(dataFrameTable,\ newColumn\ =\ size\ /\ 2\^{}20)} =
+      create a new column with specified name and the method of
+      calculating
+    \item
+      multiple columns can be created at the same time by using
+      \texttt{,} as separator, new variables can even reference each
+      other in terms of calculation
+    \end{itemize}
+  \item
+    \texttt{summarize()}
+
+    \begin{itemize}
+    \tightlist
+    \item
+      collapses the dataset into a single row
+    \item
+      \emph{example}:
+      \texttt{summarize(dataFrameTable,\ avg\ =\ mean(size))} = returns
+      the mean from the column in a single variable with the specified
+      name
+    \item
+      summarize(can return the requested value for each group in the
+      dataset
+    \end{itemize}
+  \item
+    \texttt{group\_by()}
+
+    \begin{itemize}
+    \tightlist
+    \item
+      \emph{example}:
+      \texttt{by\_package\ \textless{}-\ group\_by(cran,\ package)} =
+      creates a grouped data frame table by specified variable
+    \item
+      \texttt{summarize(by\_package,\ mean(size))} = returns the mean
+      size of each group (instead of 1 value from the
+      \texttt{summarize()} example above)
+    \item
+      \emph{\textbf{Note}: \texttt{n()} = counts number of observation
+      in the current group }
+    \item
+      \emph{\textbf{Note}: \texttt{n\_distinct()} = efficiently count
+      the number of unique values in a vector }
+    \item
+      \emph{\textbf{Note}: \texttt{quantile(variable,\ probs\ =\ 0.99)}
+      = returns the 99\% percentile from the data }
+    \item
+      \emph{\textbf{Note}: by default, \texttt{dplyr} prints the first
+      10 rows of data if there are more than 100 rows; if there are not,
+      it will print everything }
+    \end{itemize}
+  \item
+    \texttt{rbind\_list()}
+
+    \begin{itemize}
+    \tightlist
+    \item
+      bind multiple data frames by row and column
+    \item
+      \emph{example}: \texttt{rbind\_list(passed,\ failed)}
+    \end{itemize}
+  \end{itemize}
+\item
+  \textbf{Chaining/Piping}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    allows stringing together multiple function calls in a way that is
+    compact and readable, while still accomplishing the desired result
+
+    \begin{itemize}
+    \tightlist
+    \item
+      \emph{\textbf{Note}: all variable calls refer to the tbl\_df
+      specified at the same level of the call }
+    \end{itemize}
+  \item
+    \texttt{\%\textgreater{}\%} = chaining operator
+
+    \begin{itemize}
+    \tightlist
+    \item
+      \emph{\textbf{Note}: \texttt{?chain} brings up relevant
+      documentation for the chaining operator }
+    \item
+      Code on the right of the operator operates on the result from the
+      code on the left
+    \item
+      \texttt{exp1\ \%\textgreater{}\%\ exp2\ \%\textgreater{}\%\ exp3\ ...}
+
+      \begin{itemize}
+      \tightlist
+      \item
+        \texttt{exp1} is calculated first
+      \item
+        \texttt{exp2} is then applied on exp1 to achieve a result
+      \item
+        \texttt{exp3} is then applied to the result of that operation,
+        etc.
+      \end{itemize}
+    \item
+      \emph{\textbf{Note}: the chaining aspect is done with the data
+      frame table that is being passed from one call to the next }
+    \item
+      \emph{\textbf{Note}: if the last call has no additional arguments,
+      \texttt{print()} for example, then it is possible to
+      \texttt{leave()} off }
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+
+\(\pagebreak\)
+
+\hypertarget{tidyr}{%
+\subsection{tidyr}\label{tidyr}}
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{gather()}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    gather columns into key value pairs
+  \item
+    \emph{example}: \texttt{gather(students,\ sex,\ count,\ -grade)} =
+    gather each key (in this case named sex), value (in this case count)
+    pair into one row
+
+    \begin{itemize}
+    \tightlist
+    \item
+      effectively translates to (columnName, value) with new names
+      imposed on both = all combinations of column name and value
+    \item
+      \texttt{-grade} = signifies that the column does not need to be
+      remapped, so that column is preserved
+    \item
+      \texttt{class1:class5} = can be used instead to specify where to
+      gather the key values
+    \end{itemize}
+  \end{itemize}
+\item
+  \texttt{separate()}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    separate one column into multiple column
+  \item
+    \emph{example}:
+    \texttt{separate(data\ =\ res,\ col\ =\ sex\_class,\ into\ =\ c("sex",\ "class")}
+    = split the specified column in the data frame into two columns
+
+    \begin{itemize}
+    \tightlist
+    \item
+      \emph{\textbf{Note}: the new columns are created in place, and the
+      other columns are pushed to the right }
+    \item
+      \emph{\textbf{Note}: \texttt{separate()} is able to automatically
+      split non-alphanumeric values by finding the logical separator; it
+      is also possible to specify the separator by using the
+      \texttt{sep} argument }
+    \end{itemize}
+  \end{itemize}
+\item
+  \texttt{spread()}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    spread key-value pairs across multiple columns = turn values of a
+    column into column headers/variables/new columns
+  \item
+    \emph{example}: \texttt{spread(students3,\ test,\ grade)} = splits
+    ``test'' column into variables by using it as a key, and ``grade''
+    as values
+
+    \begin{itemize}
+    \tightlist
+    \item
+      \emph{\textbf{Note}: no need to specify what the columns are going
+      to be called, since they are going to be generated using the
+      values in the specified column }
+    \item
+      \emph{\textbf{Note}: the value will be matched and split up
+      according their alignment with the key (``test'') = midterm, A }
+    \end{itemize}
+  \end{itemize}
+\item
+  \texttt{extract\_numeric()}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    extract numeric component of variable
+  \item
+    \emph{example}: \texttt{extract\_numeric("class5")} = returns 5
+  \item
+    \emph{example}: \texttt{mutate(class\ =\ extract\_numeric(class))} =
+    changes the class name to numbers only
+  \end{itemize}
+\item
+  \texttt{unique()} = general R function, not specific to tidyr
+
+  \begin{itemize}
+  \tightlist
+  \item
+    returns a vector with the duplicates removed
+  \end{itemize}
+\item
+  \emph{\textbf{Note}: when there are redundant information, it's better
+  to split up the info into multiple tables; however, each table should
+  also contain primary keys, which identify observations and link data
+  from one table to the next }
+\end{itemize}
+
+\(\pagebreak\)
+
+\hypertarget{lubridate}{%
+\subsection{lubridate}\label{lubridate}}
+
+\begin{itemize}
+\tightlist
+\item
+  consistent, memorable syntax for working with dates
+\item
+  \texttt{wday(date,\ label\ =\ TRUE)} = returns number 1 - 7
+  representing Sunday - Saturday, or returns three letter day of the
+  week if label = TRUE
+\item
+  \texttt{today()}, \texttt{now()} = returns the current date and time,
+  with extractable parts (hour(), month())
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{tzone\ =\ "America/New\_York"} = used to specify time zones
+    (list
+    \href{http://en.wikipedia.org/wiki/List_of_tz_database_time_zones}{here})
+  \end{itemize}
+\item
+  \texttt{ymd("string")} = converts string in to year month day format
+  to a POSIXct time variable
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{mdy("string")} = parses date in month day year format
+  \item
+    \texttt{dmy(2508195)} = parses date in day month year format using a
+    number
+  \item
+    \texttt{ymd\_hms("string")} = parses the year month day, hour minute
+    second
+  \item
+    \texttt{hms("string")} = parses hour minute second
+
+    \begin{itemize}
+    \tightlist
+    \item
+      \texttt{tz\ =\ ""} = can use the ``tz'' argument to specify time
+      zones (list
+      \href{http://en.wikipedia.org/wiki/List_of_tz_database_time_zones}{here})
+    \end{itemize}
+  \item
+    \emph{\textbf{Note}: there are a variety of functions that are
+    available to parse different formats, all of them are capable of
+    converting the correct information if the order of month year day is
+    correct }
+  \item
+    \emph{\textbf{Note}: when necessary, \texttt{//} or \texttt{—}
+    should be added to provide clarity in date formatting }
+  \end{itemize}
+\item
+  \texttt{update(POSIXct,\ hours\ =\ 8,\ minutes\ =\ 34,\ seconds\ =\ 55)}
+  = updates components of a date time
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \emph{\textbf{Note}: does not alter the date time passed in unless
+    explicitly assigned }
+  \end{itemize}
+\item
+  arithmetic can be performed on date times by using the \texttt{days()}
+  \texttt{hours()} \texttt{minutes()}, etc. functions
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \emph{example}: \texttt{now()\ +\ hours(5)\ +\ minutes(2)} = returns
+    the date time for 5 hours and 2 minutes from now
+  \end{itemize}
+\item
+  \texttt{with\_tz(time,\ tone\ ="")} = return date-time in a different
+  time zone
+\item
+  \texttt{as.period(new\_interval(last\_time,\ arrive))} = return the
+  properly formatted difference between the two date times
+\end{itemize}
+
+\(\pagebreak\)
+
+\hypertarget{subsetting-and-sorting}{%
+\subsection{Subsetting and Sorting}\label{subsetting-and-sorting}}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{subsetting}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{x\ \textless{}-\ data.frame("var1"\ =\ sample(1:5),\ "var2"\ =\ sample(6:10),\ "var3"\ =\ (11:15))}
+    = initiates a data frame with three names columns
+  \item
+    \texttt{x\ \textless{}-\ x{[}sample(1:5),{]}} = this scrambles the
+    rows
+  \item
+    \texttt{x\$var2{[}c(2,3){]}\ =\ NA} = setting the 2nd and 3rd
+    element of the second column to NA
+  \item
+    \texttt{x{[}1:2,\ "var2"{]}} = subsetting the first two row of the
+    the second column
+  \item
+    \texttt{x{[}(x\$var1\ \textless{}=\ 3\ \textbar{}\ x\$var3\ \textgreater{}\ 15),\ {]}}
+    = return all rows of x where the first column is less than or equal
+    to three or where the third column is bigger than 15
+  \item
+    \texttt{x{[}which(x\$var2\ \textgreater{}8),\ {]}} = returns the
+    rows where the second column value is larger than 8
+
+    \begin{itemize}
+    \tightlist
+    \item
+      \emph{\textbf{Note}: \texttt{which(condition)} = useful in dealing
+      with NA values as it returns the indices of the values where the
+      condition holds true (returns FALSE for NA) }
+    \end{itemize}
+  \end{itemize}
+\item
+  \textbf{sorting/ordering}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{sort(x\$var1)} = sort the vector in increasing/alphabetical
+    order
+
+    \begin{itemize}
+    \tightlist
+    \item
+      \texttt{decreasing\ =\ TRUE} = use decreasing argument to sort
+      vector in decreasing order
+    \item
+      \texttt{na.last\ =\ TRUE} = use na.last argument to sort the
+      vector such that all the NA values will be listed last
+    \end{itemize}
+  \item
+    \texttt{x{[}order(x\$var1,\ x\$var2),\ {]}} = order the x data frame
+    according to var1 first and var2 second
+  \item
+    \texttt{plyr} package:
+    \texttt{arrange(data.farme,\ var1,\ desc(var2)} = see dplyr sections
+  \end{itemize}
+\item
+  \textbf{adding row/columns}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{x\$var4\ \textless{}-rnorm(5)} = adds a new column to the
+    end called var4
+  \item
+    \texttt{cbind(X,\ rnorm(5))} = combines data frame with vector (as a
+    column on the right)
+
+    \begin{itemize}
+    \tightlist
+    \item
+      \texttt{rbind()} = combines two objects by putting them on top of
+      each other (as a row on the bottom)
+    \item
+      \emph{\textbf{Note}: order specified in the argument is the order
+      in which the operation is performed }
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+
+\(\pagebreak\)
+
+\hypertarget{summarizing-data}{%
+\subsection{Summarizing Data}\label{summarizing-data}}
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{head(data.frame,\ n\ =\ 10)\ /\ \ tail(data.frame,\ n\ =\ 10)}
+  = prints top/bottom 10 rows of data
+\item
+  \texttt{summary(data.frame)} = displays summary information
+
+  \begin{itemize}
+  \tightlist
+  \item
+    for factors variables, the summary table will display count of the
+    top 6 values
+  \item
+    for numeric variables, the summary table will display min, 1st
+    quantile, median, mean, 3rd quantile, max
+  \end{itemize}
+\item
+  \texttt{str(data.frame)} = displays class of the object, dimensions,
+  variables (name, class, preview of data)
+\item
+  \texttt{quantile(variable,\ na.rm\ =\ TRUE,\ probs\ =\ c(0.5,\ 0.75,\ 0.9))}
+  = displays the specified quantile of the variable
+
+  \begin{itemize}
+  \tightlist
+  \item
+    default returns 0, .25, .5, .75, 1 quantiles
+  \end{itemize}
+\item
+  \texttt{table(variable,\ useNA\ =\ "ifany")} = tabulates the values of
+  the variable by listing all possible values and the number of
+  occurrences
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{useNA\ =\ "ifany"} = this will add another column if there
+    are any NA values in the variable and displays how many as well
+  \item
+    \texttt{table(var1,\ var2)} = tabulate the data against each other
+    to see if theres an relationship between them
+  \end{itemize}
+\item
+  \textbf{check for missing values}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{sum(is.na(variable))} = TRUE = 1, FALSE = 0, so if this sum
+    = 0, then there's no missing values
+  \item
+    \texttt{any(is.na(variable))} = returns TRUE/FALSE of if there is
+    any NA values in the variable
+  \item
+    \texttt{all(variable\ \textgreater{}0)} = check all values of a
+    variable against some condition and return TRUE/FALSE
+  \end{itemize}
+\item
+  \textbf{row/column sums}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{colSums/rowSums(is.na(data.frame))} = column sum of is.na
+    check for every column; works the exact same way with rowSums
+  \end{itemize}
+\item
+  \textbf{values with specific characteristics}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{table(data.frame\$var1\ \%in\%\ c("str1",\ "str2"))} =
+    returns a FALSE/TRUE table that counts how many values from the data
+    frame variable contains the specified values in the subsequent
+    vector
+  \item
+    \texttt{x{[}x\$var1\ \%in\%\ c("str1",\ "str2"),\ {]}} = subsets
+    rows from the data frame where the var1 == str1 or str2
+  \end{itemize}
+\item
+  \textbf{cross tabs}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{xt\ \textless{}-\ xtabs(Freq\ \textasciitilde{}\ Gender\ +\ Admit,\ data\ =\ data.frame)}
+    = displays a cross table of Gender and Admit variables, where the
+    values of frequency is displayed
+  \item
+    \texttt{xt2\ \textless{}-\ xtabs(var1\ \textasciitilde{}\ .,\ data\ =\ data.frame)}
+    = cross-tabulate variable 1 with all other variables, creates
+    multiple two dimensional tables
+  \item
+    \texttt{ftable(xt2)} = compacts the different tables and prints out
+    a more compacted version
+  \end{itemize}
+\end{itemize}
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule
+& Admitted & Rejected\tabularnewline
+\midrule
+\endhead
+Male & 1198 & 1493\tabularnewline
+Female & 557 & 1278\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{size of data set}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{object.size(obj)} = returns size of object in bytes
+  \item
+    \texttt{print(object.size(obj),\ units\ =\ "Mb"} = prints size of
+    object in Mb
+  \end{itemize}
+\end{itemize}
+
+\(\pagebreak\)
+
+\hypertarget{creating-new-variables}{%
+\subsection{Creating New Variables}\label{creating-new-variables}}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{sequences}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{s\ \textless{}-\ seq(1,\ 10,\ by\ =\ 2)} = creates a
+    sequence from 1 to 10 by intervals of 2
+  \item
+    \texttt{length\ =\ 3} = use the length argument to specify how many
+    numbers to generate
+  \item
+    \texttt{seq(along\ =\ x)} = create as many elements as vector x
+  \end{itemize}
+\item
+  \textbf{subsetting variables}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{restData\$nearMe\ =\ restData\$neighborhood\ \%in\%\ c("Roland",\ "Homeland")}
+    = creates a new variable \texttt{nearMe} that returns TRUE if the
+    neighborhood value is Roland or Homeland, and FALSE otherwise
+  \end{itemize}
+\item
+  \textbf{binary variables}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{restData\$zipWrong\ =\ ifelse(restData\$zipCode\textless{}0,\ TRUE,\ FALSE)}
+    = creates a new variable \texttt{zipWrong} that returns TRUE if the
+    \texttt{zipcode} is less than 0, and FALSE otherwise
+  \item
+    \texttt{ifelse(condition,\ result1,\ result2)} = this function is
+    the same as a if-else statement
+  \end{itemize}
+\item
+  \textbf{categorical variables}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{restData\$zipGroups\ =\ cut(restData\$zipCode,\ breaks\ =\ quantile(restData\$zipCode)}
+    = creates new variable \texttt{zipGroups} that specify ranges for
+    the zip code data such that the observations are divided into groups
+    created by the quantile function
+
+    \begin{itemize}
+    \tightlist
+    \item
+      \texttt{cut(variable,\ breaks)} = cuts a variable/vector into
+      groups at the specified breaks
+    \item
+      \emph{\textbf{Note}: class of resultant variable = factor }
+    \item
+      \texttt{quantile(variable)} = returns 0, .25, .5, .75, 1 by
+      default and thus provides for ranges/groups for the data to be
+      divided in
+    \end{itemize}
+  \item
+    using \texttt{Hmisc} package
+
+    \begin{itemize}
+    \tightlist
+    \item
+      \texttt{library(Hmisc)}
+    \item
+      \texttt{restData\$zipGroups\ =\ cut2(restData\$zipCode,\ g\ =\ 4)}
+    \item
+      \texttt{cut2(variable,\ g=4)} = automatically divides the variable
+      values into 4 groups according the quantiles
+    \item
+      \emph{\textbf{Note}: class of resultant variable = factor }
+    \end{itemize}
+  \end{itemize}
+\item
+  \textbf{factor variables}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{restData\$zcf\ \textless{}-\ factor(restData\$zipCode)} =
+    coverts an existing vector to factor variable
+
+    \begin{itemize}
+    \tightlist
+    \item
+      \texttt{levels\ =\ c("yes",\ "no")} = use the levels argument to
+      specify the order of the different factors
+    \item
+      \emph{\textbf{Note}: by default, converting variables to the
+      factor class, the levels will be structured alphabetically unless
+      otherwise specified }
+    \end{itemize}
+  \item
+    \texttt{as.numeric(factorVariable)} = converts factor variable
+    values into numeric by assigning the lowest (first) level 1, the
+    second lowest level 2, \ldots, etc.
+  \end{itemize}
+\item
+  \textbf{category + factor split}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    using \texttt{plyr} and \texttt{Hmisc} packages
+  \item
+    \texttt{library(plyr);\ library(Hmisc)}
+  \item
+    \texttt{readData2\ \textless{}-\ mutate(restData,\ zipGroups\ =\ cut2(zipCode,\ g\ =\ 4)}
+
+    \begin{itemize}
+    \tightlist
+    \item
+      this creates \texttt{zipGroups} and splits the data from
+      \texttt{zipCode} all at the same time
+    \end{itemize}
+  \end{itemize}
+\item
+  \textbf{common transforms}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{abs(x)} = absolute value
+  \item
+    \texttt{sqrt(x)} = square root
+  \item
+    \texttt{ceiling(x)}, \texttt{floor()} = round up/down to integer
+  \item
+    \texttt{round(x,\ digits\ =\ n)} = round to the number of digits
+    after the decimal point
+  \item
+    \texttt{signif(x,\ digits\ =\ n)} = round to the number of
+    significant digits
+  \item
+    \texttt{cos(x)}, \texttt{sin(x)}, \texttt{tan(x)} \ldots{} etc =
+    trigonometric functions
+  \item
+    \texttt{log(x)}, \texttt{log2(x)}, \texttt{log10(x)} = natural log,
+    log 2, log 10
+  \item
+    \texttt{exp(x)} = exponential of x
+  \end{itemize}
+\end{itemize}
+
+\(\pagebreak\)
+
+\hypertarget{reshaping-data}{%
+\subsection{Reshaping Data}\label{reshaping-data}}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{melting data frames}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{library(reshape2)} = loads the reshape2 package
+  \item
+    \texttt{mtcars\$carname\ \textless{}-\ rownames(mtcars)} = takes the
+    row names/name of each observation and makes a new variable called
+    ``carname''
+  \item
+    \texttt{carMelt\ \textless{}-\ melt(mtcars,\ id=c("carname",\ "gear",\ "cyl"),\ measure.vars\ =\ c("mpg",\ "hp"))}
+    = converts dataframe into a castable melted data frame by reshaping
+    the data
+
+    \begin{itemize}
+    \tightlist
+    \item
+      ID variables and measured variables are defined separately through
+      \texttt{id} and \texttt{measure.vars} arguments
+    \item
+      ID variables (identifiers) are kept in rows, while all measured
+      variables have been split into variable and value columns
+    \item
+      variable column = \texttt{mpg}, \texttt{hp} to qualify for the
+      corresponding value column
+    \item
+      value column = contains the numeric value from previous measured
+      variable columns like \texttt{mpg} \texttt{hp}
+    \item
+      ID variables are repeated when a new measured variable begins such
+      that each row is an unique observation (long/tall table)
+    \end{itemize}
+  \end{itemize}
+\item
+  \textbf{casting data frames}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{cylData\ \textless{}-\ dcast(carMetl,\ cyl\ \textasciitilde{}\ variable)}
+    = tabulate the data by rows (left hand side variable, cyl in this
+    case) by columns (right hand side variable, variable in this case),
+    so this is a table of cylinder vs mpg and hp
+
+    \begin{itemize}
+    \tightlist
+    \item
+      by default, \texttt{dcast()} summarizes the data set by providing
+      the length argument (count)
+    \item
+      can add argument (mean) to specify the value of the table produced
+    \end{itemize}
+  \end{itemize}
+\item
+  \textbf{calculating factor sums}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \textbf{method 1}:
+    \texttt{tapply(InsectSprays\$count,\ InsectSpray\$spray,\ sum)} =
+    splits the InsectSpray count values by spray groups and calculates
+    the sum of each group
+  \item
+    \textbf{method 2}: split-apply-combine
+
+    \begin{itemize}
+    \tightlist
+    \item
+      \texttt{s\ \textless{}-\ split(InsectSprays\$count,\ InsectSpray\$spray)}
+      = splits InsectSpray count values into groups by spray
+    \item
+      \texttt{sprCount\ \textless{}-\ lapply(s,\ sum)} = apply sum for
+      all of the groups and return a list
+    \item
+      \texttt{unlist(sprCount)} = converts a list into a vector with
+      names
+    \item
+      \texttt{sapply(s,\ sum)} = apply sum for all of the groups and
+      return a vector
+    \end{itemize}
+  \item
+    \textbf{method 3}: plyr package
+
+    \begin{itemize}
+    \tightlist
+    \item
+      \texttt{ddply(dataframe,\ .(variables),\ method,\ function)} = for
+      each subset of a data frame, apply function then combine results
+      into a data frame
+    \item
+      \texttt{dataframe} = data being processed
+    \item
+      \texttt{.(variables)} = variables to group/summarize by
+    \item
+      \texttt{method} = can be a variety of different functions defined
+      within the ply package, mutate, summarize, arrange, filter,
+      select, etc.
+    \item
+      \texttt{function} = how the data is going to be calculated
+    \item
+      \emph{example}:
+      \texttt{ddply(InsectSprays,\ .(spray),\ summarize,\ sum\ =\ sum(count))}
+      = summarize spray groups by providing the same of counts for each
+      group
+    \item
+      \texttt{spraySums\textless{}-\ ddply(InsectSprays,\ .(spray),\ summarize,\ sum\ =\ ave(count,\ FUN\ =\ sum))}
+      = creates a data frame (2 columns) where each row is filled with
+      the corresponding spray and sum (repeated multiple times for each
+      group)
+    \item
+      the result can then be used and added to the dataset for analysis
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+
+\(\pagebreak\)
+
+\hypertarget{merging-data}{%
+\subsection{Merging Data}\label{merging-data}}
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{merge(df1,\ df2,\ by/by.x/by.y,\ all\ =\ TRUE)} = merges two
+  data frames
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{df1}, \texttt{df2} = data frames to be merged
+  \item
+    \texttt{by\ =\ "col1"/c("col1",\ "col2")} = merge the two data
+    frames by columns of the specified names
+
+    \begin{itemize}
+    \tightlist
+    \item
+      \emph{\textbf{Note}: if \texttt{by} argument is not specified, the
+      two data frames will be merged with all columns with the same name
+      {[}default behavior{]} }
+    \item
+      \emph{\textbf{Note}: columns must have the same names for this to
+      work }
+    \end{itemize}
+  \item
+    \texttt{by.x/by.y\ =\ "col.x"/"col.y"} = specifies which columns
+    from x and y should be used to perform the merge operation
+  \item
+    \texttt{all\ =\ TRUE} = if there are values that exist in one but
+    not the other, new rows should be created with NA as values for the
+    missing data
+  \end{itemize}
+\item
+  \texttt{plyr} package: \texttt{join(df1,\ df2)} = merges the columns
+  by columns in common
+
+  \begin{itemize}
+  \tightlist
+  \item
+    faster but only works with columns that have the same name
+  \item
+    \texttt{dfList\ =\ list(df1,\ df2,\ df3);\ join\_all(dfList)} =
+    joins together a list of data frames using the common columns
+  \end{itemize}
+\end{itemize}
+
+\(\pagebreak\)
+
+\hypertarget{editing-text-variables}{%
+\subsection{Editing Text Variables}\label{editing-text-variables}}
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{tolower()} = make all character values lowercase letters
+\item
+  \texttt{toupper()} = make all character values uppercase letters
+\item
+  \texttt{strsplit(value,\ "\textbackslash{}\textbackslash{}.")} =
+  splits string into character vector by specified separator
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \emph{\textbf{Note}: \texttt{\textbackslash{}\textbackslash{}} must
+    be added for the reserved operators in R }
+  \end{itemize}
+\item
+  \texttt{sapply(list,\ function)} = can specify custom functions to
+  return the part of the character desired
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \emph{example}:
+    \texttt{fElement\ \textless{}-\ function(x)\{x{[}1{]}\};\ sapply(vector,\ fElement)}
+  \end{itemize}
+\item
+  \texttt{sub(pattern,\ replacement,\ object)} = replaces the first
+  occurrence of pattern and replaces it with the replacement string
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \emph{example}: \texttt{sub("\_",\ "",\ nameVector)} = removes first
+    "\_" from the character vector
+  \end{itemize}
+\item
+  \texttt{gsub(pattern,\ replacement,\ object)} = replaces all
+  occurrences of the specified pattern and replaces it with the
+  replacement string
+\item
+  \texttt{grep("text",\ object,\ value\ =\ FALSE)} = searches through
+  object to return the indices of where the text is found
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{value\ =\ TRUE} = returns the values instead of the indices
+  \item
+    \emph{\textbf{Note}: \texttt{grep()} returns \texttt{integer(0)} if
+    no value appears (length of the result = 0) }
+  \end{itemize}
+\item
+  \texttt{grepl("text",\ object)} = searches through object and returns
+  the T/F logical vector for if the text has been found
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \emph{example}:
+    \texttt{data2\ \textless{}-\ data1!{[}grepl("test",\ data\$intersection),\ {]}}
+  \end{itemize}
+\item
+  \texttt{string} package {[}\texttt{library(stringr)}{]}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{nchar(object/string)} = returns number of characters in each
+    element of object/string, works on matrix/data frames as well
+  \item
+    \texttt{substr("text",\ 1,\ 7)} = returns a substring of the
+    specified beginning and ending characters
+
+    \begin{itemize}
+    \tightlist
+    \item
+      \emph{\textbf{Note}: R is uses 1 based indexing system, which
+      means the first character of the string = 1 }
+    \item
+      \emph{\textbf{Note}: substring returns a string that includes both
+      first AND last letters and everything inbetween }
+    \end{itemize}
+  \item
+    \texttt{paste("str1",\ "str2",\ sep\ =\ "\ ")} = combines two
+    strings together into one by using the specified separator
+    (\texttt{default\ =\ "\ "})
+  \item
+    \texttt{paste0("str1",\ "str2")} = combines series of strings
+    together with no separator
+  \item
+    \texttt{str\_trim("\ \ text\ \ \ ")} = trims off whitespace from
+    start and end of string
+  \end{itemize}
+\item
+  \textbf{General Rules}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    name of variables should be
+
+    \begin{itemize}
+    \tightlist
+    \item
+      all lowercase when possible
+    \item
+      descriptive
+    \item
+      unique
+    \item
+      contains no underscores/dots/space
+    \end{itemize}
+  \item
+    variables with character values
+
+    \begin{itemize}
+    \tightlist
+    \item
+      made into factor variables
+    \item
+      descriptive
+    \item
+      use TRUE/FALSE instead of 1/0
+    \item
+      use Male/Female instead of 1/0 or M/F
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+
+\(\pagebreak\)
+
+\hypertarget{regular-expressions}{%
+\subsection{Regular Expressions}\label{regular-expressions}}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{RegEx} = combination of literals and metacharacters
+\item
+  used with \texttt{grep/grepl/sub/gsub} functions or any other that
+  involve searching for strings in character objects/variables
+\item
+  \texttt{\^{}} = start of the line (metacharacter)
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \emph{example}: \texttt{\^{}text} matches lines such as ``text
+    \ldots{}''
+  \end{itemize}
+\item
+  \texttt{\$} = end of the line (metacharacter)
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \emph{example}: \texttt{text\$} matches lines such as ``\ldots{}
+    text''
+  \end{itemize}
+\item
+  \texttt{{[}{]}} = set of characters that will be accepted in the match
+  (character class)
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \emph{example}: \texttt{\^{}{[}Ii{]}} matches lines such as ``I
+    \ldots{}'' or ``i \ldots{}''
+  \end{itemize}
+\item
+  \texttt{{[}0-9{]}} = searches for a a range of characters (character
+  class)
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \emph{example}: \texttt{{[}a-zA-Z{]}} will match any letter in upper
+    or lower case
+  \end{itemize}
+\item
+  \texttt{{[}\^{}?.{]}} = when used at beginning of character class,
+  ``\^{}'' means not (metacharacter)
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \emph{example}: \texttt{{[}\^{}?.{]}\$} matches any line that does
+    end in ``.'' or ``?''
+  \end{itemize}
+\item
+  \texttt{.} = any character (metacharacter)
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \emph{example}: \texttt{9.11} matches 9/11, 9911, 9-11, etc
+  \end{itemize}
+\item
+  \texttt{\textbar{}} = or, used to combine subexpressions called
+  alternatives (metacharacter)
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \emph{example}: \texttt{\^{}({[}Gg\}ood\ \textbar{}\ {[}Bb{]}ad)}
+    matches any lines that start with lower/upper ``Good\ldots{}'' and
+    ``Bad \ldots{}''
+  \item
+    \emph{\textbf{Note}: \texttt{()} limits the scope of alternatives
+    divided by ``\textbar{}'' here }
+  \end{itemize}
+\item
+  \texttt{?} = expression is optional = 0/1 of some character/expression
+  (metacharacter)
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \emph{example}: \texttt{{[}Gg{]}eorge(\ {[}Ww{]}\textbackslash{}.)?}
+    {[}Bb{]}ush matches ``george bush'', ``George W. Bush''
+  \item
+    \emph{\textbf{Note}: ``" was added before''." because ``.'' is a
+    metacharacter, ``.'' called escape dot, tells the expression to read
+    it as an actual period instead of an operator }
+  \end{itemize}
+\item
+  \texttt{*} = any number of repetition, including none = 0 or more of
+  some character/expression (metacharacter)
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \emph{example}: \texttt{.*} matches anything combination of
+    characters
+  \item
+    \emph{\textbf{Note}: \texttt{*} is greedy = always matches the
+    longest possible string that satisfies the regular expression }
+
+    \begin{itemize}
+    \tightlist
+    \item
+      greediness of \texttt{*} can be turned off with the \texttt{?}
+    \item
+      \emph{example}: \texttt{s.*?s} matches the shortest ``s\ldots s''
+      text
+    \end{itemize}
+  \end{itemize}
+\item
+  \texttt{+} = 1 or more repetitions = 1 or more of some
+  character/expression (metacharacter)
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \emph{example}: \texttt{{[}0-9{]}+} matches matches many at least
+    digit 1 numbers such as ``0'', ``90'', or ``021442132''
+  \end{itemize}
+\item
+  \texttt{\{m,\ n\}} = interval quantifier, allows specifying the
+  minimum and maximum number of matches (metacharacter)
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{m} = at least, \texttt{n} = not more than
+  \item
+    \texttt{\{m\}} = exactly \texttt{m} matches
+  \item
+    \texttt{\{m,\ \}} = at least m matches
+  \item
+    \emph{example}: \texttt{Bush(\ +{[}\^{}\ {]}+\ +)\{1,\ 5\}} debates
+    matches ``Bush + (at least one space + any word that doesn't contain
+    space + at least one space) this pattern repeated between 1 and 5
+    times + debates''
+  \end{itemize}
+\item
+  \texttt{()} = define group as the the text in parentheses, groups will
+  be remembered and can be referred to by \texttt{\textbackslash{}1},
+  \texttt{\textbackslash{}2}, etc.
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \emph{example}: \texttt{({[}a-zA-Z{]}+)\ +\textbackslash{}1\ +}
+    matches ``any word + at least one space + the same word repeated +
+    at least one space'' = ``night night'', ``so so'', etc.
+  \end{itemize}
+\end{itemize}
+
+\(\pagebreak\)
+
+\hypertarget{working-with-dates}{%
+\subsection{Working with Dates}\label{working-with-dates}}
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{date()} = returns current date in character format
+\item
+  \texttt{Sys.Date()} = returns the current date in Date format
+\item
+  \texttt{format(object,\ "format")} = formats object in specified
+  format
+
+  \begin{itemize}
+  \tightlist
+  \item
+    when object = Date, then we can use any combination of the following
+
+    \begin{itemize}
+    \tightlist
+    \item
+      \texttt{\%d} = day as number (0-31)
+    \item
+      \texttt{\%a} = abbreviated weekday
+    \item
+      \texttt{\%A} = unabbreviated weekday
+    \item
+      \texttt{\%m} = month (00-12
+    \item
+      \texttt{\%b} = abbreviated month
+    \item
+      \texttt{\%B} = unabbreviated month
+    \item
+      \texttt{\%y} = 2 digit year
+    \item
+      \texttt{\%Y} = 4 digit year
+    \end{itemize}
+  \item
+    \emph{example}: \texttt{format(Sys.Date(),\ "\%a\ \%b\ \%d")} =
+    returns ``Sun Jan 18''
+  \end{itemize}
+\item
+  \texttt{as.Date("character",\ "format")} = converts character
+  vector/variable into Date format by using the codes above
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \emph{example}:
+    \texttt{z\ \textless{}-\ as.Date("1jan1960",\ "\%d\%b\%Y")} =
+    creates a Date of ``1960-01-01''
+  \end{itemize}
+\item
+  \texttt{Date1\ -\ Date2} = prints the difference between the dates in
+  this format ``Time difference of n days''
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{as.numeric()} on this result will print/store n, the numeric
+    difference
+  \end{itemize}
+\item
+  \texttt{weekdays(Date)}, \texttt{months(Date)} = returns the
+  weekday/month of the given Date object
+\item
+  \texttt{julian(Date)} = converts the Date, which is the number of days
+  since the origin
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{attr(,\ "origin")} = prints out the origin for the julian
+    date format, which is 1970-01-01
+  \end{itemize}
+\item
+  \texttt{lubridate} package {[}\texttt{library(lubridate)}{]} = see
+  lubridate section
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{?Sys.timezone} = documentation on how to determine/set
+    timezones
+  \end{itemize}
+\end{itemize}
+
+\(\pagebreak\)
+
+\hypertarget{data-sources}{%
+\subsection{Data Sources}\label{data-sources}}
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{quantmod} package = get historical stock prices for publicly
+  traded companies on NASDAQ or NYSE
+\end{itemize}
+
+\end{document}

@@ -1,0 +1,136 @@
+---
+title: "Eng Aux 2"
+author: "Phillip.Escandon"
+date: "Nov 27, 2017"
+output: 
+  html_notebook: 
+    toc: yes
+---
+# Eng Aux Data files
+###**eng_aux_podins.dat**  
+Column / Field  
+1:      timestamp  
+2:      valid 0=data not valid,1 = valid  
+7:      eastVel  
+8:      northVel  
+9:      downVel  
+
+###**eng_aux_podstateA.dat**  
+Column / Field  
+1:     timestamp  
+8:     mach speed  
+94:    gpstime    
+
+###**eng_aux_podstateD.dat**  
+Column / Field  
+1:  timestamp  
+15: FOV Stat: 0xaa = NFOV, 0x6a=NFOV 0x55 WFOV 0x95 SWFOV  
+16: shutter status
+
+    0 = open  
+    1 =  closed  
+    2 = opening  
+    3 = closing  
+    4 = stuck closed  
+    5 = stuck open  
+    6 = in transit  
+    7 = out of position  
+    8 = error - open and closed  
+    9 = unknown  
+    10 = stuck in transit  
+21. sensorID  
+  
+
+  
+###**eng_aux_recce_task.dat**  
+Column / Field  
+1 : timestamp  
+8 : mpUserID task name known by user  
+272 : groundSpeed Ground speed at start gate m/s  
+  
+  
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Engineering Auxillary Data
+
+```{r Load Library}
+library(tidyverse)
+library(plotly)
+```
+
+#### Gather Data
+```{r Read in data, include=FALSE}
+
+podINS <- read_table2('../data/15090103s2/SSD_SEQ_1/eng_aux_podins.dat',col_names = FALSE)
+
+podStateA <- read_table2('../data/15090103s2/SSD_SEQ_1/eng_aux_podstatea.dat',col_names = FALSE)
+
+podStateD <- read_table2('../data/15090103s2/SSD_SEQ_1/eng_aux_podstated.dat',col_names = FALSE)
+
+recceTask <- read_table2('../data/15090103s2/SSD_SEQ_1/eng_aux_recce_task.dat',col_names = FALSE)
+```
+
+#### Select only the appropriate columns indicated above  
+
+```{r Select Needed Columns}
+podINSFiltered <- select(podINS,1,2,7,8,9)
+podStateAFiltered <- select(podStateA,1,8,94)
+podStateDFiltered <- select(podStateD,1,15,16,21)
+recceTaskFiltered <- select(recceTask,1,8,272)
+
+```
+Define column names
+```{r Define column names}
+podINS_colNames <- c('timestamp','valid','eastVel','northVel','downVel')
+podStateA_colNames <- c('timestamp','mach','gpstime')
+podStateD_colNames <- c('timestamp','fov','shutterStatus','sensorID')
+recceTask_colNames <- c('timestamp','mpID','groundSpeed')
+
+  
+```
+
+```{r Rename}
+colnames(podINSFiltered) <- podINS_colNames
+colnames(podStateAFiltered) <- podStateA_colNames
+colnames(podStateDFiltered) <- podStateD_colNames
+colnames(recceTaskFiltered) <- recceTask_colNames
+```
+
+
+
+#### Valid data  
+```{r}
+podINSFiltered <- filter(podINSFiltered,valid == "01")
+```
+
+#### Combine the Pod INS East / North / Down data
+```{r Combine for Meters per Second then convert to Knots}
+podINSResult <- mutate(podINSFiltered, combo = eastVel^2 + northVel^2 + downVel^2, ms = sqrt(combo),knots = ms*1.943844)
+
+
+
+```
+
+#### Plot the AC Speed  
+```{r}
+p <- qplot(x = timestamp, y = knots, data = podINSResult,geom = "line")
+```
+
+```{r}
+summary(podINSResult$knots)
+```
+```{r}
+ggplotly(p)
+
+```
+
+
+
+
+
+
+
+
