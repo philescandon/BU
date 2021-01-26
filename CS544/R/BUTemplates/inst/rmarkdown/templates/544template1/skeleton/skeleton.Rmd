@@ -1,0 +1,29 @@
+---
+title: "Template Title"
+author: "Phillip Escandon"
+email: "escandon@bu.edu"
+date: "The Date"
+output: 
+  html_document: 
+    toc: yes  
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Adding an RMarkdown Template
+
+```{r chunk1}
+2+2
+```
+
+## Assignment
+
+### Question 1
+```{r}
+
+```
+
+### Question 2
+
