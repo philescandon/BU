@@ -1,0 +1,180 @@
+---
+title: "Probability Notes"
+author: "Phillip Escandon - escandon@bu.edu"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  html_document:
+    toc: true
+    fig_caption: true
+    theme: flatly
+    css: "res/styles.css"
+  word_document:
+    toc: true
+    reference_doc: "res/BUtemplate.docx"
+---
+
+<img src="res/BU_Small.png" width=200 height=100 style="position:absolute;top:0px;right:100px;" />
+
+## Introduction
+
+```{r include=FALSE}
+library(prob)
+library(tidyverse)
+
+```
+```
+Using some of the common prob functions to solve the simple problems described in HW assignment 2.
+
+1. Make a probabilty space
+2. use PROB to define output.
+3. What do intersect and union mean in this context
+
+```
+
+## Using a probability space and describing events
+```{r}
+# Rolling  two dice 
+S<- rolldie(2,makespace = TRUE)
+tibble(S)
+
+# Now create a subset of what you'd like to check
+A <- subset(S,X1==3)
+Prob(A)
+
+# or just use Prob directly:
+
+Prob(S, X1 == 3)
+# whats the prob of the first die = 4 or 5
+Prob(S, X1 %in% c(4,5))
+
+
+```
+## Making your own probabilty space 
+
+```{r ownspace}
+# make my two columns 1. outcome, 2. probability and I set up myself
+# problem 2.8
+outcomes<- rolldie(1)
+p<- rep(1/6, times=6)
+
+S<-probspace(outcomes, probs = p)
+sum(S$probs)
+
+```
+I can set up the probabilities at my own discretion, as long as they add up to one.
+The sum of the above probabilities is `r sum(S$probs)`  
+
+Now use it
+```{r}
+# to remind oneself of what dataframe we are dealing with
+# lets take a look
+head(S,2)
+# We are looking at variables X1 and probs
+Prob(S,X1 == 4)
+Prob(S,X1 %in% c(4,5))
+Prob(S,X1 >2)
+
+```
+
+Another way of doing this is by using events, that is describing events as eventA , eventB, eventC and finding various combinations using these events.  
+
+```{r}
+deck <- cards(makespace = TRUE)
+
+event1 <- subset(deck, rank %in% c("Q","K"))
+# whats the prob of drawing a queen or king
+Prob(event1)
+# prob of drawing a card between 3-5 and is also a heart?
+Prob(deck, rank %in% c(3,5,4) & suit =="Heart")
+
+# whats the intersetion of these two event?
+event2 <- subset(deck,rank %in% c(3,5,4) & suit =="Heart")
+Prob(union(event1,event2))
+
+```
+
+## Conditional Probability
+```
+The conditional probability rule, P(B|A), computes the probability of the event B given that the event  A has
+occurred.
+
+P(B|A) = P(A ∩ B) / P(A)
+```
+
+To demonstrate conditional probability, consider rolling two dice
+```{r}
+# follow the steps from above
+# 1. make a space
+# 2. Use the Prob() 
+S <- rolldie(2,makespace = TRUE)
+head(S,n=2)
+
+# Whats the prob of both die are equal
+Prob(S,X1 == X2)
+
+# Whats the prob of both equal given that they add up to 8
+Prob(S,X1==X2, given = X1+X2==8)
+
+# whats the prob that they equal 8 given that they are equal
+Prob(S,X1+X2==8, given = X1==X2)
+
+# You can describe these are Event A and Event B
+A <- subset(S, X1 == X2)
+B <- subset(S, X1 + X2 == 8)
+
+Prob(A, given = B)
+Prob(B, given = A)
+
+```
+
+Now lets try this with coin tosses!
+```{r}
+S <- tosscoin(2,makespace = TRUE)
+S
+# Find any HEAD in two tosses of a coin
+Prob(S, isin(S,c("H")))
+
+# Find any Head or Tails during two tosses
+Prob(S, isin(S,c("H","T")))
+
+A <- subset(S,isin(S,c("H")))
+B <- subset(S,isin(S,c("H","T")))
+# Prob of finding a H given H and a T was found
+Prob(A, given = B)
+
+Prob(B, given = A)
+
+
+```
+
+## Using URNSAMPLES
+
+Define an URN that takes in one six sided die
+```{r}
+urnsamples(1:6,size = 2)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

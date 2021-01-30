@@ -1,43 +1,10 @@
----
-title: "CS544_HW2_Escandon"
-subtitle: "Professor S. Kalathur Spring 01 2021"
-author: "Phillip Escandon - escandon@bu.edu"
-date: "`r format(Sys.time(), '%d %B, %Y')`"
-output:
-  word_document:
-    toc: true
-    reference_doc: "res/BUtemplate.docx"
-  html_document:
-    toc: true
-    fig_caption: true
-    theme: flatly
-    css: "res/styles.css"
----
-
-<img src="res/BU_Small.png" width="200" height="100" style="position:absolute;top:0px;right:100px;"/>
-
-\newpage
-## Part 1 Probability
-
-    Use the Bayes theorem to calculate the following probabilities. Show the individual steps of the
-    Bayes theorem. You can use R for the calculations.
-    Suppose that in a particular state, among 10000 people surveyed, 4250 people are in the age
-    group 18-34 years, 2850 people are in the age group 35-49 years, 1640 people are in the age
-    group 50-64 years, and the remaining are 65 years & over.
-    Out of those in the age group 18-34 years, 1062 people had a BMI of above 30. Of those in the
-    age group 35-49 years, 1710 people had a BMI of above 30. Among those in the 50-64 years
-    range, 656 people had a BMI of above 30. In the last age group, 189 people had a BMI of above
-    30.
-
-
-
-```{r include=FALSE}
+## ----include=FALSE------------------------------------------------------------------------------------------------------------------------------------------------------
 library(prob)
 library(tidyverse)
 library(glue)
-```
 
-```{r 1a}
+
+## ----1a-----------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Get my population figures
 totalPop <- 10000
 ageGroupPop <- c(4250,2850,1640,1260)
@@ -52,20 +19,15 @@ df <- data.frame(byPercent,bmiGT30Percent)
 df
 
 
-```
 
-### a. What is the probability that a randomly selected person in this survey will have a BMI ofabove 30?
-```{r 1a2}
+
+## ----1a2----------------------------------------------------------------------------------------------------------------------------------------------------------------
 # P(B) = P(B|A1)*P(A1)   +  P(B|A2)*P(A2)  + P(B|A3)*P(A3)
 pb <- sum(byPercent*bmiGT30Percent)
 glue("Probability of randomly chosen person having a BMI > 30 is ",pb)
-```
 
 
-
-### b. If a randomly selected person had a BMI of above 30, what is the probability of that person being in the age group 18-34 years?
-
-```{r 1b}
+## ----1b-----------------------------------------------------------------------------------------------------------------------------------------------------------------
 # P(A1|B) = P(B|A1)* P(A1)/P(B)
 
 PA1B=(byPercent * bmiGT30Percent)[1] / pb
@@ -73,52 +35,34 @@ glue("Probability of randomly chosen person having a BMI>30 being in the 18-34
      age group is ", PA1B)
 
 
-```
 
-### c. If a randomly selected person had a BMI of above 30, what is the probability of that person being in the age group 35-49 years?
 
-```{r 1c}
+## ----1c-----------------------------------------------------------------------------------------------------------------------------------------------------------------
 PA2B=(byPercent * bmiGT30Percent)[2] / pb
 glue("Probability of randomly chosen person having a BMI>30 being in the 35-49 
      age group is ", PA2B)
 
-```
 
-### d.If a randomly selected person had a BMI of above 30, what is the probability of that person being in the age group 50-64 years?
 
-```{r 1d}
+## ----1d-----------------------------------------------------------------------------------------------------------------------------------------------------------------
 PA3B=(byPercent * bmiGT30Percent)[3] / pb
 glue("Probability of randomly chosen person having a BMI>30 being in the 50-64 
      age group is ", PA3B)
 
-```
 
-### e.
 
-If a randomly selected person had a BMI of above 30, what is the probability of that person being in the 65 years & over?
-
-```{r 1e}
+## ----1e-----------------------------------------------------------------------------------------------------------------------------------------------------------------
 PA4B=(byPercent * bmiGT30Percent)[4] / pb
 glue("Probability of randomly chosen person having a BMI>30 being in the 50-64 
      age group is ", PA4B)
 
-```
 
-\newpage
 
-## Part 2.
-```
-    Consider a game which involves rolling three dice. Write the R code for the following.
-    Using the rollDie function from the prob library, setup the sample space for this experiment with the probability space.
-    For each of the following scenarios from a) through e), show the corresponding outcomes and the probability of that event. The sample outputs for b) are shown as example.
-```
-```{r 2Setup, include=FALSE}
+## ----2Setup, include=FALSE----------------------------------------------------------------------------------------------------------------------------------------------
 library(prob)
-```
 
-### a. The sum of the rolls is greater than 10.
 
-```{r 2a}
+## ----2a-----------------------------------------------------------------------------------------------------------------------------------------------------------------
 ## Roll 3 dice and see all of the outcomes
 S<- rolldie(3, makespace = TRUE)
 dieSum <- subset(S,(X1+X2+X3>10) )
@@ -128,10 +72,9 @@ Prob(dieSum)
 # dieSum <- sum(dieSum$probs)
 # head(dieSum,n=3)
 
-```
 
-### b.  All the three rolls are identical.
-```{r 2b}
+
+## ----2b-----------------------------------------------------------------------------------------------------------------------------------------------------------------
 ## Roll 3 dice and see all of the outcomes
 S<- rolldie(3, makespace = TRUE)
 A<-subset(S,(X1==X2) & (X1==X3) & (X2 == X3))
@@ -140,10 +83,9 @@ Prob(A)
 # check
 # sum(A$probs)
 # head(A,n=3)
-```
 
-### c.  Only two of the three rolls are identical.  
-```{r 2c}
+
+## ----2c-----------------------------------------------------------------------------------------------------------------------------------------------------------------
 S<- rolldie(3, makespace = TRUE)
 Prob(S)
 # X1==X2 or X1==X3 or X2==X3
@@ -153,10 +95,9 @@ Prob(dieEqual)
 #check
 # sum(dieEqual$probs)
 # head(dieEqual,)
-```
 
-### d. None of the three rolls are identical  
-```{r 2d}
+
+## ----2d-----------------------------------------------------------------------------------------------------------------------------------------------------------------
 S<- rolldie(3, makespace = TRUE)
 #S
 dieNotEqual <- subset(S, (X1 != X2) & (X1 != X3) & (X2 != X3) )
@@ -165,11 +106,9 @@ Prob(dieNotEqual)
 #check
 # sum(dieNotEqual$probs)
 # head(dieNotEqual,n=3)
-```
 
 
-### e. Only two of the three rolls are identical given that the sum of the rolls is greater than 10. 
-```{r 2e}
+## ----2e-----------------------------------------------------------------------------------------------------------------------------------------------------------------
 S<- rolldie(3, makespace = TRUE)
 
 # X1==X2 or X1==X3 or X2==X3
@@ -180,26 +119,16 @@ Prob(intersect(A,B))
 #check
 # u<- intersect(A,B)
 # head(u,n=3)
-```
 
 
+## ----notes, eval=FALSE, include=FALSE-----------------------------------------------------------------------------------------------------------------------------------
+## # In order to use the debugger you must first create an R file from your
+## # markdown and run the debugger from the R file.
+## # use knitr::purl( <markdown> )
+## #
 
-\newpage
-## Part 3.
 
-Using a for loop or a while loop, write your own R function, 
- sum_of_first_N_odd_squares (n),
- that returns the sum of the squares of the first n odd numbers. 
-
-```{r notes, eval=FALSE, include=FALSE}
-# In order to use the debugger you must first create an R file from your 
-# markdown and run the debugger from the R file.
-# use knitr::purl( <markdown> )
-#
-```
-
-### sum_of_first_N_odd_squares()
-```{r 3Sum}
+## ----3Sum---------------------------------------------------------------------------------------------------------------------------------------------------------------
 #' sum_of_first_N_odd_squares
 #'
 #' @param x Int that defines the first X odd numbers to be operated on
@@ -221,17 +150,16 @@ sum_of_first_N_odd_squares <- function(x){
   }
   return (sum(k^2))
 }
-```
 
-```{r}
+
+## -----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 sum_of_first_N_odd_squares(2)
 sum_of_first_N_odd_squares(5)
 sum_of_first_N_odd_squares(10)
 
-```
 
-### sum_of_first_N_odd_squaresV2()
-```{r 3sumV2}
+
+## ----3sumV2-------------------------------------------------------------------------------------------------------------------------------------------------------------
 #' sum_of_first_N_odd_squaresV2
 #'
 #' @param x Int that defines the first X odd numbers to be operated on
@@ -245,45 +173,28 @@ sum_of_first_N_odd_squaresV2 <- function(x){
   x<-seq(1,(x*2),2)
   return (sum(x^2))
 }
-```
 
-The output for the Version 2 function
 
-```{r}
+## -----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 sum_of_first_N_odd_squaresV2(2)
 sum_of_first_N_odd_squaresV2(5)
 sum_of_first_N_odd_squaresV2(10)
 
-```
 
 
-\newpage
-## 4.  
-```
-Initialize the Dow Jones Industrials daily closing data, dow, using the read.csv function with the
-link: http://people.bu.edu/kalathur/datasets/DJI_2020.csv
-
-```
-
-
-### 4a.  a) Store the result of the summary function for the Close attribute as the variable sm. Change
-the names of this variable so that the output appears as shown below.
-
-```{r 4 Read In Data}
+## ----4 Read In Data-----------------------------------------------------------------------------------------------------------------------------------------------------
 dow <- read_csv("http://people.bu.edu/kalathur/datasets/DJI_2020.csv",col_types = list(col_character(),col_double()))
 head(dow)
 
-```
-### 4a. Store the result of the summary() for the *close* attribute as the variable sm.
 
-```{r 4a}
+
+## ----4a-----------------------------------------------------------------------------------------------------------------------------------------------------------------
 sm <- summary(dow$Close)
 names(sm)<-c("Min","Q1","Q2","Mean","Q3","Max")
 sm  
-```
 
 
-```{r 4a2}
+## ----4a2----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 paste("First Quartile variation is ",sm[2]-sm[1])
 paste("Second Quartile variation is ",sm[3]-sm[2])
@@ -291,21 +202,18 @@ paste("Third Quartile variation is ",sm[5]-sm[3])
 paste("Fourth Quartile variation is ",sm[6]-sm[5])
 
 
-```
 
-### 4b. Produce the output for the minumum of the Dow closing value in the datset as shown
 
-```{r 4b }
+## ----4b-----------------------------------------------------------------------------------------------------------------------------------------------------------------
 minDowClose <-min(dow$Close)
 row_minDowClose <-which(dow$Close == min(dow$Close) )
 date_minDowClose<- dow$Date[row_minDowClose]
 
 paste("The minimum Dow value of ",minDowClose," is at row ",row_minDowClose," on ",date_minDowClose)
 
-```
-### 4c. Suppose you have an index fund tied to the Dow closing value. If you have invested on the minimum date, what date from the dataset you would have sold to gain the maximum percentage gain. The output is as shown below. Note that the code should be generic so that it works on any such dataset.
 
-```{r 4c}
+
+## ----4c-----------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Use the min values from above
 # minDowClose
 # date_minDowClose
@@ -324,11 +232,9 @@ w[hiRow,1]
 gain <-  (maxDowClose / minDowClose) - 1
 
 paste("I would sell on ",w[hiRow,1]," when DOW is at",max(w$Close)," for a gain of ",round(gain,digits = 4)*100,"%")
-```
 
-### 4d. Use the diff function to calculate the differences between consecutive closing values in the dataset. Insert the value 0 at the beginning of these differences. Add this result as the DIFFS column of the data frame. The result is as shown below.   
 
-```{r 4d}
+## ----4d-----------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Create my new vector
 cl<-diff(dow$Close)
 # comparing lengths.. one is smaller than the other
@@ -343,11 +249,9 @@ length(cl)
 dow$DIFFS<-cl
 head(dow,n=6)
 
-```
 
-### 4e.  How many days did the Dow close higher than its previous day value?  How many days did the Dow close lower than its previous day value?
 
-```{r 4e}
+## ----4e-----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # Close higher
 
@@ -358,28 +262,8 @@ paste(length(dow$DIFFS[(dow$DIFFS>0)])," days DOW close higher than previous day
 
 
 paste(length(dow$DIFFS[(dow$DIFFS<0)])," days DOW closed lower than previous day")
-```
 
-### 4f. Show the subset of the data where there was a gain of at least 1000 points from its previous 
-day value.
-```{r 4f}
+
+## ----4f-----------------------------------------------------------------------------------------------------------------------------------------------------------------
 dow[(dow$DIFFS>1000),]
-```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
