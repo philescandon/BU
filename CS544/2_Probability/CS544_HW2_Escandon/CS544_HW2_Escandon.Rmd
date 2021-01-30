@@ -295,7 +295,7 @@ paste("Fourth Quartile variation is ",sm[6]-sm[5])
 
 ### 4b. Produce the output for the minumum of the Dow closing value in the datset as shown
 
-```{r 4b}
+```{r }
 minDowClose <-min(dow$Close)
 row_minDowClose <-which(dow$Close == min(dow$Close) )
 date_minDowClose<- dow$Date[56]
@@ -310,10 +310,14 @@ works on any such dataset.
 
 ```{r}
 tgtRow <- which(dow$Close == max(dow$Close))
-maxVal <-max(dow$Close)
-maxValDate <-dow$Date[29]
-highDate <-"4/29/20"
-highPrice <-"24634"
+maxVal <- max(dow$Close)
+maxValDate <- dow$Date[29]
+highDate <- "4/29/20"
+highPrice <- "24634"
+
+lowVal <- min(dow$Close)
+low_tgtRow <- which(dow$Close == min(dow$Close))
+
 gain <- 32.5
 
 paste("I would sell on ",highDate," when DOW is at",highPrice," for a gain of ",gain," %")
@@ -324,22 +328,37 @@ dataset. Insert the value 0 at the beginning of these differences. Add this resu
 column of the data frame. The result is as shown below.   
 
 ```{r 4d}
+cl<-diff(dow$Close)
+length(cl)
+length(dow$Close)
 
+cl<-prepend(cl,0)
+length(cl)
+
+dow$DIFFS<-cl
+head(dow,n=6)
 
 ```
 
-### 4e.  How many days did the Dow close higher than its previous day value?  How many days did
-the Dow close lower than its previous day value?
+### 4e.  How many days did the Dow close higher than its previous day value?  How many days did the Dow close lower than its previous day value?
 
 ```{r 4e}
 
+# Close higher
 
+paste(length(dow$DIFFS[(dow$DIFFS>0)])," days DOW close higher than previous day")
+
+# Close lower
+
+
+
+paste(length(dow$DIFFS[(dow$DIFFS<0)])," days DOW closed lower than previous day")
 ```
 
 ### 4f. Show the subset of the data where there was a gain of at least 1000 points from its previous 
 day value.
 ```{r 4f}
-
+dow[(dow$DIFFS>1000),]
 ```
 
 
