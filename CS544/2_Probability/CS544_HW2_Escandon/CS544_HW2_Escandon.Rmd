@@ -4,14 +4,14 @@ subtitle: "Professor S. Kalathur Spring 01 2021"
 author: "Phillip Escandon - escandon@bu.edu"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
+  word_document:
+    toc: true
+    reference_doc: "res/BUtemplate.docx"
   html_document:
     toc: true
     fig_caption: true
     theme: flatly
     css: "res/styles.css"
-  word_document:
-    toc: true
-    reference_doc: "res/BUtemplate.docx"
 ---
 
 <img src="res/BU_Small.png" width="200" height="100" style="position:absolute;top:0px;right:100px;"/>
@@ -32,6 +32,7 @@ output:
 
 
 ```{r include=FALSE}
+library(prob)
 library(tidyverse)
 library(glue)
 ```
@@ -120,10 +121,12 @@ library(prob)
 ```{r 2a}
 ## Roll 3 dice and see all of the outcomes
 S<- rolldie(3, makespace = TRUE)
-#S
-RollsGT10 <- subset(S,(X1 + X2 + X3)>10 )
-sumRollGT10 <- sum(RollsGT10$probs)
-glue('Probability of 3 die roll greater than 10 is ', sumRollGT10 )
+dieSum <- subset(S,(X1+X2+X3>10) )
+Prob(dieSum)
+
+#check
+# dieSum <- sum(dieSum$probs)
+# head(dieSum,n=3)
 
 ```
 
@@ -131,25 +134,228 @@ glue('Probability of 3 die roll greater than 10 is ', sumRollGT10 )
 ```{r 2b}
 ## Roll 3 dice and see all of the outcomes
 S<- rolldie(3, makespace = TRUE)
+A<-subset(S,(X1==X2) & (X1==X3) & (X2 == X3))
+Prob(A)
+
+# check
+# sum(A$probs)
+# head(A,n=3)
+```
+
+### c.  Only two of the three rolls are identical.  
+```{r 2c}
+S<- rolldie(3, makespace = TRUE)
+Prob(S)
+# X1==X2 or X1==X3 or X2==X3
+dieEqual <- subset(S, (X1 == X2) | (X1 == X3) | X2 == X3  )
+Prob(dieEqual)
+
+#check
+# sum(dieEqual$probs)
+# head(dieEqual,)
+```
+
+### d. None of the three rolls are identical  
+```{r 2d}
+S<- rolldie(3, makespace = TRUE)
 #S
-dieEqual <- subset(S, (X1 == X2) == X3 )
-sum(dieEqual$probs)
+dieNotEqual <- subset(S, (X1 != X2) & (X1 != X3) & (X2 != X3) )
+Prob(dieNotEqual)
+
+#check
+# sum(dieNotEqual$probs)
+# head(dieNotEqual,n=3)
+```
+
+
+### e. Only two of the three rolls are identical given that the sum of the rolls is greater than 10. 
+```{r 2e}
+S<- rolldie(3, makespace = TRUE)
+
+# X1==X2 or X1==X3 or X2==X3
+A <- subset(S, (X1 == X2) | (X1 == X3) | X2 == X3  )
+B <- subset(S,(X1 + X2 + X3 > 10))
+Prob(intersect(A,B))
+
+#check
+# u<- intersect(A,B)
+# head(u,n=3)
+```
+
+
+
+\newpage
+## Part 3.
+
+Using a for loop or a while loop, write your own R function, 
+ sum_of_first_N_odd_squares (n),
+ that returns the sum of the squares of the first n odd numbers. 
+
+```{r notes, eval=FALSE, include=FALSE}
+# In order to use the debugger you must first create an R file from your 
+# markdown and run the debugger from the R file.
+# use knitr::purl( <markdown> )
+#
+```
+
+
+```{r 3Sum}
+#' sum_of_first_N_odd_squares
+#'
+#' @param x Int that defines the first X odd numbers to be operated on
+#'
+#' @return Sum of the squares of the odd values
+#' @export
+#'
+#' @examples  sum_of_first_N_odd_squares - returns 1^2 + 3^2 + 5^2 + 7^2 + 9^2 = 165
+sum_of_first_N_odd_squares <- function(x){
+#create a seq for x double the size since we are taking every other one
+  x<-seq(1:(x*2))
+
+  #create an empty vector for our output
+  k<- c() 
+  for(n in x){
+    if (n %% 2 == 1){  # n %% 2 == 1 searches for the odd number
+      k <- c(k,n)      # and stores them in k
+    }
+  }
+  return (sum(k^2))
+}
+```
+
+
+
+### 3a.
+```{r}
+sum_of_first_N_odd_squares(2)
+sum_of_first_N_odd_squares(5)
+sum_of_first_N_odd_squares(10)
+
+```
+```{r}
+#' sum_of_first_N_odd_squaresV2
+#'
+#' @param x Int that defines the first X odd numbers to be operated on
+#'
+#' @return Sum of the squares of the odd values
+#' @export
+#'
+#' @examples  sum_of_first_N_odd_squares - returns 1^2 + 3^2 + 5^2 + 7^2 + 9^2 = 165
+sum_of_first_N_odd_squaresV2 <- function(x){
+#create a seq for x double the size since we are taking every other one
+  x<-seq(1,(x*2),2)
+  return (sum(x^2))
+}
+```
+
+The output for the Version 2 function
+
+```{r}
+sum_of_first_N_odd_squaresV2(2)
+sum_of_first_N_odd_squaresV2(5)
+sum_of_first_N_odd_squaresV2(10)
 
 ```
 
-### c.  Only two of the three rolls are identical.
 
-### d. None of the three rolls are identical
+\newpage
+## 4.  
+```
+Initialize the Dow Jones Industrials daily closing data, dow, using the read.csv function with the
+link: http://people.bu.edu/kalathur/datasets/DJI_2020.csv
 
-### e.
+```
 
-Only two of the three rolls are identical given that the sum of the rolls is greater than 10.
 
-## Part 3.
+### 4a.  a) Store the result of the summary function for the Close attribute as the variable sm. Change
+the names of this variable so that the output appears as shown below.
 
-Using a for loop or a while loop, write your own R function, sum_of_first_N\_odd_squares (n), that returns the sum of the squares of the first n odd numbers.
+```{r 4 Read In Data}
+dow <- read_csv("http://people.bu.edu/kalathur/datasets/DJI_2020.csv",col_types = list(col_character(),col_double()))
+head(dow)
 
-    For example, if n = 5, the first five odd numbers are 1, 3, 5, 7, 9 and the required result is
-    12 + 32 + 52 + 72 + 92 = 165.
+```
+### 4a. Store the result of the summary() for the *close* attribute as the variable sm.
 
-### f.
+```{r 4a}
+sm <- summary(dow$Close)
+names(sm)<-c("Min","Q1","Q2","Mean","Q3","Max")
+sm  
+
+```
+```{r 4b}
+
+paste("First Quartile variation is ",sm[2]-sm[1])
+paste("Second Quartile variation is ",sm[3]-sm[2])
+paste("Third Quartile variation is ",sm[5]-sm[3])
+paste("Fourth Quartile variation is ",sm[6]-sm[5])
+
+
+```
+
+### 4b. Produce the output for the minumum of the Dow closing value in the datset as shown
+
+```{r 4b}
+minDowClose <-min(dow$Close)
+row_minDowClose <-which(dow$Close == min(dow$Close) )
+date_minDowClose<- dow$Date[56]
+
+paste("The minimum Dow value of ",minDowClose," is at row ",row_minDowClose," on ",date_minDowClose)
+
+```
+### 4c. Suppose you have an index fund tied to the Dow closing value. If you have invested on the 
+minimum date, what date from the dataset you would have sold to gain the maximum
+percentage gain. The output is as shown below. Note that the code should be generic so that it
+works on any such dataset.
+
+```{r}
+tgtRow <- which(dow$Close == max(dow$Close))
+maxVal <-max(dow$Close)
+maxValDate <-dow$Date[29]
+highDate <-"4/29/20"
+highPrice <-"24634"
+gain <- 32.5
+
+paste("I would sell on ",highDate," when DOW is at",highPrice," for a gain of ",gain," %")
+```
+
+### 4d. Use the diff function to calculate the differences between consecutive closing values in the
+dataset. Insert the value 0 at the beginning of these differences. Add this result as the DIFFS
+column of the data frame. The result is as shown below.   
+
+```{r 4d}
+
+
+```
+
+### 4e.  How many days did the Dow close higher than its previous day value?  How many days did
+the Dow close lower than its previous day value?
+
+```{r 4e}
+
+
+```
+
+### 4f. Show the subset of the data where there was a gain of at least 1000 points from its previous 
+day value.
+```{r 4f}
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
