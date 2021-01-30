@@ -209,7 +209,7 @@ Using a for loop or a while loop, write your own R function,
 #'
 #' @examples  sum_of_first_N_odd_squares - returns 1^2 + 3^2 + 5^2 + 7^2 + 9^2 = 165
 sum_of_first_N_odd_squares <- function(x){
-#create a seq for x double the size since we are taking every other one
+#create a seq for x - but DOUBLE the size since we are taking every other one
   x<-seq(1:(x*2))
 
   #create an empty vector for our output
