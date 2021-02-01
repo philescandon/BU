@@ -87,7 +87,7 @@ Prob(event1)
 # prob of drawing a card between 3-5 and is also a heart?
 Prob(deck, rank %in% c(3,5,4) & suit =="Heart")
 
-# whats the intersetion of these two event?
+# whats the intersection of these two event?
 event2 <- subset(deck,rank %in% c(3,5,4) & suit =="Heart")
 Prob(union(event1,event2))
 

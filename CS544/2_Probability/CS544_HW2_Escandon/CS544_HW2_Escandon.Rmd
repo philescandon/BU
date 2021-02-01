@@ -148,7 +148,10 @@ S<- rolldie(3, makespace = TRUE)
 Prob(S)
 # X1==X2 or X1==X3 or X2==X3
 dieEqual <- subset(S, (X1 == X2) | (X1 == X3) | X2 == X3  )
-Prob(dieEqual)
+A<-subset(S,(X1==X2) & (X1==X3) & (X2 == X3))
+# NOW take the UNION of dieEqual with A.  A comes from prob 2b.
+# this will remove the x1=x2=x3 attributes
+Prob(union(dieEqual,A))
 
 #check
 # sum(dieEqual$probs)
