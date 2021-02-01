@@ -5,10 +5,10 @@ author: "Phillip Escandon - escandon@bu.edu"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
   word_document:
-    toc: true
+    toc: false
     reference_doc: "res/BUtemplate.docx"
   html_document:
-    toc: true
+    toc: false
     fig_caption: true
     theme: flatly
     css: "res/styles.css"
@@ -20,14 +20,17 @@ output:
 ## Part 1 Probability
 
     Use the Bayes theorem to calculate the following probabilities. Show the individual steps of the
-    Bayes theorem. You can use R for the calculations.
+    Bayes theorem. You can use R for the calculations.  
+    
     Suppose that in a particular state, among 10000 people surveyed, 4250 people are in the age
     group 18-34 years, 2850 people are in the age group 35-49 years, 1640 people are in the age
-    group 50-64 years, and the remaining are 65 years & over.
+    group 50-64 years, and the remaining are 65 years & over.  
+    
     Out of those in the age group 18-34 years, 1062 people had a BMI of above 30. Of those in the
     age group 35-49 years, 1710 people had a BMI of above 30. Among those in the 50-64 years
     range, 656 people had a BMI of above 30. In the last age group, 189 people had a BMI of above
-    30.
+    30.  
+    
 
 
 
@@ -54,7 +57,7 @@ df
 
 ```
 
-### a. What is the probability that a randomly selected person in this survey will have a BMI ofabove 30?
+### a.  What is the probability that a randomly selected person in this survey will have a BMI above 30?
 ```{r 1a2}
 # P(B) = P(B|A1)*P(A1)   +  P(B|A2)*P(A2)  + P(B|A3)*P(A3)
 pb <- sum(byPercent*bmiGT30Percent)
@@ -63,44 +66,42 @@ glue("Probability of randomly chosen person having a BMI > 30 is ",pb)
 
 
 
-### b. If a randomly selected person had a BMI of above 30, what is the probability of that person being in the age group 18-34 years?
+### b.  If a randomly selected person had a BMI of above 30, what is the probability of that person being in the age group 18-34 years?
 
 ```{r 1b}
 # P(A1|B) = P(B|A1)* P(A1)/P(B)
 
 PA1B=(byPercent * bmiGT30Percent)[1] / pb
 glue("Probability of randomly chosen person having a BMI>30 being in the 18-34 
-     age group is ", PA1B)
+     age group is ", round(PA1B,digits=4))
 
 
 ```
 
-### c. If a randomly selected person had a BMI of above 30, what is the probability of that person being in the age group 35-49 years?
+### c.  If a randomly selected person had a BMI of above 30, what is the probability of that person being in the age group 35-49 years?
 
 ```{r 1c}
 PA2B=(byPercent * bmiGT30Percent)[2] / pb
 glue("Probability of randomly chosen person having a BMI>30 being in the 35-49 
-     age group is ", PA2B)
+     age group is ",round(PA2B,digits= 4))
 
 ```
 
-### d.If a randomly selected person had a BMI of above 30, what is the probability of that person being in the age group 50-64 years?
+### d.  If a randomly selected person had a BMI of above 30, what is the probability of that person being in the age group 50-64 years?
 
 ```{r 1d}
 PA3B=(byPercent * bmiGT30Percent)[3] / pb
 glue("Probability of randomly chosen person having a BMI>30 being in the 50-64 
-     age group is ", PA3B)
+     age group is ", round(PA3B,digits = 4))
 
 ```
 
-### e.
-
-If a randomly selected person had a BMI of above 30, what is the probability of that person being in the 65 years & over?
+### e.  If a randomly selected person had a BMI of above 30, what is the probability of that person being in the 65 years & over?
 
 ```{r 1e}
 PA4B=(byPercent * bmiGT30Percent)[4] / pb
 glue("Probability of randomly chosen person having a BMI>30 being in the 50-64 
-     age group is ", PA4B)
+     age group is ", round(PA4B,digits = 4))
 
 ```
 
@@ -145,6 +146,7 @@ Prob(A)
 ### c.  Only two of the three rolls are identical.  
 ```{r 2c}
 S<- rolldie(3, makespace = TRUE)
+<<<<<<< HEAD
 Prob(S)
 # X1==X2 or X1==X3 or X2==X3
 dieEqual <- subset(S, (X1 == X2) | (X1 == X3) | X2 == X3  )
@@ -152,10 +154,24 @@ A<-subset(S,(X1==X2) & (X1==X3) & (X2 == X3))
 # NOW take the UNION of dieEqual with A.  A comes from prob 2b.
 # this will remove the x1=x2=x3 attributes
 Prob(union(dieEqual,A))
+=======
+# create 3 subsets and take the union
+
+# X1==X2, X3 not included
+t<- subset(S,X1==X2 & X1 != X3)
+
+# X1==X3, X2 not included
+u<- subset(S,X1==X3 & X1 != X2)
+
+# X2==X3, X1 not included
+v<- subset(S,X2==X3 & X1 != X2)
+
+Prob(union(t,u,v))
+>>>>>>> 8cc35375ad1fbc2ef911217203480eb128ced8f2
 
 #check
-# sum(dieEqual$probs)
-# head(dieEqual,)
+# union(t,u,v)
+
 ```
 
 ### d. None of the three rolls are identical  
@@ -165,7 +181,6 @@ S<- rolldie(3, makespace = TRUE)
 dieNotEqual <- subset(S, (X1 != X2) & (X1 != X3) & (X2 != X3) )
 Prob(dieNotEqual)
 
-#check
 # sum(dieNotEqual$probs)
 # head(dieNotEqual,n=3)
 ```
@@ -261,7 +276,7 @@ sum_of_first_N_odd_squaresV2(10)
 
 
 \newpage
-## 4.  
+  
 ```
 Initialize the Dow Jones Industrials daily closing data, dow, using the read.csv function with the
 link: http://people.bu.edu/kalathur/datasets/DJI_2020.csv
@@ -269,7 +284,7 @@ link: http://people.bu.edu/kalathur/datasets/DJI_2020.csv
 ```
 
 
-### 4a.  a) Store the result of the summary function for the Close attribute as the variable sm. Change
+### 4. Store the result of the summary function for the Close attribute as the variable sm. Change
 the names of this variable so that the output appears as shown below.
 
 ```{r 4 Read In Data}
