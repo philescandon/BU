@@ -1,0 +1,482 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+  \usepackage{amssymb}
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={Probability Notes},
+  pdfauthor={Phillip Escandon - escandon@bu.edu},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifluatex
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+
+\title{Probability Notes}
+\author{Phillip Escandon -
+\href{mailto:escandon@bu.edu}{\nolinkurl{escandon@bu.edu}}}
+\date{01 February, 2021}
+
+\begin{document}
+\maketitle
+
+{
+\setcounter{tocdepth}{2}
+\tableofcontents
+}
+\hypertarget{introduction}{%
+\subsection{Introduction}\label{introduction}}
+
+\begin{verbatim}
+Using some of the common prob functions to solve the simple problems described in HW assignment 2.
+
+1. Make a probabilty space
+2. use PROB to define output.
+3. What do intersect and union mean in this context
+\end{verbatim}
+
+\hypertarget{using-a-probability-space-and-describing-events}{%
+\subsection{Using a probability space and describing
+events}\label{using-a-probability-space-and-describing-events}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Rolling  two dice }
+\NormalTok{S}\OtherTok{\textless{}{-}} \FunctionTok{rolldie}\NormalTok{(}\DecValTok{2}\NormalTok{,}\AttributeTok{makespace =} \ConstantTok{TRUE}\NormalTok{)}
+\FunctionTok{tibble}\NormalTok{(S)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 36 x 3
+##       X1    X2  probs
+##    <int> <int>  <dbl>
+##  1     1     1 0.0278
+##  2     2     1 0.0278
+##  3     3     1 0.0278
+##  4     4     1 0.0278
+##  5     5     1 0.0278
+##  6     6     1 0.0278
+##  7     1     2 0.0278
+##  8     2     2 0.0278
+##  9     3     2 0.0278
+## 10     4     2 0.0278
+## # ... with 26 more rows
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Now create a subset of what you\textquotesingle{}d like to check}
+\NormalTok{A }\OtherTok{\textless{}{-}} \FunctionTok{subset}\NormalTok{(S,X1}\SpecialCharTok{==}\DecValTok{3}\NormalTok{)}
+\FunctionTok{Prob}\NormalTok{(A)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.1666667
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# or just use Prob directly:}
+
+\FunctionTok{Prob}\NormalTok{(S, X1 }\SpecialCharTok{==} \DecValTok{3}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.1666667
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# whats the prob of the first die = 4 or 5}
+\FunctionTok{Prob}\NormalTok{(S, X1 }\SpecialCharTok{\%in\%} \FunctionTok{c}\NormalTok{(}\DecValTok{4}\NormalTok{,}\DecValTok{5}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.3333333
+\end{verbatim}
+
+\hypertarget{making-your-own-probabilty-space}{%
+\subsection{Making your own probabilty
+space}\label{making-your-own-probabilty-space}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# make my two columns 1. outcome, 2. probability and I set up myself}
+\CommentTok{\# problem 2.8}
+\NormalTok{outcomes}\OtherTok{\textless{}{-}} \FunctionTok{rolldie}\NormalTok{(}\DecValTok{1}\NormalTok{)}
+\NormalTok{p}\OtherTok{\textless{}{-}} \FunctionTok{rep}\NormalTok{(}\DecValTok{1}\SpecialCharTok{/}\DecValTok{6}\NormalTok{, }\AttributeTok{times=}\DecValTok{6}\NormalTok{)}
+
+\NormalTok{S}\OtherTok{\textless{}{-}}\FunctionTok{probspace}\NormalTok{(outcomes, }\AttributeTok{probs =}\NormalTok{ p)}
+\FunctionTok{sum}\NormalTok{(S}\SpecialCharTok{$}\NormalTok{probs)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 1
+\end{verbatim}
+
+I can set up the probabilities at my own discretion, as long as they add
+up to one. The sum of the above probabilities is 1
+
+Now use it
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# to remind oneself of what dataframe we are dealing with}
+\CommentTok{\# lets take a look}
+\FunctionTok{head}\NormalTok{(S,}\DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   X1     probs
+## 1  1 0.1666667
+## 2  2 0.1666667
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# We are looking at variables X1 and probs}
+\FunctionTok{Prob}\NormalTok{(S,X1 }\SpecialCharTok{==} \DecValTok{4}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.1666667
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{Prob}\NormalTok{(S,X1 }\SpecialCharTok{\%in\%} \FunctionTok{c}\NormalTok{(}\DecValTok{4}\NormalTok{,}\DecValTok{5}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.3333333
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{Prob}\NormalTok{(S,X1 }\SpecialCharTok{\textgreater{}}\DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.6666667
+\end{verbatim}
+
+Another way of doing this is by using events, that is describing events
+as eventA , eventB, eventC and finding various combinations using these
+events.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{deck }\OtherTok{\textless{}{-}} \FunctionTok{cards}\NormalTok{(}\AttributeTok{makespace =} \ConstantTok{TRUE}\NormalTok{)}
+
+\NormalTok{event1 }\OtherTok{\textless{}{-}} \FunctionTok{subset}\NormalTok{(deck, rank }\SpecialCharTok{\%in\%} \FunctionTok{c}\NormalTok{(}\StringTok{"Q"}\NormalTok{,}\StringTok{"K"}\NormalTok{))}
+\CommentTok{\# whats the prob of drawing a queen or king}
+\FunctionTok{Prob}\NormalTok{(event1)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.1538462
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# prob of drawing a card between 3{-}5 and is also a heart?}
+\FunctionTok{Prob}\NormalTok{(deck, rank }\SpecialCharTok{\%in\%} \FunctionTok{c}\NormalTok{(}\DecValTok{3}\NormalTok{,}\DecValTok{5}\NormalTok{,}\DecValTok{4}\NormalTok{) }\SpecialCharTok{\&}\NormalTok{ suit }\SpecialCharTok{==}\StringTok{"Heart"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.05769231
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# whats the intersection of these two event?}
+\NormalTok{event2 }\OtherTok{\textless{}{-}} \FunctionTok{subset}\NormalTok{(deck,rank }\SpecialCharTok{\%in\%} \FunctionTok{c}\NormalTok{(}\DecValTok{3}\NormalTok{,}\DecValTok{5}\NormalTok{,}\DecValTok{4}\NormalTok{) }\SpecialCharTok{\&}\NormalTok{ suit }\SpecialCharTok{==}\StringTok{"Heart"}\NormalTok{)}
+\FunctionTok{Prob}\NormalTok{(}\FunctionTok{union}\NormalTok{(event1,event2))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.2115385
+\end{verbatim}
+
+\hypertarget{conditional-probability}{%
+\subsection{Conditional Probability}\label{conditional-probability}}
+
+\begin{verbatim}
+The conditional probability rule, P(B|A), computes the probability of the event B given that the event  A has
+occurred.
+
+P(B|A) = P(A ∩ B) / P(A)
+\end{verbatim}
+
+To demonstrate conditional probability, consider rolling two dice
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# follow the steps from above}
+\CommentTok{\# 1. make a space}
+\CommentTok{\# 2. Use the Prob() }
+\NormalTok{S }\OtherTok{\textless{}{-}} \FunctionTok{rolldie}\NormalTok{(}\DecValTok{2}\NormalTok{,}\AttributeTok{makespace =} \ConstantTok{TRUE}\NormalTok{)}
+\FunctionTok{head}\NormalTok{(S,}\AttributeTok{n=}\DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   X1 X2      probs
+## 1  1  1 0.02777778
+## 2  2  1 0.02777778
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Whats the prob of both die are equal}
+\FunctionTok{Prob}\NormalTok{(S,X1 }\SpecialCharTok{==}\NormalTok{ X2)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.1666667
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Whats the prob of both equal given that they add up to 8}
+\FunctionTok{Prob}\NormalTok{(S,X1}\SpecialCharTok{==}\NormalTok{X2, }\AttributeTok{given =}\NormalTok{ X1}\SpecialCharTok{+}\NormalTok{X2}\SpecialCharTok{==}\DecValTok{8}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.2
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# whats the prob that they equal 8 given that they are equal}
+\FunctionTok{Prob}\NormalTok{(S,X1}\SpecialCharTok{+}\NormalTok{X2}\SpecialCharTok{==}\DecValTok{8}\NormalTok{, }\AttributeTok{given =}\NormalTok{ X1}\SpecialCharTok{==}\NormalTok{X2)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.1666667
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# You can describe these are Event A and Event B}
+\NormalTok{A }\OtherTok{\textless{}{-}} \FunctionTok{subset}\NormalTok{(S, X1 }\SpecialCharTok{==}\NormalTok{ X2)}
+\NormalTok{B }\OtherTok{\textless{}{-}} \FunctionTok{subset}\NormalTok{(S, X1 }\SpecialCharTok{+}\NormalTok{ X2 }\SpecialCharTok{==} \DecValTok{8}\NormalTok{)}
+
+\FunctionTok{Prob}\NormalTok{(A, }\AttributeTok{given =}\NormalTok{ B)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.2
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{Prob}\NormalTok{(B, }\AttributeTok{given =}\NormalTok{ A)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.1666667
+\end{verbatim}
+
+Now lets try this with coin tosses!
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{S }\OtherTok{\textless{}{-}} \FunctionTok{tosscoin}\NormalTok{(}\DecValTok{2}\NormalTok{,}\AttributeTok{makespace =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{S}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   toss1 toss2 probs
+## 1     H     H  0.25
+## 2     T     H  0.25
+## 3     H     T  0.25
+## 4     T     T  0.25
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Find any HEAD in two tosses of a coin}
+\FunctionTok{Prob}\NormalTok{(S, }\FunctionTok{isin}\NormalTok{(S,}\FunctionTok{c}\NormalTok{(}\StringTok{"H"}\NormalTok{)))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.75
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Find any Head or Tails during two tosses}
+\FunctionTok{Prob}\NormalTok{(S, }\FunctionTok{isin}\NormalTok{(S,}\FunctionTok{c}\NormalTok{(}\StringTok{"H"}\NormalTok{,}\StringTok{"T"}\NormalTok{)))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.5
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{A }\OtherTok{\textless{}{-}} \FunctionTok{subset}\NormalTok{(S,}\FunctionTok{isin}\NormalTok{(S,}\FunctionTok{c}\NormalTok{(}\StringTok{"H"}\NormalTok{)))}
+\NormalTok{B }\OtherTok{\textless{}{-}} \FunctionTok{subset}\NormalTok{(S,}\FunctionTok{isin}\NormalTok{(S,}\FunctionTok{c}\NormalTok{(}\StringTok{"H"}\NormalTok{,}\StringTok{"T"}\NormalTok{)))}
+\CommentTok{\# Prob of finding a H given H and a T was found}
+\FunctionTok{Prob}\NormalTok{(A, }\AttributeTok{given =}\NormalTok{ B)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{Prob}\NormalTok{(B, }\AttributeTok{given =}\NormalTok{ A)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.6666667
+\end{verbatim}
+
+\hypertarget{using-urnsamples}{%
+\subsection{Using URNSAMPLES}\label{using-urnsamples}}
+
+Define an URN that takes in one six sided die
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{urnsamples}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\DecValTok{6}\NormalTok{,}\AttributeTok{size =} \DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    X1 X2
+## 1   1  2
+## 2   1  3
+## 3   1  4
+## 4   1  5
+## 5   1  6
+## 6   2  3
+## 7   2  4
+## 8   2  5
+## 9   2  6
+## 10  3  4
+## 11  3  5
+## 12  3  6
+## 13  4  5
+## 14  4  6
+## 15  5  6
+\end{verbatim}
+
+\end{document}
