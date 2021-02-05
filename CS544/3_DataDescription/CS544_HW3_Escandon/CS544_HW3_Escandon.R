@@ -1,39 +1,17 @@
----
-title: "CS544_HW3_Escandon"
-author: "Phillip Escandon - escandon@bu.edu"
-date: "`r format(Sys.time(), '%d %B, %Y')`"
-output:
-  word_document:
-    toc: true
-    reference_doc: "res/BUtemplate.docx"
-  html_document:
-    toc: true
-    fig_caption: true
-    theme: flatly
-    css: "res/styles.css"
-editor_options: 
-  markdown: 
-    wrap: 72
----
-
-<img src="res/BU_Small.png" width="200" height="100" style="position:absolute;top:0px;right:100px;"/>
-
-```{r include=FALSE}
+## ----include=FALSE-------------------------------------------------------------------------------------------------------------------------
 library(tidyverse)
 library(lubridate)
 library(corrplot)
 library(RColorBrewer)
 
 setwd("~/BU/CS544/3_DataDescription/CS544_HW3_Escandon")
-```
 
-## Part 1. Read in some prime number data, plot and draw inferences.
 
-```{r}
+## ------------------------------------------------------------------------------------------------------------------------------------------
 df <- read.csv("http://people.bu.edu/kalathur/datasets/myPrimes.csv")
-```
 
-```{r}
+
+## ------------------------------------------------------------------------------------------------------------------------------------------
 dim(df)
 colnames(df)
 head(df)
@@ -41,56 +19,29 @@ tail(df)
 summary(df)
 dplyr::count(df,df$First)
 dplyr::count(df,df$Last)
-```
 
-### 1a. Show a barplot of the last digit
 
-```{r 1a}
+## ----1a------------------------------------------------------------------------------------------------------------------------------------
 #barplot(table(df$LastDigit),col = 'green')
 table(df$LastDigit) %>% barplot(col = 'green')
 
-```
 
-### 1b. Show a barplot of the first digit
 
-```{r 1b}
+## ----1b------------------------------------------------------------------------------------------------------------------------------------
 # data <- df$FirstDigit
 # table(data)
 # barplot( table(data),col = 'Blue')
 table(df$FirstDigit) %>% barplot(col='blue')
 #table(df$FirstDigit) %>% barplot(col = 'gold')
 count(df,df$FirstDigit)%>%table()%>%barplot()
-```
 
-### 1c What two interences can you draw from the plots above?
 
-Last Digit Plot:
-      1. No prime numbers > 10 end with 1 or 5
-      2.  
-      
-First Digits Plot:
-      1. Proportion?  Barplot with frequency
-      2. 
-
-    
-      
-
-\newpage
-
-## Part 2. Initialize the quarter coin productions dataset
-
-about the of the 50 US states by the DenverMint and PhillyMint. The
-numbers in the dataset (in thousands ) are the number of quarters
-minted.
-
-```{r 2}
+## ----2-------------------------------------------------------------------------------------------------------------------------------------
 us_quarters <- read.csv("http://people.bu.edu/kalathur/datasets/us_quarters.csv")
 
-```
 
-Basic Exploration
 
-```{r 2Basic}
+## ----2Basic--------------------------------------------------------------------------------------------------------------------------------
 dim(us_quarters)
 colnames(us_quarters)
 head(us_quarters)
@@ -109,14 +60,9 @@ sum(gQuarters$qrtCount)/4
 # ggplot(g,aes(x=State, y = qrtCount, color = Mint))+
 #   geom_point( )+
 #     theme(axis.text.x = element_text(angle = 80, hjust = 1))
-```
 
-### 2a. Highest number of quarters produced by each mint?
 
-For which state were the lowest number of quarters produced by each
-mint?
-
-```{r 2a}
+## ----2a------------------------------------------------------------------------------------------------------------------------------------
 # Highest
 # Find the index of the max
 c<- which(max(us_quarters$DenverMint) == us_quarters$DenverMint)
@@ -138,65 +84,57 @@ paste("Philly Mint: State with the least printed quarters: ", state)
 
 
 
-```
-
-```{r eval=FALSE, include=FALSE}
-## finding the indices
-#out <- boxplot.stats(dat$hwy)$out
-#out_ind <- which(dat$hwy %in% c(out))
-
-```
-
-```{r outliers, eval=FALSE, include=FALSE}
-dat <- ggplot2::mpg
-
-out <- boxplot.stats(dat$hwy)$out
-out_ind <- which(dat$hwy %in% c(out))
-out_ind
 
 
-u<-boxplot(dat$hwy,
-  ylab = "hwy",
-  main = "Boxplot of highway miles per gallon"
-)
+## ----eval=FALSE, include=FALSE-------------------------------------------------------------------------------------------------------------
+## ## finding the indices
+## #out <- boxplot.stats(dat$hwy)$out
+## #out_ind <- which(dat$hwy %in% c(out))
+## 
 
-mtext(paste("Outliers: ", paste(out, collapse = ", ")))
+
+## ----outliers, eval=FALSE, include=FALSE---------------------------------------------------------------------------------------------------
+## dat <- ggplot2::mpg
+## 
+## out <- boxplot.stats(dat$hwy)$out
+## out_ind <- which(dat$hwy %in% c(out))
+## out_ind
+## 
+## 
+## u<-boxplot(dat$hwy,
+##   ylab = "hwy",
+##   main = "Boxplot of highway miles per gallon"
+## )
+## 
+## mtext(paste("Outliers: ", paste(out, collapse = ", ")))
+## 
+## 
+## ggplot(dat) +
+##   aes(x = "", y = hwy) +
+##   geom_boxplot(fill = "#0c4c8a") +
+##   theme_minimal()
+## 
 
 
-ggplot(dat) +
-  aes(x = "", y = hwy) +
-  geom_boxplot(fill = "#0c4c8a") +
-  theme_minimal()
-
-```
-
-### 2b. What is the value of the total coins in dollars?
-
-```{r 2b}
+## ----2b------------------------------------------------------------------------------------------------------------------------------------
 # the number of quarters is in THOUSANDS
 totalQuarters <- sum(us_quarters$DenverMint, us_quarters$PhillyMint)
 totalDollars <- totalQuarters / 4
 paste("Dollar amount of all quarters printed from both mints is $",totalDollars," dollars")
-```
 
-### 2c. Produce barplot from the data using the R barplot function
 
-with the data for the two mints as a matrix. Write any two striking
-inferences you can observe by looking at the plot.
-
-```{r 2c}
+## ----2c------------------------------------------------------------------------------------------------------------------------------------
 # transpose but leave out states
 # help from https://www.r-graph-gallery.com/210-custom-barplot-layout.html
-options(scipen = 1)
 usq_t<-t(us_quarters[-1])
+
+
 barplot(usq_t,names=us_quarters$State,las = 3,beside= TRUE,col = c("red","blue"))
 
 
-```
 
-Another approach
 
-```{r 2c2}
+## ----2c2-----------------------------------------------------------------------------------------------------------------------------------
 
 #us_quarters %>% gather()
 
@@ -206,13 +144,9 @@ Another approach
 
 
 
-```
 
-### 2d. Scatter plot: Number of coins between the two mints.
 
-Write any two inferences you can observe looking at the plot.
-
-```{r 2d}
+## ----2d------------------------------------------------------------------------------------------------------------------------------------
 options(scipen = 1)
 #plot(us_quarters$DenverMint)
 #plot(xus_quarters$PhillyMint)
@@ -226,13 +160,9 @@ ggplot(data = us_quarters) +
 
 
 
-```
 
-### 2e. Show the side-by-side box plots for the two mints.
 
-Write any two inferences for each of the box plots.
-
-```{r 2e}
+## ----2e------------------------------------------------------------------------------------------------------------------------------------
 par( mfrow=c(1,2))
 boxplot(us_quarters$DenverMint,horizontal = TRUE,xaxt = "n", xlab = "Denver Mint", col = "blue")
 axis(side = 1, at = fivenum(us_quarters$DenverMint), labels = TRUE)
@@ -240,15 +170,9 @@ axis(side = 1, at = fivenum(us_quarters$DenverMint), labels = TRUE)
 boxplot(us_quarters$PhillyMint, horizontal = TRUE,xaxt = "n", xlab = "Philly Mint", col = "green")
 axis(side = 1, at = fivenum(us_quarters$PhillyMint), labels = TRUE)
 
-```
-The Denver Mint box plot show several outliers, while the Philly mint shows many more.  We can infer that the denver mint prints quarters the most equitably from all the states.  The Philly mint, less so.
 
-### 2f. What states would be considered as outliers
 
-For each of the two mints. Use the five number summary function to
-derive the outlier bounds
-
-```{r 2f Outliers}
+## ----2f Outliers---------------------------------------------------------------------------------------------------------------------------
 
 f<- fivenum(us_quarters$DenverMint)
 lower <- f[2] - 1.5*(f[4] - f[2])
@@ -262,13 +186,9 @@ outlier_ind2 <- which(us_quarters$PhillyMint < lower | us_quarters$PhillyMint > 
 us_quarters$State[outlier_ind2]
 paste("The outlier states from the Philly mint are ", us_quarters$State[outlier_ind2])
 
-```
 
-\newpage
 
-## Part 3. Stock Data
-
-```{r 3 Setup}
+## ----3 Setup-------------------------------------------------------------------------------------------------------------------------------
 stocks <- read.csv("http://people.bu.edu/kalathur/datasets/faang.csv")
 head(stocks,2)
 tail(stocks,2)
@@ -276,11 +196,9 @@ summary(stocks[-1])
 
 
 
-```
 
-### 3a. Show the pair wise plots for all the 5 stocks in the dataset in a single plot.
 
-```{r 5Stocks}
+## ----5Stocks-------------------------------------------------------------------------------------------------------------------------------
 # Like with the mint data - it would be easier to reformat the data
 # putting all of the stock symbols in one column and all of the values in one column.
 # This does mean that there will be repeating date values, but this works well for plotting.
@@ -293,48 +211,27 @@ gStocks$Date <- ymd(stocks$Date)
 gStocks %>% ggplot(aes(x=Date,y=value,color = stockSym))+ geom_line()+ geom_point()
 
 #         theme(axis.text.x = element_text(angle = 80, hjust = 1))
-```
 
-### 3b. Show the correlation matrix for the 5 stocks in the dataset.
 
-```{r 3b}
+## ----3b------------------------------------------------------------------------------------------------------------------------------------
 # use the pairs - but dont include the date!
 pairs(stocks[-1],pch=16, col = 'Blue')
 (c<-cor(stocks[-1]))
-```
 
-```{r 3b corrPlot}
+
+## ----3b corrPlot---------------------------------------------------------------------------------------------------------------------------
 corrplot(c,type = "upper",order = "hclust",col = brewer.pal(n=10,name = "Paired"))
 
-```
 
 
-
-### 3c. Provide at least 4 interpretations of the results.
-
-    1. All the stocks are correlated positively
-    2. All stocks can be grouped together - say 'Tech Stocks'
-    3. Netflix is not as strongly correlated with Google or Facebook
-    4. Netflix would be the first choice to exclude from the 'Tech Stock' group since it is not as strongly correlated with the others.
-
-\newpage
-
-## 4. Scores of 100 students
-
-```{r 4 Setup}
+## ----4 Setup-------------------------------------------------------------------------------------------------------------------------------
 scores <- read.csv("http://people.bu.edu/kalathur/datasets/scores.csv")
 
 head(scores)
 summary(scores$Score)
-```
 
-### 4a. Save the result of the histogram
 
-into a variable. Using the counts and breaks property of this variable,
-write the R code to produce the following output. The code for the
-following output should not refer to the individual scores.
-
-```{r 4a}
+## ----4a------------------------------------------------------------------------------------------------------------------------------------
 library(knitr)
 studentHist<-hist(scores$Score)
 
@@ -344,21 +241,14 @@ for (i in seq(1,length(studentHist$count)) ) {
   }
 
 
-```
 
-### 4b. Show the histogram and the custom output
 
-Using the breaks option of the histogram. Show that students in the 1.
-range (70,90] get an A grade, 2. (50,70] get a B grade, and 3. (30-50]
-get a C grade. The code for the following output should not refer to the
-individual scores.
-
-```{r 4b, fig.height=4, fig.width=8}
+## ----4b------------------------------------------------------------------------------------------------------------------------------------
 newHist<-hist(scores$Score,breaks = seq(30,90,20))
 
-# for (i in seq(1,length(newHist$count)) ) {
-#     j<-sprintf("%d students in range (,%d,%d ] ", newHist$counts[i],newHist$breaks[i],newHist$breaks[i+1])
-#     print(j)
-#}
+for (i in seq(1,length(newHist$count)) ) {
+    j<-sprintf("%d students in range (,%d,%d ] ", newHist$counts[i],newHist$breaks[i],newHist$breaks[i+1])
+    print(j)
+}
 
-```
+
