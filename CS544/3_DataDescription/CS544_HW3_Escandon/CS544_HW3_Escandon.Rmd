@@ -1,0 +1,52 @@
+---
+title: "Untitled"
+author: "Phillip Escandon - escandon@bu.edu"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  word_document:
+    toc: true
+    reference_doc: "res/BUtemplate.docx"
+  html_document:
+    toc: true
+    fig_caption: true
+    theme: flatly
+    css: "res/styles.css"
+---
+
+<img src="res/BU_Small.png" width=200 height=100 style="position:absolute;top:0px;right:100px;" />
+
+## Introduction
+
+This template expands on the minimal example, and includes a logo and custom CSS. 
+
+## Analysis
+
+If you look at the file `inst/rmarkdown/templates/02-extra-files/templates.yaml`, you will see that the following line:
+
+```
+create_dir: true
+```
+
+This means that a new directory will be created when the template is selected. This will copy over the content of the folder `inst/rmarkdown/templates/02-extra-files/skeleton`to the directory selected.
+
+## Conclusion
+
+The custom CSS has been used to change the style of the tables in the document.
+
+```{r}
+knitr::kable(mtcars[1:5, 1:5], caption = "A custom table style")
+```
+
+## Customization
+
+You may want to consider making the following changes
+
+- altering the style.css file to change the style of the table
+- Add your own logo to the header by replacing the `logo.png` file.
+
+## Limitations
+
+You may notice that this kind of template requires the external files to be in the same working directory as the R Markdown file. This can make the file less portable, and also can become frustrating if you want to have lots of additional files.
+
+You may overcome this limitation by creating a custom R Markdown format. This allows us to reference to files contained directly within your custom template package. To see an example of this, check out template 5.
+

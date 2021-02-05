@@ -3,14 +3,14 @@ title: "Probability Notes"
 author: "Phillip Escandon - escandon@bu.edu"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
-  html_document:
-    toc: true
-    fig_caption: true
-    theme: flatly
-    css: "res/styles.css"
   word_document:
-    toc: true
-    reference_doc: "res/BUtemplate.docx"
+    toc: yes
+    reference_doc: res/BUtemplate.docx
+  html_document:
+    toc: yes
+    fig_caption: yes
+    theme: flatly
+    css: res/styles.css
 ---
 
 <img src="res/BU_Small.png" width=200 height=100 style="position:absolute;top:0px;right:100px;" />
@@ -91,6 +91,10 @@ Prob(deck, rank %in% c(3,5,4) & suit =="Heart")
 event2 <- subset(deck,rank %in% c(3,5,4) & suit =="Heart")
 Prob(union(event1,event2))
 
+
+A <- subset(deck,rank %in% c("J"))
+B <- subset(deck, suit == 'Club')
+
 ```
 
 ## Conditional Probability
@@ -129,7 +133,7 @@ Prob(B, given = A)
 
 Now lets try this with coin tosses!
 ```{r}
-S <- tosscoin(2,makespace = TRUE)
+S <- tosscoin(3,makespace = TRUE)
 S
 # Find any HEAD in two tosses of a coin
 Prob(S, isin(S,c("H")))
@@ -155,6 +159,61 @@ urnsamples(1:6,size = 2)
 ```
 
 
+## Question on Quiz 2
+```{r oddCount(x)}
+oddCount <- function(x){
+
+  #create an empty vector for our output
+  k<- c() 
+  for(n in x){
+    if (n %% 2 == 1){  # n %% 2 == 1 searches for the odd number
+      k <- c(k,n)      # and stores them in k
+    }
+  }
+  return (length(k))
+}
+```
+```{r isPalidrome(x)}
+isPalindrome <- function(x){
+# find the midpoint of vector
+mid <- length(x)/2
+# Identify if even or odd
+if(length(x) %% 2 == 0){even <- TRUE}
+else{even <-FALSE}
+
+  if(even){
+# first half (fh) of vector
+  fh <-  x[1:(length(x)/2)]
+# last half (lh) of vector
+  lh <-  x[(length(x)/2 + 1) : length(x)]  
+  # reverse the last half
+  lh <- lh[length(lh):1]
+# are they equal?
+
+    if (fh == lh)
+        return (TRUE)
+    else return (FALSE)
+
+    }
+
+# Now the case of an odd numbered vector
+  else{
+# first half (fh) of vector
+  fh <-  x[1:(length(x)/2 +1)]
+# last half (lh) of vector
+  lh <-  x[(length(x)/2 + 1) : length(x)]  
+  # reverse the last half
+  lh <- lh[length(lh):1]
+# are they equal?
+
+    if (fh == lh)
+        return (TRUE)
+    else return (FALSE)
+
+    }
+}
+
+```
 
 
 
