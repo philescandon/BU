@@ -1,17 +1,20 @@
 ---
 title: "CS544_HW2_Escandon"
-subtitle: "Professor S. Kalathur Spring 01 2021"
 author: "Phillip Escandon - escandon@bu.edu"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
-  word_document:
-    toc: false
-    reference_doc: "res/BUtemplate.docx"
+  pdf_document:
+    toc: true
+    highlight: tango
   html_document:
-    toc: false
-    fig_caption: true
+    toc: no
+    fig_caption: yes
     theme: flatly
-    css: "res/styles.css"
+    css: res/styles.css
+  word_document:
+    toc: no
+    reference_doc: res/BUtemplate.docx
+subtitle: Professor S. Kalathur Spring 01 2021
 ---
 
 <img src="res/BU_Small.png" width="200" height="100" style="position:absolute;top:0px;right:100px;"/>
@@ -107,7 +110,7 @@ glue("Probability of randomly chosen person having a BMI>30 being in the 50-64
 
 \newpage
 
-## Part 2.
+## Part 2. Random Variables
 ```
     Consider a game which involves rolling three dice. Write the R code for the following.
     Using the rollDie function from the prob library, setup the sample space for this experiment with the probability space.
@@ -193,7 +196,7 @@ Prob(intersect(A,B))
 
 
 \newpage
-## Part 3.
+## Part 3. Functions
 
 Using a for loop or a while loop, write your own R function, 
  sum_of_first_N_odd_squares (n),
@@ -266,6 +269,7 @@ sum_of_first_N_odd_squaresV2(10)
 
 
 \newpage
+## Part 4. Using R
   
 ```
 Initialize the Dow Jones Industrials daily closing data, dow, using the read.csv function with the

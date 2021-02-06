@@ -16,4 +16,44 @@ output:
 <img src="res/BU_Small.png" width=200 height=100 style="position:absolute;top:0px;right:100px;" />
 
 ## Introduction
-The dataset that I chose to investigate was the college major dataset from 
+The dataset that I chose to investigate was the college major dataset from fivethirtyeight.
+```{r library}
+library(tidyverse)
+
+```
+
+Setup the datasets:
+### Majors List  
+```{r}
+MajorsList <- read.csv("college-majors/majors-list.csv",header=TRUE,stringsAsFactors=FALSE)
+head(MajorsList)
+colnames(MajorsList)
+
+```
+
+### all ages dataset
+```{r}
+allAges <- read.csv("college-majors/all-ages.csv",header = TRUE,stringsAsFactors = FALSE)
+head(allAges)
+colnames(allAges)
+
+```
+
+
+### recent grad dataset
+```{r}
+recentGrad<- read.csv("college-majors/recent-grads.csv",header = TRUE,stringsAsFactors = FALSE)
+head(recentGrad)
+colnames(recentGrad)
+
+```
+
+### recent-grads dataset
+```{r}
+
+
+```
+
+
+
+
