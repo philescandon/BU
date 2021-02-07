@@ -23,10 +23,12 @@ library(tidyverse)
 library(lubridate)
 library(corrplot)
 library(RColorBrewer)
+library(dplyr)
 
-setwd("~/BU/CS544/3_DataDescription/CS544_HW3_Escandon")
+#setwd("~/BU/CS544/3_DataDescription/CS544_HW3_Escandon")
 ```
 
+\newpage
 ## Part 1. Read in some prime number data, plot and draw inferences.
 
 ```{r}
@@ -45,32 +47,34 @@ dplyr::count(df,df$Last)
 
 ### 1a. Show a barplot of the last digit
 
-```{r 1a}
+```{r 1a,fig.height=4, fig.width=8}
 #barplot(table(df$LastDigit),col = 'green')
-table(df$LastDigit) %>% barplot(col = 'green')
-
+#table(df$LastDigit) %>% barplot(col = 'green')
+table(df$LastDigit)%>%barplot(legend=TRUE,col = brewer.pal(n=9,"Paired"),xlab="1a. Last Digit of Prime Numbers")
 ```
 
 ### 1b. Show a barplot of the first digit
 
-```{r 1b}
+```{r 1b,fig.height=4, fig.width=8}
+# Different approaches to getting the data.  
 # data <- df$FirstDigit
-# table(data)
 # barplot( table(data),col = 'Blue')
-table(df$FirstDigit) %>% barplot(col='blue')
+# Tried using the %>% operator 
+table(df$FirstDigit) %>% barplot(legend=TRUE,col = brewer.pal(10,"Paired"),xlab="1b. First Digit of Prime Numbers")
+
+# Different notes to see what was possible
 #table(df$FirstDigit) %>% barplot(col = 'gold')
-count(df,df$FirstDigit)%>%table()%>%barplot()
+#count(df,df$FirstDigit)%>%table()%>%barplot()
 ```
 
 ### 1c What two interences can you draw from the plots above?
 
 Last Digit Plot:
-      1. No prime numbers > 10 end with 1 or 5
-      2.  
+      1. No prime numbers > 10 end with 2 or 5
+      2. Close distribution of remaining numbers used
       
 First Digits Plot:
-      1. Proportion?  Barplot with frequency
-      2. 
+      1. First digit of a prime is almost evenly distributed
 
     
       
@@ -91,10 +95,11 @@ us_quarters <- read.csv("http://people.bu.edu/kalathur/datasets/us_quarters.csv"
 Basic Exploration
 
 ```{r 2Basic}
-dim(us_quarters)
-colnames(us_quarters)
-head(us_quarters)
-tail(us_quarters)
+# See some basic metrics 
+#dim(us_quarters)
+#colnames(us_quarters)
+#head(us_quarters)
+#tail(us_quarters)
 
 #might be easier to view this 'wide' mint data as a single column
 gQuarters<-gather(us_quarters,Mint,qrtCount,c(DenverMint,PhillyMint))
@@ -102,9 +107,11 @@ gQuarters<-gather(us_quarters,Mint,qrtCount,c(DenverMint,PhillyMint))
 # Now filter:
 pm<- filter(gQuarters,Mint=="PhillyMint")
 dm<- filter(gQuarters,Mint=="DenverMint")
-sum(gQuarters$qrtCount)/4
+#sum(gQuarters$qrtCount)/4
 
-
+head(arrState <-arrange(gQuarters,State),4)
+arrMint <- arrange(gQuarters,Mint)
+arrCount <- arrange(gQuarters,desc(qrtCount))
 
 # ggplot(g,aes(x=State, y = qrtCount, color = Mint))+
 #   geom_point( )+
@@ -121,21 +128,21 @@ mint?
 # Find the index of the max
 c<- which(max(us_quarters$DenverMint) == us_quarters$DenverMint)
 state<-us_quarters$State[c]
-paste("Denver Mint: State with the most printed quarters: ", state)
 
 d<- which(min(us_quarters$DenverMint) == us_quarters$DenverMint)
 state<-us_quarters$State[d]
-paste("Denver Mint: State with the least printed quarters: ", state)
 
 e<- which(max(us_quarters$PhillyMint) == us_quarters$PhillyMint)
 state<-us_quarters$State[e]
-paste("Philly Mint: State with the most printed quarters: ", state)
 
 f<- which(min(us_quarters$PhillyMint) == us_quarters$PhillyMint)
 state<-us_quarters$State[f]
+
+
+paste("Denver Mint: State with the most printed quarters: ", state)
+paste("Denver Mint: State with the least printed quarters: ", state)
+paste("Philly Mint: State with the most printed quarters: ", state)
 paste("Philly Mint: State with the least printed quarters: ", state)
-
-
 
 
 ```
@@ -184,27 +191,42 @@ paste("Dollar amount of all quarters printed from both mints is $",totalDollars,
 with the data for the two mints as a matrix. Write any two striking
 inferences you can observe by looking at the plot.
 
-```{r 2c}
+```{r 2c,fig.height=4, fig.width=8}
 # transpose but leave out states
 # help from https://www.r-graph-gallery.com/210-custom-barplot-layout.html
 options(scipen = 1)
 usq_t<-t(us_quarters[-1])
-barplot(usq_t,names=us_quarters$State,las = 3,beside= TRUE,col = c("red","blue"))
+#barplot(usq_t,names=us_quarters$State,las = 3,beside= TRUE,col = c("red","blue"))
+# Using the arranged by State dataset (~line 111) 
+barplot(arrState$qrtCount,names=arrState$State,las = 3,beside= TRUE,col = c("red","blue"))
+
+
 
 
 ```
 
-Another approach
+```
+ pars=list             # controls the following graphical parameters  
+ ((boxwex=.8,           # determines the width of the box  
+ staplewex=.6),        # determines the width of the whisker see "help(bxp)" for more information  
+ ylab="Response",      # y axis label  
+ xlab="Treatments",    # x axis label  
+ main="Experiment",    # graphic title  
+ las=1,                # controls the orientation of the axis labels (1=horizontal)  
+ cex.lab=1.1)          # controls the font size of the axis labels  
+```
 
-```{r 2c2}
 
+
+```{r 2c2, eval=FALSE, include=FALSE}
+# Another approach
 #us_quarters %>% gather()
 
 # ggplot(data = SprintTotalHours %>% gather(Variable, Hours, -Sprint), 
 #        aes(x = Sprint, y = Hours, fill = Variable)) + 
 #     geom_bar(stat = 'identity', position = 'dodge')
 
-
+#barplot(gQuarters$qrtCount,beside = TRUE ,las = 3, names = gQuarters$State)
 
 ```
 
@@ -212,27 +234,31 @@ Another approach
 
 Write any two inferences you can observe looking at the plot.
 
-```{r 2d}
+```{r 2d,fig.height=4, fig.width=8}
 options(scipen = 1)
 #plot(us_quarters$DenverMint)
 #plot(xus_quarters$PhillyMint)
 
 
-ggplot(data = us_quarters) + 
-  geom_point(mapping = aes(x = State, y= DenverMint,col='red')) +
-  geom_point(mapping = aes(x = State, y= PhillyMint,col='blue'))+
+p<-ggplot(data = us_quarters) + 
+  geom_point(mapping = aes(x = State, y= DenverMint,col='Denver Mint')) +
+  geom_point(mapping = aes(x = State, y= PhillyMint,col='Philly Mint'))+
   theme(axis.text.x = element_text(angle = 80, hjust = 1))
-
-
-
+p+ggtitle("Number of coins between the two mint")+ 
+  ylab("Quarter Count in thousands")
 
 ```
+Inferences from the above plot:
+1. The Philly mint has a bias toward printing Quarters from Virginia for some reason.
+2. The Denver mint doesn't print many quarters from Ohio
+
+
 
 ### 2e. Show the side-by-side box plots for the two mints.
 
 Write any two inferences for each of the box plots.
 
-```{r 2e}
+```{r 2e,fig.height=4, fig.width=8}
 par( mfrow=c(1,2))
 boxplot(us_quarters$DenverMint,horizontal = TRUE,xaxt = "n", xlab = "Denver Mint", col = "blue")
 axis(side = 1, at = fivenum(us_quarters$DenverMint), labels = TRUE)
@@ -249,18 +275,20 @@ For each of the two mints. Use the five number summary function to
 derive the outlier bounds
 
 ```{r 2f Outliers}
-
+# Use the fivenum for detecting the outliers
 f<- fivenum(us_quarters$DenverMint)
 lower <- f[2] - 1.5*(f[4] - f[2])
 upper <-  f[4] + 1.5*(f[4] - f[2])
 outlier_ind <- which(us_quarters$DenverMint < lower | us_quarters$DenverMint > upper) 
-us_quarters$State[outlier_ind]
-paste("The outlier states from the Denver Mint are ",us_quarters$State[outlier_ind])  
+#us_quarters$State[outlier_ind]
+paste("The outlier states from the Denver Mint are: ")
+paste(us_quarters$State[outlier_ind])  
   
 f<- fivenum(us_quarters$PhillyMint)
 outlier_ind2 <- which(us_quarters$PhillyMint < lower | us_quarters$PhillyMint > upper) 
-us_quarters$State[outlier_ind2]
-paste("The outlier states from the Philly mint are ", us_quarters$State[outlier_ind2])
+#us_quarters$State[outlier_ind2]
+paste("The outlier states from the Philly mint are: ")
+paste(us_quarters$State[outlier_ind2])
 
 ```
 
@@ -270,9 +298,10 @@ paste("The outlier states from the Philly mint are ", us_quarters$State[outlier_
 
 ```{r 3 Setup}
 stocks <- read.csv("http://people.bu.edu/kalathur/datasets/faang.csv")
-head(stocks,2)
-tail(stocks,2)
-summary(stocks[-1])
+# Get some basic details
+#head(stocks,2)
+#tail(stocks,2)
+#summary(stocks[-1])
 
 
 
@@ -280,7 +309,7 @@ summary(stocks[-1])
 
 ### 3a. Show the pair wise plots for all the 5 stocks in the dataset in a single plot.
 
-```{r 5Stocks}
+```{r 5Stocks,fig.height=4, fig.width=8}
 # Like with the mint data - it would be easier to reformat the data
 # putting all of the stock symbols in one column and all of the values in one column.
 # This does mean that there will be repeating date values, but this works well for plotting.
@@ -303,7 +332,9 @@ pairs(stocks[-1],pch=16, col = 'Blue')
 (c<-cor(stocks[-1]))
 ```
 
-```{r 3b corrPlot}
+```{r 3b corrPlot,fig.height=4, fig.width=8}
+# different view of the corr matrix.  Only include the upper and
+# make it easy to visually see corr/ non-corr
 corrplot(c,type = "upper",order = "hclust",col = brewer.pal(n=10,name = "Paired"))
 
 ```
@@ -324,8 +355,9 @@ corrplot(c,type = "upper",order = "hclust",col = brewer.pal(n=10,name = "Paired"
 ```{r 4 Setup}
 scores <- read.csv("http://people.bu.edu/kalathur/datasets/scores.csv")
 
-head(scores)
-summary(scores$Score)
+# Get some basics
+#head(scores)
+#summary(scores$Score)
 ```
 
 ### 4a. Save the result of the histogram
@@ -334,10 +366,11 @@ into a variable. Using the counts and breaks property of this variable,
 write the R code to produce the following output. The code for the
 following output should not refer to the individual scores.
 
-```{r 4a}
+```{r 4a,fig.height=4, fig.width=8}
 library(knitr)
-studentHist<-hist(scores$Score)
+studentHist<-hist(scores$Score, col = brewer.pal(5,"Accent"))
 
+# I don't care for the sprintf.  Change to print( paste() )
 for (i in seq(1,length(studentHist$count)) ) {
     j<-sprintf("%d students in range (,%d,%d ] ", studentHist$counts[i],studentHist$breaks[i],studentHist$breaks[i+1])
     print(j)
@@ -354,11 +387,11 @@ get a C grade. The code for the following output should not refer to the
 individual scores.
 
 ```{r 4b, fig.height=4, fig.width=8}
-newHist<-hist(scores$Score,breaks = seq(30,90,20))
+newHist<-hist(scores$Score,breaks = seq(30,90,20),col=brewer.pal(4,"Accent"))
 
-# for (i in seq(1,length(newHist$count)) ) {
-#     j<-sprintf("%d students in range (,%d,%d ] ", newHist$counts[i],newHist$breaks[i],newHist$breaks[i+1])
-#     print(j)
-#}
+for (i in seq(1,length(newHist$count)) ) {
+    j<-sprintf("%d students in range (,%d,%d ] ", newHist$counts[i],newHist$breaks[i],newHist$breaks[i+1])
+    print(j)
+}
 
 ```
