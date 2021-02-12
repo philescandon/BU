@@ -1,0 +1,219 @@
+---
+title: "CS544 Homework 4"
+author: "Phillip Escandon - escandon@bu.edu"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  html_document:
+    toc: true
+    fig_caption: true
+    theme: flatly
+    css: "res/styles.css"
+  word_document:
+    toc: true
+    reference_doc: "res/BUtemplate.docx"
+---
+
+<img src="res/BU_Small.png" width=200 height=100 style="position:absolute;top:0px;right:100px;" />
+
+## Introduction
+
+
+## 1. Binomial Distribution - Perfect Score
+```
+Suppose a student has 40% chance of scoring a perfect score in an exam with randomly selected questions. Each student will be provided 5 attempts. 
+```
+```{r eval=FALSE, include=FALSE}
+
+```
+For the Binomial Distribution  - look for an event that only has two outcomes - a success/ failure, 1/0, etc.
+
+### a. Compute and plot the probability distribution 
+for the number of perfect scores over the 5 attempts
+```{r 1a}
+
+# Probability of success
+p<- .40
+# number of attempts
+n<-5
+bi<-dbinom(5,n,p)
+
+# Probability Mass Function - shows the distribution of successes
+x <- 0:n
+plot(x,dbinom(x,n,p),main = "PMF for bin(5,.40)")
+
+```
+
+### b. Probability of exactly 2 perfect scores 
+```{r 1b}
+# Probability of success
+p<- .40
+# number of attempts
+n<-5
+dbinom(2,n,p)
+
+# Calculation by formula
+# Equation: f(x) = {n x} p^x(1-p)^(n-x)
+
+
+```
+$$f(x) = {n \choose x} p^{x} (1-p)^{n-x}$$
+```{r 1bRed}
+# Probability 
+p<- .4
+# number of attempts
+x<- 2
+
+succes<- p^x
+
+
+
+```
+
+
+### c. Probability of at least 2 perfect scores
+```{r 1c}
+# Use Cummulative Distr. Function
+# Probability of success
+p<- .40
+# number of attempts
+n<-2
+pbinom(2,n,p)
+# CDF Plot
+plot(x,pbinom(x,n,p),type = "s",main = "CDF for Bin(2,.4)")
+```
+
+### d. Perfect scores for 1000 sutdents 
+```{r 1d}
+# Probability of success
+p<- .40
+n<- 5
+# draw 1000 students
+draws <- rbinom(1000,size = n, prob = p)
+br<- (0:(n+1)) - .5
+hist(draws,br,main = "Random perfect scores for 1000 students")
+
+```
+
+```
+Question 2. Negative Binomial Distribution
+```  
+
+
+## 2.  Negative Binomial Distibution -
+Student has 60 percent chance of a perfect score.
+Suppose a student has 60% chance of scoring a perfect score in an exam with
+randomly selected questions. The student has to repeatedly take the exam until they
+achieve three perfect scores.
+
+```{r}
+
+```
+
+### a.
+```{r 2a}
+
+```
+
+### b. 
+```{r 2b}
+
+```
+
+### c.
+```{r 2c}
+
+```
+
+### d.  
+```{r 2d}
+
+```
+
+```
+Question 3.  
+```
+
+
+## 3.  
+```{r 3}
+
+```
+
+### a.
+```{r 3a}
+
+```
+
+### b. 
+```{r 3b}
+
+```
+
+### c.
+```{r 3c}
+
+```
+
+### d.  
+```{r 3d}
+
+```
+
+```
+Question 4.
+```
+
+
+## 4.  
+```{r}
+
+```
+
+### a.
+```{r}
+
+```
+
+### b. 
+```{r}
+
+```
+
+### c.
+```{r}
+
+```
+
+### d.  
+```{r}
+
+```
+
+```
+Question 5
+```
+
+## 5.
+```{r}
+
+```
+
+### a.
+```{r}
+
+```
+
+### b. 
+```{r}
+
+```
+
+### c.
+```{r}
+
+```
+
+### d.  
+```{r}
+
+```
