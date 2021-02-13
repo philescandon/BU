@@ -192,7 +192,7 @@ summary {
 <h1 class="title toc-ignore">CS544_HW2_Escandon</h1>
 <h3 class="subtitle">Professor S. Kalathur Spring 01 2021</h3>
 <h4 class="author">Phillip Escandon - <a href="mailto:escandon@bu.edu" class="email">escandon@bu.edu</a></h4>
-<h4 class="date">31 January, 2021</h4>
+<h4 class="date">01 February, 2021</h4>
 
 </div>
 
@@ -254,17 +254,16 @@ glue(&quot;Probability of randomly chosen person having a BMI&gt;30 being in the
 <pre><code>## Probability of randomly chosen person having a BMI&gt;30 being in the 35-49 
 ## age group is 0.4728</code></pre>
 </div>
-<div id="d.if-a-randomly-selected-person-had-a-bmi-of-above-30-what-is-the-probability-of-that-person-being-in-the-age-group-50-64-years" class="section level3">
-<h3>d.If a randomly selected person had a BMI of above 30, what is the probability of that person being in the age group 50-64 years?</h3>
+<div id="d.-if-a-randomly-selected-person-had-a-bmi-of-above-30-what-is-the-probability-of-that-person-being-in-the-age-group-50-64-years" class="section level3">
+<h3>d. If a randomly selected person had a BMI of above 30, what is the probability of that person being in the age group 50-64 years?</h3>
 <pre class="r"><code>PA3B=(byPercent * bmiGT30Percent)[3] / pb
 glue(&quot;Probability of randomly chosen person having a BMI&gt;30 being in the 50-64 
      age group is &quot;, round(PA3B,digits = 4))</code></pre>
 <pre><code>## Probability of randomly chosen person having a BMI&gt;30 being in the 50-64 
 ## age group is 0.1814</code></pre>
 </div>
-<div id="e." class="section level3">
-<h3>e.</h3>
-<p>If a randomly selected person had a BMI of above 30, what is the probability of that person being in the 65 years &amp; over?</p>
+<div id="e.-if-a-randomly-selected-person-had-a-bmi-of-above-30-what-is-the-probability-of-that-person-being-in-the-65-years-over" class="section level3">
+<h3>e. If a randomly selected person had a BMI of above 30, what is the probability of that person being in the 65 years &amp; over?</h3>
 <pre class="r"><code>PA4B=(byPercent * bmiGT30Percent)[4] / pb
 glue(&quot;Probability of randomly chosen person having a BMI&gt;30 being in the 50-64 
      age group is &quot;, round(PA4B,digits = 4))</code></pre>
@@ -273,8 +272,8 @@ glue(&quot;Probability of randomly chosen person having a BMI&gt;30 being in the
 <div style="page-break-after: always;"></div>
 </div>
 </div>
-<div id="part-2." class="section level2">
-<h2>Part 2.</h2>
+<div id="part-2.-random-variables" class="section level2">
+<h2>Part 2. Random Variables</h2>
 <pre><code>    Consider a game which involves rolling three dice. Write the R code for the following.
     Using the rollDie function from the prob library, setup the sample space for this experiment with the probability space.
     For each of the following scenarios from a) through e), show the corresponding outcomes and the probability of that event. The sample outputs for b) are shown as example.</code></pre>
@@ -303,10 +302,24 @@ Prob(A)</code></pre>
 <div id="c.-only-two-of-the-three-rolls-are-identical." class="section level3">
 <h3>c. Only two of the three rolls are identical.</h3>
 <pre class="r"><code>S&lt;- rolldie(3, makespace = TRUE)
-# X1==X2 X1==X3 or X2==X3
+
+Prob(S)</code></pre>
+<pre><code>## [1] 1</code></pre>
+<pre class="r"><code># X1==X2 or X1==X3 or X2==X3
+dieEqual &lt;- subset(S, (X1 == X2) | (X1 == X3) | X2 == X3  )
+A&lt;-subset(S,(X1==X2) &amp; (X1==X3) &amp; (X2 == X3))
+# NOW take the UNION of dieEqual with A.  A comes from prob 2b.
+# this will remove the x1=x2=x3 attributes
+Prob(union(dieEqual,A))</code></pre>
+<pre><code>## [1] 0.4444444</code></pre>
+<pre class="r"><code># create 3 subsets and take the union
+
+# X1==X2, X3 not included
 t&lt;- subset(S,X1==X2 &amp; X1 != X3)
+
 # X1==X3, X2 not included
 u&lt;- subset(S,X1==X3 &amp; X1 != X2)
+
 # X2==X3, X1 not included
 v&lt;- subset(S,X2==X3 &amp; X1 != X2)
 
@@ -340,8 +353,8 @@ Prob(intersect(A,B))</code></pre>
 <div style="page-break-after: always;"></div>
 </div>
 </div>
-<div id="part-3." class="section level2">
-<h2>Part 3.</h2>
+<div id="part-3.-functions" class="section level2">
+<h2>Part 3. Functions</h2>
 <p>Using a for loop or a while loop, write your own R function, sum_of_first_N_odd_squares (n), that returns the sum of the squares of the first n odd numbers.</p>
 <div id="sum_of_first_n_odd_squares" class="section level3">
 <h3>sum_of_first_N_odd_squares()</h3>
@@ -398,13 +411,13 @@ sum_of_first_N_odd_squaresV2 &lt;- function(x){
 <div style="page-break-after: always;"></div>
 </div>
 </div>
-<div id="section" class="section level2">
-<h2>4.</h2>
+<div id="using-r" class="section level2">
+<h2>4. Using R</h2>
 <pre><code>Initialize the Dow Jones Industrials daily closing data, dow, using the read.csv function with the
 link: http://people.bu.edu/kalathur/datasets/DJI_2020.csv
 </code></pre>
-<div id="a.-a-store-the-result-of-the-summary-function-for-the-close-attribute-as-the-variable-sm.-change" class="section level3">
-<h3>4a. a) Store the result of the summary function for the Close attribute as the variable sm. Change</h3>
+<div id="store-the-result-of-the-summary-function-for-the-close-attribute-as-the-variable-sm.-change" class="section level3">
+<h3>Store the result of the summary function for the Close attribute as the variable sm. Change</h3>
 <p>the names of this variable so that the output appears as shown below.</p>
 <pre class="r"><code>dow &lt;- read_csv(&quot;http://people.bu.edu/kalathur/datasets/DJI_2020.csv&quot;,col_types = list(col_character(),col_double()))
 head(dow)</code></pre>
