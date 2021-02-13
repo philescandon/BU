@@ -1,0 +1,172 @@
+---
+title: "CS544_HW3_Escandon"
+author: "Phillip Escandon - escandon@bu.edu"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  html_document:
+    toc: true
+    fig_caption: true
+    theme: flatly
+    css: "res/styles.css"
+  word_document:
+    toc: true
+    reference_doc: "res/BUtemplate.docx"
+---
+
+<img src="res/BU_Small.png" width=200 height=100 style="position:absolute;top:0px;right:100px;" />
+
+```{r setup}
+library(tidyverse)
+```
+
+
+## Part 1. Prime Numbers
+```
+ Initialize the dataset about prime numbers as shown below:
+df <- read.csv("http://people.bu.edu/kalathur/datasets/myPrimes.csv")
+```
+```{r 1Setup}
+df <- read.csv("http://people.bu.edu/kalathur/datasets/myPrimes.csv")
+
+```
+
+Data Exploration
+
+
+```{r dataExploration}
+head(df, 10)
+tail(df)
+summary(df)
+```
+
+
+
+### 1a. Bar Plot frequencies of last digits.
+```{r 1a}
+
+table(df$LastDigit)
+barplot(table(df$LastDigit),col='blue')
+
+```
+
+### 1b. Bar Plot of frequencies of first digits
+```{r 1b}
+barplot(table(df$FirstDigit),col = 'green')
+
+
+```
+
+### 1c. Draw two interences from each plot.
+```{r 1c}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy))
+```
+
+```{r}
+dim(mpg)
+unique(mpg$class)
+
+
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, color = class))
+```
+```{r}
+ggplot(data = mpg) + 
+  geom_smooth(mapping = aes(x = displ, y = hwy))
+```
+```{r}
+ggplot(data = mpg) + 
+  geom_smooth(mapping = aes(x = displ, y = hwy,linetype = drv))
+```
+```{r palidrome}
+x <-  c(1,2,4,3,1)
+isPali <- function(x) {
+  
+  ifelse(identical(x,x[length(x):1]),return(TRUE), return(FALSE))
+  
+}
+
+```
+```{r}
+y <- c(1,3,5,7,5,3,1)
+isPali(y)
+
+```
+
+
+```{r}
+ggplot(diamonds) +
+  geom_bar(mapping = aes(x = cut))
+
+ggplot(df) + 
+  geom_bar(mapping = aes(x=FirstDigit))
+
+barplot(table(df$FirstDigit))
+
+```
+
+
+## Part 2.
+```{r}
+us_quarters <- read.csv("http://people.bu.edu/kalathur/datasets/us_quarters.csv")
+head(us_quarters)
+us_quarters[us_quarters == "Colorado",c(2,3)] %>% sum
+
+usq<- gather(us_quarters,Mint,qtrCount,c(DenverMint,PhillyMint))
+usq
+
+# Find texas quarters - they are printed from two different mints!
+usq[which(usq$State=='Texas'),]
+
+byState<-usq %>% group_by(Mint)
+
+
+# whats the sum of the quarters from texas?
+usq[which(usq$State=='Texas'),]$qtrCount %>% sum
+# 541800
+usq[usq$State == 'Colorado',]$qtrCount %>% sum
+
+
+```
+
+
+###2a. Which state has most quarters by mint
+```{r}
+head(us_quarters,2)
+
+denverMax <- max(us_quarters$DenverMint)
+ind <- which(us_quarters$DenverMint  == denverMax)
+#us_quarters[ind,]$State
+paste("State with most quarters from the Denver Mint: ",us_quarters[ind,]$State," with ",denverMax)
+
+
+phillyMax <- max(us_quarters$PhillyMint)
+ind <- which(us_quarters$PhillyMint  == phillyMax)
+#us_quarters[ind,]$State
+paste("State with most quarters from the Philly Mint: ",us_quarters[ind,]$State," with ",phillyMax)
+
+
+denverMin <- min(us_quarters$DenverMint)
+ind <- which(us_quarters$DenverMint  == denverMin)
+#us_quarters[ind,]$State
+paste("State with least quarters from the Denver Mint: ",us_quarters[ind,]$State," with ", denverMin)
+
+
+phillyMin <- min(us_quarters$PhillyMint)
+ind <- which(us_quarters$PhillyMint  == phillyMin)
+#us_quarters[ind,]$State
+paste("State with least quarters from the Philly Mint: ",us_quarters[ind,]$State," with ",phillyMin)
+
+# Total Coins
+totalMoney <- sum(us_quarters[,c('DenverMint','PhillyMint')])/4
+
+table(us_quarters) %>% barplot
+
+```
+
+
+## Part 3.
+
+
+## Part 4
+
