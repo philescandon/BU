@@ -1,0 +1,360 @@
+---
+title: "CS544 Homework 4"
+author: "Phillip Escandon - escandon@bu.edu"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  html_document:
+    toc: true
+    fig_caption: true
+    theme: flatly
+    css: "res/styles.css"
+  word_document:
+    toc: true
+    reference_doc: "res/BUtemplate.docx"
+---
+
+<img src="res/BU_Small.png" width=200 height=100 style="position:absolute;top:0px;right:100px;" />
+
+## Introduction
+
+
+## 1. Binomial Distribution - Perfect Score
+```
+Suppose a student has 40% chance of scoring a perfect score in an exam with randomly selected questions. Each student will be provided 5 attempts. 
+```
+```{r eval=FALSE, include=FALSE}
+
+```
+For the Binomial Distribution  - look for an event that only has two outcomes - a success/ failure, 1/0, etc.
+
+### a. Compute and plot the probability distribution 
+for the number of perfect scores over the 5 attempts
+```{r 1a}
+
+# Probability of success
+p <- .40
+# number of attempts / trials
+attempts <-5
+# number of successes
+successes <- 5
+
+(bi<-dbinom(successes,attempts,p))
+
+# Probability Mass Function - shows the distribution of successes
+x <- 0:attempts
+plot(x,dbinom(x,attempts,p),main = "PMF for bin(5,.40)")
+plot(x,pbinom(x,attempts,p),main = "CDF for bin(5,.40)")
+paste('Probability of 5 perfect scores is',bi)
+```
+
+### b. Probability of exactly 2 perfect scores 
+```{r 1b}
+# Probability of success
+p<- .40
+# number of attempts / trials
+attempts<-5
+# number of successes
+successes <- 2
+bi2 <- dbinom(successes,attempts,p)
+
+# Calculation by formula
+# Equation: f(x) = {n x} p^x(1-p)^(n-x)
+paste('Probability of exactly two perfect scores is ', bi2 )
+
+```
+$$f(x) = {n \choose x} p^{x} (1-p)^{n-x}$$
+The manual calculation will use the above formula to verify the previous calcualated probabilty
+```{r 1bRed}
+# n = attempts 
+n <- 5
+# p = Probability
+p<- .4
+# number of attempts / trials
+x<- 2
+
+success<- p^x
+fail<- (1-p)^(n-x)
+fx<-success*fail
+paste("f(2) is ",fx)
+
+```
+
+
+### c. Probability of at least 2 perfect scores
+```{r 1c}
+# Use Cummulative Distr. Function
+# Probability of success
+p<- .40
+# number of attempts / trial
+n<-2
+attempts<- 5
+# number of successes
+successes <- 2
+cdf<-pbinom(2,n,p)
+(cdf<-pbinom(successes,attempts,p))
+x<- 0:attempts
+# CDF Plot
+plot(x,pbinom(x,attempts,p),type = "s",main = "CDF for Bin(2,.4)")
+```
+
+### d. Perfect scores for 1000 sutdents 
+```{r 1d}
+# Probability of success
+p<- .40
+n<- 5
+successes<- 5
+# draw 1000 students
+draws <- rbinom(1000,size = n, prob = p)
+barplot(table(draws),main = "Random perfect scores for 1000 students")
+
+br<- (0:(n+1)) - .5
+hist(draws,br,main = "Random perfect scores for 1000 students")
+
+```
+
+```
+Question 2. Negative Binomial Distribution
+```  
+
+
+## 2.  Negative Binomial Distibution -
+Student has 60 percent chance of a perfect score.
+Suppose a student has 60% chance of scoring a perfect score in an exam with randomly selected questions. The student has to repeatedly take the exam until they achieve three perfect scores.
+
+```{r}
+
+
+```
+
+
+
+
+### a.
+```{r 2a}
+# Need 3 perfect scores - will max 10 fails before quitting.
+# Probability
+p<- .60
+# Number of success as 'r'
+r<- 3
+# number of failures
+fails <- 10
+# this is the negative binomial distribution. failures before a success.
+
+# args are usually (success, attempts, prob) this time..fails 
+(dnbinom(fails,r,p))
+
+x <- 0:fails
+plot(dnbinom(x,r,p),main = "PDF - r=3,f=10 Negative Binomial Distribution")
+
+plot(pnbinom(x,r,p),main = "CDF r=3,f=10, Negative Binomial Distribution")
+
+```
+
+
+### b.  What is the probability of three perfect scores with exactly 4 failures
+
+```{r 2b}
+r <- 3
+fails <- 4
+p <- .6
+dnb <- dnbinom(fails,r,p)
+paste('Probability of three perfect scores with 4 failures is',dnb)
+```
+
+Perform the same calculation without the R function
+
+$$f(4) = {6 \choose 2} (1-.6)^{4}.6^{3}$$
+```{r 2ba}
+# cannot get the example neg binomial
+r <- 3
+fails <- 4
+p <- .6
+# f(4)
+choose(6,2) * (.6**3) * ((1-.6)**4)
+
+#Check
+#dnbinom(4,3,.6) == choose(6,2) * (.6**3) * ((1-p)**4)
+
+
+```
+Example:
+
+$$f(5) = {7 \choose 2} (1-.5)^{3}.5^{5}$$
+```{r}
+#example
+dnbinom(5,3,.5)
+choose(7,2) * (.5**3) * ((1-.5)**5)
+```
+
+
+### c. 3 Perfect scores with AT MOST 4 failures
+```{r 2c}
+# Apply the CDF here
+r <- 3
+fails <- 4
+p <- .6
+cd <- pnbinom(fails,r,p)
+paste('Probability of 3 Perfect scores with at most 4 failures:',cd)
+```
+
+### d. Simulate 3 perfect scores for 1000 students. Show a barplot
+```{r 2d}
+r <- 3
+fails <- 4
+p <- .6
+x <- rnbinom(1000, size = r, prob = p)
+barplot(table(x))
+
+```
+
+```
+Question 3.  
+```
+
+
+## 3.  
+```{r 3}
+M <- 60    # Of interest
+N <- 40    # Not of interest
+K <- 20    # Sample Size
+
+
+```
+
+### a.
+```{r 3a}
+M <- 60    # Of interest
+N <- 40    # Not of interest
+K <- 20    # Sample Size
+dhyper(20, m = M, n = N, k = K)
+pmf <-  dhyper(0:K,m=M,n=N,k=K)
+pmf
+plot(pmf)
+
+
+```
+
+### b. Exactly 10 multiple choice out of the 20
+```{r 3b}
+# Review this portion - I don't know
+M <- 20    # Of interest
+N <- 10    # Not of interest
+K <- 10    # Sample Size
+phyper(10,m=M,n=N,k=K)
+cdf <-  phyper(0:K,m=M,n=N,k=K)
+cdf
+plot(cdf)
+
+# Example code
+M <- 20; N <- 980; K <- 50
+
+# P(X = 2)  exactly 2 faulty chips
+
+dhyper(2, m = M, n = N, k = K)
+
+```
+
+```{r 3ba}
+# P(X = 10)   10 questions of interest out of 20
+
+choose(M,10) * choose(N,10) / choose(M+N, 20)
+```
+
+
+
+### c. At least 10 multiple choice out of 20 questions
+```{r 3c}
+# P(X > 2)   at least 3 faulty chips
+
+1 - phyper(2, m = M, n = N, k = K)
+# or
+phyper(2, m = M, n = N, k = K, lower.tail = FALSE)
+
+```
+
+### d.  
+```{r 3d}
+x <- rhyper(1000, m = M, n = N, k = K )
+barplot(table(x),main = 'Hypergeometric')
+
+```
+
+
+```
+Question 4.
+```
+
+
+## 4.  Poisson Distribution
+```{r}
+# On average 10 questions per day for prof
+lmda <- 10
+```
+
+### a. Exactly 8 questions per day.  Prob?
+```{r 4a}
+dpois(8,lambda = lmda)
+```
+
+### b. At most 8 questions per day. Prob?
+```{r 4b}
+ppois(8,lambda = lmda)
+```
+
+### c. 6 to 12 questions inclusive
+```{r 4c}
+ppois(12,lambda = lmda) - ppois(5,lambda = lmda)
+```
+
+### d.  PMF for the first 20 questions
+```{r 4d}
+pmf <-  dpois(0:20,lambda = lmda)
+plot(0:20,pmf)
+```
+
+
+### e.  Course runs for 50 days.  How many ?'s per day?
+Show barplot.
+Show boxplot.
+What can you infer?
+```{r 4e}
+rpois(50, lambda = lmda)
+
+x <- rpois(1000, lambda = lmda)                         
+plot(table(x))
+```
+
+
+
+```
+Question 5
+```
+
+## 5. Normal Distribution
+```{r}
+# Ave day $100, standard dev. = $10
+# Remember 68,95,99
+
+
+
+```
+
+### a.
+```{r 5a}
+
+```
+
+### b. 
+```{r}
+
+```
+
+### c.
+```{r}
+
+```
+
+### d.  
+```{r}
+
+```

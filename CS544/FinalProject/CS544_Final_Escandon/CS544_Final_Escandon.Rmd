@@ -3,57 +3,33 @@ title: "CS544 Final Project"
 author: "Phillip Escandon - escandon@bu.edu"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
-  word_document:
-    toc: true
-    reference_doc: "res/BUtemplate.docx"
   html_document:
     toc: true
     fig_caption: true
     theme: flatly
     css: "res/styles.css"
+  word_document:
+    toc: true
+    reference_doc: "res/BUtemplate.docx"
 ---
 
 <img src="res/BU_Small.png" width=200 height=100 style="position:absolute;top:0px;right:100px;" />
 
 ## Introduction
-The dataset that I chose to investigate was the college major dataset from fivethirtyeight.
-```{r library}
-library(tidyverse)
+The dataset that I chose to investigate was the college major dataset from 
 
-```
+What hypothesis do I want to investigate , prove, or illuminate.
 
-Setup the datasets:
-### Majors List  
-```{r}
-MajorsList <- read.csv("college-majors/majors-list.csv",header=TRUE,stringsAsFactors=FALSE)
-head(MajorsList)
-colnames(MajorsList)
-
-```
-
-### all ages dataset
-```{r}
-allAges <- read.csv("college-majors/all-ages.csv",header = TRUE,stringsAsFactors = FALSE)
-head(allAges)
-colnames(allAges)
-
-```
+## Exploratory Data Analysis
 
 
-### recent grad dataset
-```{r}
-recentGrad<- read.csv("college-majors/recent-grads.csv",header = TRUE,stringsAsFactors = FALSE)
-head(recentGrad)
-colnames(recentGrad)
+### One categorical / one numerical data
 
-```
+### Two or more variables
 
-### recent-grads dataset
-```{r}
+### Distribution of the data
 
+### Draw random samples and show applicability of the Central limit Theorem
 
-```
-
-
-
+### Show how various sampling methods can be used on the data.
 
