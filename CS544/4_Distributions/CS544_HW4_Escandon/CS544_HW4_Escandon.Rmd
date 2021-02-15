@@ -23,12 +23,12 @@ output:
 Suppose a student has 40% chance of scoring a perfect score in an exam with randomly selected questions. Each student will be provided 5 attempts. 
 ```
 ```{r eval=FALSE, include=FALSE}
-
+library(prob)
 ```
 For the Binomial Distribution  - look for an event that only has two outcomes - a success/ failure, 1/0, etc.
 
 ### a. Compute and plot the probability distribution 
-for the number of perfect scores over the 5 attempts
+for the number of perfect scores over the 5 attempts.  PMF and CDF
 ```{r 1a}
 
 # Probability of success
@@ -38,13 +38,14 @@ attempts <-5
 # number of successes
 successes <- 5
 
-(bi<-dbinom(successes,attempts,p))
+bi<-dbinom(successes,attempts,p)
 
 # Probability Mass Function - shows the distribution of successes
 x <- 0:attempts
+paste('Probability of 5 perfect scores is',bi)
 plot(x,dbinom(x,attempts,p),main = "PMF for bin(5,.40)")
 plot(x,pbinom(x,attempts,p),main = "CDF for bin(5,.40)")
-paste('Probability of 5 perfect scores is',bi)
+
 ```
 
 ### b. Probability of exactly 2 perfect scores 
@@ -63,7 +64,7 @@ paste('Probability of exactly two perfect scores is ', bi2 )
 
 ```
 $$f(x) = {n \choose x} p^{x} (1-p)^{n-x}$$
-The manual calculation will use the above formula to verify the previous calcualated probabilty
+The manual calculation will use the above formula to verify the previous calculated probability
 ```{r 1bRed}
 # n = attempts 
 n <- 5
@@ -72,9 +73,9 @@ p<- .4
 # number of attempts / trials
 x<- 2
 
-success<- p^x
-fail<- (1-p)^(n-x)
-fx<-success*fail
+# Binomial manual Calculation
+fx <- choose(n,x)* (p**x) * ((1-p)**(n-x))
+
 paste("f(2) is ",fx)
 
 ```
@@ -82,16 +83,28 @@ paste("f(2) is ",fx)
 
 ### c. Probability of at least 2 perfect scores
 ```{r 1c}
-# Use Cummulative Distr. Function
+
+# P(X > 1)  at least 2 successes
+# Same as  1 - P(X <= 1)
+# 1 - pbinom(1, size = n, prob = p)
+# or
+# sum(dbinom(2:n, size = n, prob = p))
+
+
 # Probability of success
 p<- .40
 # number of attempts / trial
-n<-2
 attempts<- 5
+
 # number of successes
-successes <- 2
-cdf<-pbinom(2,n,p)
-(cdf<-pbinom(successes,attempts,p))
+successes <- 1
+
+
+cdf<-1- pbinom(successes,attempts,p)
+# check
+# sum(dbinom(2:n, size = n, prob = p))
+
+paste("Probability of at least 2 perfect scores is ",cdf)
 x<- 0:attempts
 # CDF Plot
 plot(x,pbinom(x,attempts,p),type = "s",main = "CDF for Bin(2,.4)")
@@ -135,29 +148,30 @@ Suppose a student has 60% chance of scoring a perfect score in an exam with rand
 # Probability
 p<- .60
 # Number of success as 'r'
-r<- 3
+successes<- 3
 # number of failures
 fails <- 10
 # this is the negative binomial distribution. failures before a success.
 
 # args are usually (success, attempts, prob) this time..fails 
-(dnbinom(fails,r,p))
+(dnbinom(fails,successes,p))
 
 x <- 0:fails
-plot(dnbinom(x,r,p),main = "PDF - r=3,f=10 Negative Binomial Distribution")
+plot(dnbinom(x,successes,p),main = "PDF - r=3,f=10 Negative Binomial Distribution")
 
-plot(pnbinom(x,r,p),main = "CDF r=3,f=10, Negative Binomial Distribution")
+plot(pnbinom(x,successes,p),main = "CDF r=3,f=10, Negative Binomial Distribution")
 
 ```
 
 
-### b.  What is the probability of three perfect scores with exactly 4 failures
+### b.  What is the probability 3 perfect scores with exactly 4 failures
 
 ```{r 2b}
-r <- 3
+successes <- 3
 fails <- 4
 p <- .6
-dnb <- dnbinom(fails,r,p)
+
+dnb <- dnbinom(fails,successes,p)
 paste('Probability of three perfect scores with 4 failures is',dnb)
 ```
 
@@ -165,31 +179,28 @@ Perform the same calculation without the R function
 
 $$f(4) = {6 \choose 2} (1-.6)^{4}.6^{3}$$
 ```{r 2ba}
-# cannot get the example neg binomial
-r <- 3
-fails <- 4
+# cannot get the example neg binomial by hand using matrix mult 
+# Left the args as r,x,p for a simplified choose equation
+
+r <- 3 # successes
+x <- 4 # fails
 p <- .6
 # f(4)
 choose(6,2) * (.6**3) * ((1-.6)**4)
+choose((r+x)-1,r-1) * (p**r)* ((1-p)**x)
 
 #Check
 #dnbinom(4,3,.6) == choose(6,2) * (.6**3) * ((1-p)**4)
 
 
 ```
-Example:
 
-$$f(5) = {7 \choose 2} (1-.5)^{3}.5^{5}$$
-```{r}
-#example
-dnbinom(5,3,.5)
-choose(7,2) * (.5**3) * ((1-.5)**5)
-```
 
 
 ### c. 3 Perfect scores with AT MOST 4 failures
 ```{r 2c}
 # Apply the CDF here
+# P(X <= 4)   at most 4 failures
 r <- 3
 fails <- 4
 p <- .6
@@ -212,7 +223,7 @@ Question 3.
 ```
 
 
-## 3.  
+## 3. Hypergeometric Distribution
 ```{r 3}
 M <- 60    # Of interest
 N <- 40    # Not of interest
@@ -237,27 +248,25 @@ plot(pmf)
 ### b. Exactly 10 multiple choice out of the 20
 ```{r 3b}
 # Review this portion - I don't know
-M <- 20    # Of interest
-N <- 10    # Not of interest
-K <- 10    # Sample Size
+M <- 60    # Of interest
+N <- 40    # Not of interest
+K <- 20    # Sample Size
 phyper(10,m=M,n=N,k=K)
 cdf <-  phyper(0:K,m=M,n=N,k=K)
 cdf
 plot(cdf)
 
-# Example code
-M <- 20; N <- 980; K <- 50
 
-# P(X = 2)  exactly 2 faulty chips
 
-dhyper(2, m = M, n = N, k = K)
+
 
 ```
 
 ```{r 3ba}
 # P(X = 10)   10 questions of interest out of 20
 
-choose(M,10) * choose(N,10) / choose(M+N, 20)
+a <- choose(M,10) * choose(N,10) / choose(M+N, 20)
+paste("The probability that a student will have exactly 10 multiple choice quesions out of 20 is ",a)
 ```
 
 
@@ -293,17 +302,21 @@ lmda <- 10
 
 ### a. Exactly 8 questions per day.  Prob?
 ```{r 4a}
-dpois(8,lambda = lmda)
+dp <- dpois(8,lambda = lmda)
+paste("Probability of exactly 8 questions per day : ",dp)
 ```
 
 ### b. At most 8 questions per day. Prob?
 ```{r 4b}
-ppois(8,lambda = lmda)
+pp <- ppois(8,lambda = lmda)
+paste("Probability of at most 8 questions per day : ",pp)
 ```
 
 ### c. 6 to 12 questions inclusive
 ```{r 4c}
-ppois(12,lambda = lmda) - ppois(5,lambda = lmda)
+pinc <- ppois(12,lambda = lmda) - ppois(5,lambda = lmda)
+paste("Probability of 6-12 questions inclusive is : ",pinc)
+
 ```
 
 ### d.  PMF for the first 20 questions
@@ -322,6 +335,10 @@ rpois(50, lambda = lmda)
 
 x <- rpois(1000, lambda = lmda)                         
 plot(table(x))
+barplot(table(x))
+boxplot(x)
+paste("From looking at the box and bar plots you can infer that there are three high outliers, the average number of questions would be about 11 questions per day")
+
 ```
 
 
@@ -329,6 +346,7 @@ plot(table(x))
 ```
 Question 5
 ```
+Suppose that visitors at a theme park spend an average of $100 on souvenirs. Assume that the money spent is normally distributed with a standard deviation of 10 dollars. 
 
 ## 5. Normal Distribution
 ```{r}
@@ -336,11 +354,17 @@ Question 5
 # Remember 68,95,99
 
 
-
 ```
 
-### a.
+### a. Plot the PDF of a distribution
+covering 3 standard deviations of either side of the mean.
 ```{r 5a}
+# Ave day $100, standard dev. = $10
+# Remember 68,95,99
+#x <- seq(0,200,1)
+x <- seq(77,123,1)
+pdf.1 <- dnorm(x,mean=100,sd=10)
+plot(x,pdf.1,main = "$100 Average, $10 Standard deviation")
 
 ```
 
