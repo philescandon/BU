@@ -1,0 +1,95 @@
+---
+title: "CS544 Homework 5"
+author: "Phillip Escandon - escandon@bu.edu"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  html_document:
+    toc: true
+    toc_float:
+      collapsed: true
+    fig_caption: true
+    theme: flatly
+    css: "res/styles.css"
+  word_document:
+    toc: true
+    reference_doc: "res/BUtemplate.docx"
+---
+
+<img src="res/BU_Small.png" width=200 height=100 style="position:absolute;top:0px;right:100px;" />
+
+\newpage
+
+## 1. Central Limit Theorem
+```
+Using the city of Boston earnings dataset complete 3 distributions and compare the standard deviation and mean of each
+
+```
+```{r Setup, include=FALSE}
+library(tidyverse)
+library(prob)
+
+```
+Retrieve the data
+```{r getData}
+boston <- read.csv("http://people.bu.edu/kalathur/datasets/bostonCityEarnings.csv",colClasses = c("character","character","character","integer","character"))
+
+
+```
+
+
+### 1.a Show a sample drawn using simple random sampling without replacement.
+Show frequencies for the selected departments.  Show percentages of these with respect to sample size.
+```{r 1a}
+
+```
+
+
+### 1.b
+```{r 1b}
+
+```
+
+### 1.c
+```{r 1c}
+
+```
+
+### 1.d
+```{r 1d}
+
+```
+
+
+
+## 2. Central Limit Theorem - Negative Binomial Distribution
+```
+Suppose the input data follows the negative binomial distribution with the parameters size = 3 and prob = .5
+
+```
+### 2.a
+
+### 2.b
+
+### 2.c
+
+### 2.d
+
+
+## 3. Sampling
+```
+Create a subset of the dataset from #1 iwth only the top 5 departments based on the number of employees working in that department.
+The top 5 should be computed using R code.  Use the %in% operator.
+Sampling size: 50 for each
+Random seed: Last 4 of your BU id : 5121
+```
+
+### 3.a
+
+### 3.b
+
+### 3.c
+
+### 3.d
+
+
+
