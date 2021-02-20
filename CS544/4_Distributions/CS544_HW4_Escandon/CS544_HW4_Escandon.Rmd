@@ -17,6 +17,9 @@ output:
 
 ## Introduction
 
+```{r}
+library(prob)
+```
 
 ## 1. Binomial Distribution - Perfect Score
 ```
@@ -30,7 +33,7 @@ For the Binomial Distribution  - look for an event that only has two outcomes - 
 ### a. Compute and plot the probability distribution 
 for the number of perfect scores over the 5 attempts
 ```{r 1a}
-
+# PMF
 # Probability of success
 p <- .40
 # number of attempts / trials
@@ -49,6 +52,7 @@ paste('Probability of 5 perfect scores is',bi)
 
 ### b. Probability of exactly 2 perfect scores 
 ```{r 1b}
+# Use PMF
 # Probability of success
 p<- .40
 # number of attempts / trials
@@ -72,6 +76,11 @@ p<- .4
 # number of attempts / trials
 x<- 2
 
+# P(X = 3)   3 Heads
+choose(n,2) * p^3 * (1 - p)^2
+
+
+choose(5,2) * P**2 * ((1-p)**5)
 success<- p^x
 fail<- (1-p)^(n-x)
 fx<-success*fail
