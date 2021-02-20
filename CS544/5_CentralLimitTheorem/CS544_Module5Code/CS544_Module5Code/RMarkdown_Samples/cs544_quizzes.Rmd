@@ -1,0 +1,90 @@
+---
+output:
+  html_document:
+    fig_width: 8
+    code_folding: hide
+    highlight: tango
+    toc: true
+    toc_float:
+      collapsed: true
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(fig.width=8, fig.height=4,
+                      echo=FALSE, warning=FALSE, message=FALSE)
+```
+
+
+
+## Quiz Grade Analysis
+
+The following report looks at the performance of 30 students over 4 quizzes. The grades data is simulated using random numbers for normal distributions.
+
+
+```{r echo=TRUE}
+library(plotly)
+
+set.seed(123)
+
+data <- data.frame(
+  Quiz1 = round(rnorm(30, 60, 5)),
+  Quiz2 = round(rnorm(30, 70, 2)),
+  Quiz3 = round(rnorm(30, 80, 5)),
+  Quiz4 = round(rnorm(30, 75, 10))
+  )
+data$Average_Quizzes <- round(
+  (data$Quiz1 + data$Quiz2 + data$Quiz3 + data$Quiz4) / 4.0)
+
+grades <- data$Average_Quizzes
+
+x <- list(
+  title = "Student"
+)
+y <- list(
+  title = "Score"
+)
+
+n = length(grades)
+
+p <- plot_ly(x = 1:n, y = grades, name = 'Quizzes', type = 'bar') %>%
+  layout(title="Average Quiz Scores", xaxis = x, yaxis = y)
+p
+```
+
+
+## Summary of Quiz scores
+
+```{r echo = TRUE}
+
+options(digits=2)
+sum_data <- data.frame(
+  AvgQuiz = as.vector(summary(data$Average_Quizzes)),
+  Quiz1 = as.vector(summary(data$Quiz1)),
+  Quiz2 = as.vector(summary(data$Quiz2)),
+  Quiz3 = as.vector(summary(data$Quiz3)),
+  Quiz4 = as.vector(summary(data$Quiz4))
+)
+
+rownames(sum_data) <- c("Min", "Q1", "Q2", "Mean", "Q3", "Max")
+sum_data
+
+```
+
+
+## Box plot analysis of Average Quiz and the individual Quizzes
+
+```{r echo = TRUE}
+
+plot_ly(data, y = ~Average_Quizzes, type="box", name = 'Avg_Quiz') %>%
+  add_trace(p, y = ~Quiz1, name = 'Quiz1') %>%
+  add_trace(p, y = ~Quiz2, name = 'Quiz2') %>%
+  add_trace(p, y = ~Quiz3, name = 'Quiz3') %>%
+  add_trace(p, y = ~Quiz4, name = 'Quiz4') %>%
+  layout(yaxis = y)
+
+```
+
+## Conclusions
+
+Add conclusions about the analysis...
