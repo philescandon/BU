@@ -3,395 +3,170 @@ title: "CS544_HW3_Escandon"
 author: "Phillip Escandon - escandon@bu.edu"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
-  word_document:
-    toc: true
-    reference_doc: "res/BUtemplate.docx"
   html_document:
     toc: true
     fig_caption: true
     theme: flatly
     css: "res/styles.css"
-editor_options: 
-  markdown: 
-    wrap: 72
+  word_document:
+    toc: true
+    reference_doc: "res/BUtemplate.docx"
 ---
 
-<img src="res/BU_Small.png" width="200" height="100" style="position:absolute;top:0px;right:100px;"/>
+<img src="res/BU_Small.png" width=200 height=100 style="position:absolute;top:0px;right:100px;" />
 
-```{r include=FALSE}
+```{r setup}
 library(tidyverse)
-library(lubridate)
-library(corrplot)
-library(RColorBrewer)
-library(dplyr)
-
-#setwd("~/BU/CS544/3_DataDescription/CS544_HW3_Escandon")
 ```
 
-\newpage
-## Part 1. Read in some prime number data, plot and draw inferences.
 
-```{r}
+## Part 1. Prime Numbers
+```
+ Initialize the dataset about prime numbers as shown below:
 df <- read.csv("http://people.bu.edu/kalathur/datasets/myPrimes.csv")
 ```
+```{r 1Setup}
+df <- read.csv("http://people.bu.edu/kalathur/datasets/myPrimes.csv")
 
-```{r}
-dim(df)
-colnames(df)
-head(df)
+```
+
+Data Exploration
+
+
+```{r dataExploration}
+head(df, 10)
 tail(df)
 summary(df)
-dplyr::count(df,df$First)
-dplyr::count(df,df$Last)
-```
-
-### 1a. Show a barplot of the last digit
-
-```{r 1a,fig.height=4, fig.width=8}
-#barplot(table(df$LastDigit),col = 'green')
-#table(df$LastDigit) %>% barplot(col = 'green')
-table(df$LastDigit)%>%barplot(legend=TRUE,col = brewer.pal(n=9,"Paired"),xlab="1a. Last Digit of Prime Numbers")
-```
-
-### 1b. Show a barplot of the first digit
-
-```{r 1b,fig.height=4, fig.width=8}
-# Different approaches to getting the data.  
-# data <- df$FirstDigit
-# barplot( table(data),col = 'Blue')
-# Tried using the %>% operator 
-table(df$FirstDigit) %>% barplot(legend=TRUE,col = brewer.pal(10,"Paired"),xlab="1b. First Digit of Prime Numbers")
-
-# Different notes to see what was possible
-#table(df$FirstDigit) %>% barplot(col = 'gold')
-#count(df,df$FirstDigit)%>%table()%>%barplot()
-```
-
-### 1c What two interences can you draw from the plots above?
-
-Last Digit Plot:
-      1. No prime numbers > 10 end with 2 or 5
-      2. Close distribution of remaining numbers used
-      
-First Digits Plot:
-      1. First digit of a prime is almost evenly distributed
-
-    
-      
-
-\newpage
-
-## Part 2. Initialize the quarter coin productions dataset
-
-about the of the 50 US states by the DenverMint and PhillyMint. The
-numbers in the dataset (in thousands ) are the number of quarters
-minted.
-
-```{r 2}
-us_quarters <- read.csv("http://people.bu.edu/kalathur/datasets/us_quarters.csv")
-
-```
-
-Basic Exploration
-
-```{r 2Basic}
-# See some basic metrics 
-#dim(us_quarters)
-#colnames(us_quarters)
-#head(us_quarters)
-#tail(us_quarters)
-
-#might be easier to view this 'wide' mint data as a single column
-gQuarters<-gather(us_quarters,Mint,qrtCount,c(DenverMint,PhillyMint))
-
-# Now filter:
-pm<- filter(gQuarters,Mint=="PhillyMint")
-dm<- filter(gQuarters,Mint=="DenverMint")
-#sum(gQuarters$qrtCount)/4
-
-head(arrState <-arrange(gQuarters,State),4)
-arrMint <- arrange(gQuarters,Mint)
-arrCount <- arrange(gQuarters,desc(qrtCount))
-
-# ggplot(g,aes(x=State, y = qrtCount, color = Mint))+
-#   geom_point( )+
-#     theme(axis.text.x = element_text(angle = 80, hjust = 1))
-```
-
-### 2a. Highest number of quarters produced by each mint?
-
-For which state were the lowest number of quarters produced by each
-mint?
-
-```{r 2a}
-# Highest
-# Find the index of the max
-c<- which(max(us_quarters$DenverMint) == us_quarters$DenverMint)
-state<-us_quarters$State[c]
-
-d<- which(min(us_quarters$DenverMint) == us_quarters$DenverMint)
-state<-us_quarters$State[d]
-
-e<- which(max(us_quarters$PhillyMint) == us_quarters$PhillyMint)
-state<-us_quarters$State[e]
-
-f<- which(min(us_quarters$PhillyMint) == us_quarters$PhillyMint)
-state<-us_quarters$State[f]
-
-
-paste("Denver Mint: State with the most printed quarters: ", state)
-paste("Denver Mint: State with the least printed quarters: ", state)
-paste("Philly Mint: State with the most printed quarters: ", state)
-paste("Philly Mint: State with the least printed quarters: ", state)
-
-
-```
-
-```{r eval=FALSE, include=FALSE}
-## finding the indices
-#out <- boxplot.stats(dat$hwy)$out
-#out_ind <- which(dat$hwy %in% c(out))
-
-```
-
-```{r outliers, eval=FALSE, include=FALSE}
-dat <- ggplot2::mpg
-
-out <- boxplot.stats(dat$hwy)$out
-out_ind <- which(dat$hwy %in% c(out))
-out_ind
-
-
-u<-boxplot(dat$hwy,
-  ylab = "hwy",
-  main = "Boxplot of highway miles per gallon"
-)
-
-mtext(paste("Outliers: ", paste(out, collapse = ", ")))
-
-
-ggplot(dat) +
-  aes(x = "", y = hwy) +
-  geom_boxplot(fill = "#0c4c8a") +
-  theme_minimal()
-
-```
-
-### 2b. What is the value of the total coins in dollars?
-
-```{r 2b}
-# the number of quarters is in THOUSANDS
-totalQuarters <- sum(us_quarters$DenverMint, us_quarters$PhillyMint)
-totalDollars <- totalQuarters / 4
-paste("Dollar amount of all quarters printed from both mints is $",totalDollars," dollars")
-```
-
-### 2c. Produce barplot from the data using the R barplot function
-
-with the data for the two mints as a matrix. Write any two striking
-inferences you can observe by looking at the plot.
-
-```{r 2c,fig.height=4, fig.width=8}
-# transpose but leave out states
-# help from https://www.r-graph-gallery.com/210-custom-barplot-layout.html
-options(scipen = 1)
-usq_t<-t(us_quarters[-1])
-#barplot(usq_t,names=us_quarters$State,las = 3,beside= TRUE,col = c("red","blue"))
-# Using the arranged by State dataset (~line 111) 
-barplot(arrState$qrtCount,names=arrState$State,las = 3,beside= TRUE,col = c("red","blue"))
-
-
-
-
-```
-
-```
- pars=list             # controls the following graphical parameters  
- ((boxwex=.8,           # determines the width of the box  
- staplewex=.6),        # determines the width of the whisker see "help(bxp)" for more information  
- ylab="Response",      # y axis label  
- xlab="Treatments",    # x axis label  
- main="Experiment",    # graphic title  
- las=1,                # controls the orientation of the axis labels (1=horizontal)  
- cex.lab=1.1)          # controls the font size of the axis labels  
 ```
 
 
 
-```{r 2c2, eval=FALSE, include=FALSE}
-# Another approach
-#us_quarters %>% gather()
+### 1a. Bar Plot frequencies of last digits.
+```{r 1a}
 
-# ggplot(data = SprintTotalHours %>% gather(Variable, Hours, -Sprint), 
-#        aes(x = Sprint, y = Hours, fill = Variable)) + 
-#     geom_bar(stat = 'identity', position = 'dodge')
-
-#barplot(gQuarters$qrtCount,beside = TRUE ,las = 3, names = gQuarters$State)
+table(df$LastDigit)
+barplot(table(df$LastDigit),col='blue')
 
 ```
 
-### 2d. Scatter plot: Number of coins between the two mints.
+### 1b. Bar Plot of frequencies of first digits
+```{r 1b}
+barplot(table(df$FirstDigit),col = 'green')
 
-Write any two inferences you can observe looking at the plot.
-
-```{r 2d,fig.height=4, fig.width=8}
-options(scipen = 1)
-#plot(us_quarters$DenverMint)
-#plot(xus_quarters$PhillyMint)
-
-
-p<-ggplot(data = us_quarters) + 
-  geom_point(mapping = aes(x = State, y= DenverMint,col='Denver Mint')) +
-  geom_point(mapping = aes(x = State, y= PhillyMint,col='Philly Mint'))+
-  theme(axis.text.x = element_text(angle = 80, hjust = 1))
-p+ggtitle("Number of coins between the two mint")+ 
-  ylab("Quarter Count in thousands")
 
 ```
-Inferences from the above plot:
-1. The Philly mint has a bias toward printing Quarters from Virginia for some reason.
-2. The Denver mint doesn't print many quarters from Ohio
 
-
-
-### 2e. Show the side-by-side box plots for the two mints.
-
-Write any two inferences for each of the box plots.
-
-```{r 2e,fig.height=4, fig.width=8}
-par( mfrow=c(1,2))
-boxplot(us_quarters$DenverMint,horizontal = TRUE,xaxt = "n", xlab = "Denver Mint", col = "blue")
-axis(side = 1, at = fivenum(us_quarters$DenverMint), labels = TRUE)
-
-boxplot(us_quarters$PhillyMint, horizontal = TRUE,xaxt = "n", xlab = "Philly Mint", col = "green")
-axis(side = 1, at = fivenum(us_quarters$PhillyMint), labels = TRUE)
-
+### 1c. Draw two interences from each plot.
+```{r 1c}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy))
 ```
-The Denver Mint box plot show several outliers, while the Philly mint shows many more.  We can infer that the denver mint prints quarters the most equitably from all the states.  The Philly mint, less so.
 
-### 2f. What states would be considered as outliers
+```{r}
+dim(mpg)
+unique(mpg$class)
 
-For each of the two mints. Use the five number summary function to
-derive the outlier bounds
 
-```{r 2f Outliers}
-# Use the fivenum for detecting the outliers
-f<- fivenum(us_quarters$DenverMint)
-lower <- f[2] - 1.5*(f[4] - f[2])
-upper <-  f[4] + 1.5*(f[4] - f[2])
-outlier_ind <- which(us_quarters$DenverMint < lower | us_quarters$DenverMint > upper) 
-#us_quarters$State[outlier_ind]
-paste("The outlier states from the Denver Mint are: ")
-paste(us_quarters$State[outlier_ind])  
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, color = class))
+```
+```{r}
+ggplot(data = mpg) + 
+  geom_smooth(mapping = aes(x = displ, y = hwy))
+```
+```{r}
+ggplot(data = mpg) + 
+  geom_smooth(mapping = aes(x = displ, y = hwy,linetype = drv))
+```
+```{r palidrome}
+x <-  c(1,2,4,3,1)
+isPali <- function(x) {
   
-f<- fivenum(us_quarters$PhillyMint)
-outlier_ind2 <- which(us_quarters$PhillyMint < lower | us_quarters$PhillyMint > upper) 
-#us_quarters$State[outlier_ind2]
-paste("The outlier states from the Philly mint are: ")
-paste(us_quarters$State[outlier_ind2])
-
-```
-
-\newpage
-
-## Part 3. Stock Data
-
-```{r 3 Setup}
-stocks <- read.csv("http://people.bu.edu/kalathur/datasets/faang.csv")
-# Get some basic details
-#head(stocks,2)
-#tail(stocks,2)
-#summary(stocks[-1])
-
-
-
-```
-
-### 3a. Show the pair wise plots for all the 5 stocks in the dataset in a single plot.
-
-```{r 5Stocks,fig.height=4, fig.width=8}
-# Like with the mint data - it would be easier to reformat the data
-# putting all of the stock symbols in one column and all of the values in one column.
-# This does mean that there will be repeating date values, but this works well for plotting.
-
-# Use gather(data, <newVar>,<newVar>,c(<column names>))
-gStocks<-gather(stocks, stockSym, value,c(Facebook,Apple,Amazon,Netflix,Google))
-# Change the date vector using lubridate...
-gStocks$Date <- ymd(stocks$Date)
-# now pipe it all together
-gStocks %>% ggplot(aes(x=Date,y=value,color = stockSym))+ geom_line()+ geom_point()
-
-#         theme(axis.text.x = element_text(angle = 80, hjust = 1))
-```
-
-### 3b. Show the correlation matrix for the 5 stocks in the dataset.
-
-```{r 3b}
-# use the pairs - but dont include the date!
-pairs(stocks[-1],pch=16, col = 'Blue')
-(c<-cor(stocks[-1]))
-```
-
-```{r 3b corrPlot,fig.height=4, fig.width=8}
-# different view of the corr matrix.  Only include the upper and
-# make it easy to visually see corr/ non-corr
-corrplot(c,type = "upper",order = "hclust",col = brewer.pal(n=10,name = "Paired"))
-
-```
-
-
-
-### 3c. Provide at least 4 interpretations of the results.
-
-    1. All the stocks are correlated positively
-    2. All stocks can be grouped together - say 'Tech Stocks'
-    3. Netflix is not as strongly correlated with Google or Facebook
-    4. Netflix would be the first choice to exclude from the 'Tech Stock' group since it is not as strongly correlated with the others.
-
-\newpage
-
-## 4. Scores of 100 students
-
-```{r 4 Setup}
-scores <- read.csv("http://people.bu.edu/kalathur/datasets/scores.csv")
-
-# Get some basics
-#head(scores)
-#summary(scores$Score)
-```
-
-### 4a. Save the result of the histogram
-
-into a variable. Using the counts and breaks property of this variable,
-write the R code to produce the following output. The code for the
-following output should not refer to the individual scores.
-
-```{r 4a,fig.height=4, fig.width=8}
-library(knitr)
-studentHist<-hist(scores$Score, col = brewer.pal(5,"Accent"))
-
-# I don't care for the sprintf.  Change to print( paste() )
-for (i in seq(1,length(studentHist$count)) ) {
-    j<-sprintf("%d students in range (,%d,%d ] ", studentHist$counts[i],studentHist$breaks[i],studentHist$breaks[i+1])
-    print(j)
-  }
-
-
-```
-
-### 4b. Show the histogram and the custom output
-
-Using the breaks option of the histogram. Show that students in the 1.
-range (70,90] get an A grade, 2. (50,70] get a B grade, and 3. (30-50]
-get a C grade. The code for the following output should not refer to the
-individual scores.
-
-```{r 4b, fig.height=4, fig.width=8}
-newHist<-hist(scores$Score,breaks = seq(30,90,20),col=brewer.pal(4,"Accent"))
-
-for (i in seq(1,length(newHist$count)) ) {
-    j<-sprintf("%d students in range (,%d,%d ] ", newHist$counts[i],newHist$breaks[i],newHist$breaks[i+1])
-    print(j)
+  ifelse(identical(x,x[length(x):1]),return(TRUE), return(FALSE))
+  
 }
 
 ```
+```{r}
+y <- c(1,3,5,7,5,3,1)
+isPali(y)
+
+```
+
+
+```{r}
+ggplot(diamonds) +
+  geom_bar(mapping = aes(x = cut))
+
+ggplot(df) + 
+  geom_bar(mapping = aes(x=FirstDigit))
+
+barplot(table(df$FirstDigit))
+
+```
+
+
+## Part 2.
+```{r}
+us_quarters <- read.csv("http://people.bu.edu/kalathur/datasets/us_quarters.csv")
+head(us_quarters)
+us_quarters[us_quarters == "Colorado",c(2,3)] %>% sum
+
+usq<- gather(us_quarters,Mint,qtrCount,c(DenverMint,PhillyMint))
+usq
+
+# Find texas quarters - they are printed from two different mints!
+usq[which(usq$State=='Texas'),]
+
+byState<-usq %>% group_by(Mint)
+
+
+# whats the sum of the quarters from texas?
+usq[which(usq$State=='Texas'),]$qtrCount %>% sum
+# 541800
+usq[usq$State == 'Colorado',]$qtrCount %>% sum
+
+
+```
+
+
+###2a. Which state has most quarters by mint
+```{r}
+head(us_quarters,2)
+
+denverMax <- max(us_quarters$DenverMint)
+ind <- which(us_quarters$DenverMint  == denverMax)
+#us_quarters[ind,]$State
+paste("State with most quarters from the Denver Mint: ",us_quarters[ind,]$State," with ",denverMax)
+
+
+phillyMax <- max(us_quarters$PhillyMint)
+ind <- which(us_quarters$PhillyMint  == phillyMax)
+#us_quarters[ind,]$State
+paste("State with most quarters from the Philly Mint: ",us_quarters[ind,]$State," with ",phillyMax)
+
+
+denverMin <- min(us_quarters$DenverMint)
+ind <- which(us_quarters$DenverMint  == denverMin)
+#us_quarters[ind,]$State
+paste("State with least quarters from the Denver Mint: ",us_quarters[ind,]$State," with ", denverMin)
+
+
+phillyMin <- min(us_quarters$PhillyMint)
+ind <- which(us_quarters$PhillyMint  == phillyMin)
+#us_quarters[ind,]$State
+paste("State with least quarters from the Philly Mint: ",us_quarters[ind,]$State," with ",phillyMin)
+
+# Total Coins
+totalMoney <- sum(us_quarters[,c('DenverMint','PhillyMint')])/4
+
+table(us_quarters) %>% barplot
+
+```
+
+
+## Part 3.
+
+
+## Part 4
+

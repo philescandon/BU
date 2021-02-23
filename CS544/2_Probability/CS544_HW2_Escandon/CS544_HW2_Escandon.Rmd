@@ -4,7 +4,8 @@ author: "Phillip Escandon - escandon@bu.edu"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
   pdf_document:
-    toc: no
+    toc: true
+    highlight: tango
   html_document:
     toc: no
     fig_caption: yes
@@ -148,11 +149,6 @@ Prob(A)
 ### c.  Only two of the three rolls are identical.  
 ```{r 2c}
 S<- rolldie(3, makespace = TRUE)
-
-
-# NOW take the UNION of dieEqual with A.  A comes from prob 2b.
-# this will remove the x1=x2=x3 attributes
-
 # create 3 subsets and take the union
 
 # X1==X2, X3 not included
@@ -165,7 +161,6 @@ u<- subset(S,X1==X3 & X1 != X2)
 v<- subset(S,X2==X3 & X1 != X2)
 
 Prob(union(t,u,v))
-
 
 #check
 # union(t,u,v)
@@ -274,7 +269,8 @@ sum_of_first_N_odd_squaresV2(10)
 
 
 \newpage
-## 4. Using R  
+## Part 4. Using R
+  
 ```
 Initialize the Dow Jones Industrials daily closing data, dow, using the read.csv function with the
 link: http://people.bu.edu/kalathur/datasets/DJI_2020.csv
@@ -282,7 +278,7 @@ link: http://people.bu.edu/kalathur/datasets/DJI_2020.csv
 ```
 
 
-###  Store the result of the summary function for the Close attribute as the variable sm. Change
+### 4. Store the result of the summary function for the Close attribute as the variable sm. Change
 the names of this variable so that the output appears as shown below.
 
 ```{r 4 Read In Data}
