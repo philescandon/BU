@@ -1,30 +1,4 @@
----
-title: "CS544 Homework 5"
-author: "Phillip Escandon - escandon@bu.edu"
-date: "`r format(Sys.time(), '%d %B, %Y')`"
-output:
-  html_document:
-    toc: true
-    toc_float:
-      collapsed: true
-    fig_caption: true
-    theme: flatly
-    css: "res/styles.css"
-  word_document:
-    toc: true
-    reference_doc: "res/BUtemplate.docx"
----
-
-<img src="res/BU_Small.png" width=200 height=100 style="position:absolute;top:0px;right:100px;" />
-
-\newpage
-
-## 1. Central Limit Theorem
-```
-Using the city of Boston earnings dataset complete 3 distributions and compare the standard deviation and mean of each
-
-```
-```{r Setup, include=FALSE}
+## ----Setup, include=FALSE--------------------------------------------------------------------------------------------------------
 library(tidyverse)
 library(prob)
 library(plotly)
@@ -33,19 +7,15 @@ library(scales)  # for dollar format
 library(sampling) # for question 3
 set.seed(5121)
 options(digits=4)
-```
-Retrieve the data
-```{r getData}
+
+
+## ----getData---------------------------------------------------------------------------------------------------------------------
 boston <- read.csv("http://people.bu.edu/kalathur/datasets/bostonCityEarnings.csv",colClasses = c("character","character","character","integer","character"))
 
 
-```
 
 
-### 1.a Show the histogram of the employee earnings.  Use breaks from 40000 to 400000 in
-steps of 20000 and show the corresponding tick labels on the x-axis
-
-```{r 1a}
+## ----1a--------------------------------------------------------------------------------------------------------------------------
 
 # Cannot get the xlim to work correctly
 s <- seq(40000,400000,20000)
@@ -60,25 +30,19 @@ paste("Standard Deviation from the mean is ", sd0)
 paste("I can infer that the earnings for Boston City public employees is skewed left and with < $100,000 salaries. The high salaries for some jobs are surprising to my high school kids.")
 
 
-```
-
-```{r notes 1, eval=FALSE, include=FALSE}
-# Testing for the xlim / xaxis
-#sum(ee$density * 20000) == 1
-
-#ggplot(boston, aes(x=Earnings)) + geom_histogram(color="darkblue", fill="lightblue",binwidth = 20000) +  scale_x_continuous(limits = c(40000, 400000))
 
 
+## ----notes 1, eval=FALSE, include=FALSE------------------------------------------------------------------------------------------
+## # Testing for the xlim / xaxis
+## #sum(ee$density * 20000) == 1
+## 
+## #ggplot(boston, aes(x=Earnings)) + geom_histogram(color="darkblue", fill="lightblue",binwidth = 20000) +  scale_x_continuous(limits = c(40000, 400000))
+## 
+## 
+## 
 
-```
 
-
-
-
-### 1.b Draw 5000 samples of this data of size 10, show the histogram of the sample means. 
-Compute the mean of the sample means and the standard deviation of the sample
-means. 
-```{r 1b}
+## ----1b--------------------------------------------------------------------------------------------------------------------------
 samples <- 5000
 sample.size <- 10
 
@@ -96,12 +60,9 @@ mean10 <- dollar(mean(xbar))
 sd10 <- dollar(sd(xbar))
 
 
-```
 
-### 1.c Draw 5000 samples of this data of size 40, show the histogram of the sample means.  
-Compute the mean of the sample means and the standard deviation of the sample
-means.  
-```{r 1c}
+
+## ----1c--------------------------------------------------------------------------------------------------------------------------
 samples <- 5000
 sample.size <- 40
 
@@ -118,10 +79,9 @@ mean40 <- dollar(mean(xbar))
 sd40 <- dollar(sd(xbar))
 
 
-```
 
-### 1.d Compare of means and standard deviations of the above three distributions.
-```{r 1d}
+
+## ----1d--------------------------------------------------------------------------------------------------------------------------
 paste(" The mean and SD of the original dataset are ", mean0," and ", sd0)
 paste(" The mean and SD of the 10 sample sized dataset are ", mean10," and ",sd10)
 paste(" The mean and SD of the 40 sample sized  dataset are ", mean40," and ", sd40)
@@ -132,18 +92,9 @@ paste(" The mean became clear quickly with a small data set and the standard dev
 #boxplot(boston$Earnings,horizontal = TRUE ))
 
 
-```
 
 
-
-## 2. Central Limit Theorem - Negative Binomial Distribution
-```
-Suppose the input data follows the negative binomial distribution with the parameters size = 3 and prob = .5
-
-```
-### 2.a  Generate 5000 random values from this distribution. Show the barplot with the
-proportions of the distinct values of this distribution.
-```{r 2a}
+## ----2a--------------------------------------------------------------------------------------------------------------------------
 # Probability
 p <-  .5
 # size
@@ -160,15 +111,9 @@ title("Random Negative Binomial Distribution, r=3, p=.5")
 mean(x)
 sd(x)
 
-```
 
 
-
-
-### 2.b With samples sizes of 10, 20, 30, and 40, draw 1000 samples from the data
-generated in a). Use sample() function with replace as FALSE. Show the histograms of
-the densities of the sample means. Use a 2 x 2 layout.
-```{r}
+## --------------------------------------------------------------------------------------------------------------------------------
 par(mfrow = c(2,2))
 p <-  .5
 nbiSample <- 5000
@@ -198,27 +143,15 @@ par(mfrow = c(1,1))
 #10 / sqrt(c(10,20,30,40))
 
 
-```
 
 
-### 2.c Compare of means and standard deviations of the data from a) with the four
-sequences generated in b). 
-
-```{r}
+## --------------------------------------------------------------------------------------------------------------------------------
 paste("With the four sample sizes changing, the mean was very accurate and the standard deviation was increasingly less as the sample size grew. Changing the nbiSample var from 5000 to 500 still resulted in values very close when the same sample size of 40 was used. ")
 
 
-```
 
 
-## 3. Sampling
-```
-Create a subset of the dataset from #1 with only the top 5 departments based on the number of employees working in that department.
-The top 5 should be computed using R code.  Use the %in% operator.
-Sampling size: 50 for each
-Random seed: Last 4 of your BU id : 5121
-```
-```{r 3 TopDepartments}
+## ----3 TopDepartments------------------------------------------------------------------------------------------------------------
 # Trying the %>% operator
 # Created a sorted var, send it to table for a count, sort it by decreasing values and get the names
 sortedDept <- boston$Department  %>% table() %>% sort(decreasing = TRUE) %>% names()
@@ -230,15 +163,9 @@ top5DepartmentNames <- sortedDept[1:5]
 topDepartments <- subset(boston,boston$Department %in% top5DepartmentNames)
 
 
-```
 
 
-
-### 3.a  Show the sample drawn using simple random sampling without replacement. 
-Show the frequencies for the selected departments. Show the percentages of these with
-respect to sample size.
-
-```{r 3a }
+## ----3a--------------------------------------------------------------------------------------------------------------------------
 # seed from BU id
 set.seed(5121)
 s <- srswor(50, nrow(topDepartments))
@@ -266,13 +193,9 @@ barplot(t2, main =  "Top Depts by Percentage- Simple Random Sampling", ylab = "P
         col="#69b3a2")
 
 
-```
 
 
-### 3.b Show the sample drawn using systematic sampling. 
-Show the frequencies for the selected departments. Show the percentages of these with respect to sample size.
-
-```{r 3b}
+## ----3b--------------------------------------------------------------------------------------------------------------------------
 set.seed(5121)
 # sample size 50
 N <- nrow(topDepartments)
@@ -317,15 +240,9 @@ barplot(t4, main =  "Top Depts by Percentage - Systematic Sampling", ylab = "Per
 
 
 
-```
 
 
-### 3.c Calculate the inclusion probabilities using the Earnings variable. 
-Using these values, show the sample drawn using systematic sampling with unequal probabilities. 
-Show the frequencies for the selected departments. 
-Show the percentages of these with respect to sample size.
-
-```{r 3c}
+## ----3c--------------------------------------------------------------------------------------------------------------------------
 # min i
 #### 3.6. Unequal Probabilities
 #inclusionprobabilities()
@@ -369,15 +286,9 @@ barplot(t6, main =  "Top Depts by Percentage - Inclusion", ylab = "Percent Propo
         col="#70b3a2")
 
 
-```
 
 
-
-### 3.d Stratified Sampling: Order the data using the Department variable. 
-Draw a stratified sample using proportional sizes based on the Department variable. 
-Show the frequencies for the selected departments. 
-Show the percentages of these with respect to sample size.
-```{r 3d}
+## ----3d--------------------------------------------------------------------------------------------------------------------------
 sortedDepts <- sort(table(topDepartments$Department),decreasing = TRUE)
 set.seed(5121)
 # Then do the stratified sampling
@@ -429,11 +340,9 @@ barplot(t8, main =  "Top Depts by Percentage - Stratified", ylab = "Percent Prop
         col="#70b3a2")
 
 
-```
 
-### 3.e Compare the means of Earnings variable for these four samples against the mean for
-the data. 
-```{r 3e}
+
+## ----3e--------------------------------------------------------------------------------------------------------------------------
 # Original Dataset
 paste("The mean for Earning variable in the original dataset is", dollar( mean(boston$Earnings)))
 
@@ -451,12 +360,6 @@ paste("The mean for Earning variable in the Stratified Random dataset is", dolla
 
 
 "It appears that a simple random sample works best for this particular problem, but am questioning why the mean is not closer to the original dataset mean as it worked in out example data sets."
-
-
-
-```
-
-
 
 
 
