@@ -2,15 +2,29 @@
 
 #### 2.1. Introduction
 
+# different ways to choose 2 numbers out of 5
+choose(5,2)
+# This answer is the number of combinations that you are able to create
+# in this case you can have 10 combinations of 2 numbers out of the 5
+
+
 library(prob)
 options(digits=4)
 
 x <- c(69,70,72,75,79)
 samples <- urnsamples(x, 2)
 samples
+mean(x)
+sd(x)
+
+
 
 xbar <- (samples$X1 + samples$X2)/2
 xbar
+
+mean(xbar)
+sd(xbar)
+
 
 hist(xbar, prob = TRUE)
 
@@ -78,6 +92,8 @@ hist(xbar, prob = TRUE,
 
 mean(xbar)
 sd(xbar)
+
+
 
 # Examine different sample sizes
 
@@ -158,6 +174,9 @@ par(mfrow = c(2,3))
 
 0.5 / sqrt(c(10,20,30,40,50,60))
 
+
+
+## PROPORTION
 #### 2.4. Data from Discrete Uniform Distribution
 
 set.seed(150)
@@ -169,7 +188,7 @@ x <- sample(1:6, size = 1000, replace = TRUE)
 table(x)
 
 prop.table(table(x)) * 100
-
+options(scipen = 3)
 barplot(prop.table(table(x)),
   xlab = "x", ylim = c(0, 0.2), ylab = "Proportion")
   
@@ -283,6 +302,8 @@ head(sample.2[c(2,4,14,17,22)])
 table(sample.2$REG)
 
 
+
+#------------------------------------------
 #### 3.4. Systematic Sampling
 
 set.seed(113)
@@ -325,6 +346,8 @@ head(sample.3[c(2,4,14,17,22)])
 
 table(sample.3$REG)
 
+
+#--------------------------------------------------
 #### 3.6. Unequal Probabilities
 
 set.seed(113)
@@ -343,6 +366,8 @@ head(sample.4[c(2,4,14,17,22)])
 
 table(sample.4$REG)
 
+
+#------------------------------------
 #### 3.7. Stratified Sampling
 
 set.seed(123)
@@ -361,7 +386,7 @@ head(data)
 table(data$Section)
 
 st.1 <- strata(data, stratanames = c("Section"),
-               size = rep(3, 4), method = "srswor",
+               size = rep(3, 5), method = "srswor",
                description = TRUE)
 
 st.1

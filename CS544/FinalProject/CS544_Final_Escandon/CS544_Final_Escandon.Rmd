@@ -16,11 +16,24 @@ output:
 <img src="res/BU_Small.png" width=200 height=100 style="position:absolute;top:0px;right:100px;" />
 
 ## Introduction
+```
 The dataset that I chose to investigate was the college major dataset from 
 
+
+```
 What hypothesis do I want to investigate , prove, or illuminate.
 
 ## Exploratory Data Analysis
+```{r Load libraries, include=FALSE}
+library(tidyverse)
+library(prob)
+library(plotly)
+library(renv)
+
+```
+
+Loading in the data files
+
 
 
 ### One categorical / one numerical data
