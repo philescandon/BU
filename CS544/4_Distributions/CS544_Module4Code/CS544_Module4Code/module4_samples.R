@@ -58,8 +58,8 @@ for (i in 1:length(x)) {
 
 #### 2.7. Bernoulli Trials
 
-p <- 1/4
-sample(0:1, size = 10, replace = TRUE, 
+p <- .56
+sample(4, size = 5, replace = FALSE, 
   prob = c(1 - p, p))
 
 p <- 3/4
@@ -86,6 +86,8 @@ dbinom(0:n, size = n, prob = p)
 
 dbinom(c(1,5), size = n, prob = p)
 
+
+#---- 
 # P(X <= 3)   at most 3 successes
 
 sum(dbinom(0:3, size = n, prob = p))
@@ -94,6 +96,7 @@ sum(dbinom(0:3, size = n, prob = p))
 
 pbinom(3, size = n, prob = p)
 
+#-----
 # P(X > 3)  at least 4 successes
 
 sum(dbinom(4:n, size = n, prob = p))
@@ -326,16 +329,19 @@ plot(table(x))
 
 
 
+
+
 #### 2.15. Negative Binomial Distribution
 
 r <- 3  # Number of successes (fixed)
+x <- 5
 p <- 0.5
 
 # P(X = 5)   five failures before getting 3 successes
 # 2 successes in the first 7 attempts, 8th is success
 
 choose(7, 2) * (p**r) * ((1-p)**5) 
-
+choose((r+x)-1,r-1) * (p**r) * ((1-p)**x)
 dnbinom(5, size = r, prob = p)
 
 # Distribution of probabilities
@@ -359,6 +365,7 @@ sum(0:20 * pmf)
 sum(dnbinom(0:5, size = r, prob = p))
 
 pnbinom(5, size = r, prob = p)
+
 
 # P(X > 5)   at least 6 failures
 
@@ -644,9 +651,9 @@ plot(x, cdf, type="l", col="red", xlim=c(-3,3))
 
 qnorm(0.5, mean=0, sd=1)
 
-qnorm(0.95, mean=80, sd=5)
+qnorm(0.99, mean=0, sd=1)
 
-qnorm(0.99, mean=80, sd=5)
+                                
 
 ### 3.9. Generating Random Numbers with Normal Distribution
 
