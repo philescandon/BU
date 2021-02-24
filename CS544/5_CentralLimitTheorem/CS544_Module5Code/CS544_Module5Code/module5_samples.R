@@ -8,10 +8,15 @@ options(digits=4)
 x <- c(69,70,72,75,79)
 samples <- urnsamples(x, 2)
 samples
-
+# take the mean of the original data
+mean(x)
+sd(x)
+#now find the mean of the samples
 xbar <- (samples$X1 + samples$X2)/2
-xbar
 
+xbar
+mean(xbar)
+sd(xbar)
 hist(xbar, prob = TRUE)
 
 # Alternative approach (no need for prob library)
@@ -63,11 +68,11 @@ sd(x)
 
 # Examine 10000 samples of 5 scores
 
-samples <- 10000
+samples <- 100
 sample.size <- 5
 
 xbar <- numeric(samples)
-
+# x is the normal distro set
 for (i in 1: samples) {
 	xbar[i] <- mean(sample(x, sample.size, replace = FALSE))
 }
