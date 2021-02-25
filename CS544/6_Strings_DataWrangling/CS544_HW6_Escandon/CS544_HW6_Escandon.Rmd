@@ -1,0 +1,136 @@
+---
+title: "CS544 Homework 6"
+author: "Phillip Escandon - escandon@bu.edu"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  html_document:
+    toc: true
+    toc_float:
+      collapsed: true    
+    fig_caption: true
+    theme: flatly
+    css: "res/styles.css"
+  word_document:
+    toc: true
+    reference_doc: "res/BUtemplate.docx"
+---
+
+<img src="res/BU_Small.png" width=200 height=100 style="position:absolute;top:0px;right:100px;" />
+
+
+\newpage
+
+
+```{r Setup, include=FALSE}
+library(tidyverse)
+library(prob)
+library(plotly)
+library(RColorBrewer) # color
+library(scales)  # for dollar format
+library(sampling) # 
+set.seed(5121)
+options(digits=4)
+
+
+setwd("~/BU/CS544/6_Strings_DataWrangling/CS544_HW6_Escandon")
+```
+
+## 1. Stringr and strings
+```
+
+```
+```{r 1 setup}
+file <- "http://people.bu.edu/kalathur/datasets/lincoln.txt"
+ words <- scan(file, what=character())
+
+
+```
+
+### 1 a. 
+```{r 1a}
+
+```
+### 1 b. 
+```{r 1b}
+
+```
+### 1 c. 
+```{r 1c}
+
+```
+### 1 d. 
+```{r 1d}
+
+```
+### 1 e. 
+```{r 1e}
+
+```
+### 1 f. 
+```{r 1f}
+
+```
+### 1 g. 
+```{r 1g}
+
+```
+
+
+## Stopwords Bonus
+```{r Bonus Setup}
+
+stopfile <- "http://people.bu.edu/kalathur/datasets/stopwords.txt"
+stopwords <- scan(stopfile, what=character())
+```
+```
+Filter the stopwords from the new_words data. Use the %in% operator.
+Repeat c) and d) for this data without the stop words.
+```
+### Bonus c. 
+```{r Bonus c}
+
+```
+
+### Bonus d.  
+```{r Bonus d}
+
+```
+
+## 2. Data Wrangling and the Tidyverse
+Download the following csv file,
+http://people.bu.edu/kalathur/usa_daily_avg_temps.csv
+locally first and use read.csv to load the data into a data frame.
+
+```{r 2 setup}
+dailyTemps <- read_csv("usa_daily_avg_temps.csv")
+
+```
+### 2 a.  
+```{r 2a}
+
+```
+
+### 2 b.  
+```{r 2b}
+
+```
+
+### 2 c.  
+```{r 2c}
+
+```
+
+### 2 d.  
+```{r 2d}
+
+```
+
+### 2 e.  
+```{r 2e}
+
+```
+
+
+
+
+
