@@ -1,0 +1,211 @@
+---
+title: "CS544 Homework 6"
+author: "Phillip Escandon - escandon@bu.edu"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  word_document:
+    toc: true
+    reference_doc: "res/BUtemplate.docx"
+  html_document:
+    toc: true
+    toc_float:
+      collapsed: true    
+    fig_caption: true
+    theme: flatly
+    css: "res/styles.css"
+---
+
+<img src="res/BU_Small.png" width=200 height=100 style="position:absolute;top:0px;right:100px;" />
+
+
+\newpage
+
+
+```{r Setup, include=FALSE}
+library(tidyverse)
+library(prob)
+library(plotly)
+library(RColorBrewer) # color
+library(scales)  # for dollar format
+library(sampling) # 
+set.seed(5121)
+options(digits=4)
+
+
+setwd("~/BU/CS544/6_Strings_DataWrangling/CS544_HW6_Escandon")
+```
+
+## 1. Stringr and strings
+```
+
+```
+```{r 1 setup}
+# Read in the lincoln text and place into the words variable.
+file <- "http://people.bu.edu/kalathur/datasets/lincoln.txt"
+ words <- scan(file, what=character())
+
+
+```
+
+### 1 a. Detect and show all words with punctuation.
+```{r 1a}
+# Words with punctuation
+punctWords <- words[str_detect(words, "[:punct:]")]
+punctWords
+
+```
+### 1 b. Replace punctuation with space.
+Remove any empty words and convert to lowercase
+```{r 1b}
+# replace punctuation with space
+
+new_words<- str_remove_all(str_replace_all(punctWords,"[:punct:]","")," ")
+# Could not get rid of "" and had difficulty with '--'
+new_words <- new_words[new_words!='']
+new_words <- str_to_lower(new_words)
+new_words
+
+
+```
+### 1 c. Top 5 frequent words
+```{r 1c}
+# Find the top 5 frequently used words.
+top5 <- sort(table(new_words),decreasing = TRUE)[1:5]
+top5
+
+```
+### 1 d. Plot the distribution of the word frequencies of the word lengths.
+```{r 1d}
+# Should sort the barplot
+# Barplot seems more applicable  
+barplot(table(str_length(new_words)),horiz = FALSE,las = 1,xlab = 'Word Length',ylab = 'Word Count')
+#hist(table(str_length(new_words)))
+
+
+```
+### 1 e. What are the words in the new_words data with the longest length
+```{r 1e}
+lenlongestWord <- str_length(new_words) %>% max()
+
+longestWord <- new_words[str_length(new_words) == lenlongestWord]
+
+glue::glue("The longest word is ", longestWord)
+
+```
+### 1 f. Show all words that begin with letter p 
+```{r 1f}
+pWords <- new_words[str_detect(new_words,"^[pP]")]
+pWords
+
+```
+
+
+### 1 g. Show all words that end with a letter r 
+```{r 1g}
+rWords <- new_words[str_detect(new_words,"[rR]$")]
+rWords
+
+```
+
+
+## Stopwords Bonus
+```{r Bonus Setup}
+
+stopfile <- "http://people.bu.edu/kalathur/datasets/stopwords.txt"
+stopwords <- scan(stopfile, what=character())
+```
+```
+Filter the stopwords from the new_words data. Use the %in% operator.
+Repeat c) and d) for this data without the stop words.
+```
+### Bonus c. 
+```{r Bonus c}
+#new_words[stopwords %in% new_words]
+
+# this is the one we want
+#new_words
+new_words_wo_stops <- new_words[!new_words %in% stopwords]
+
+# Top 5 most frequent words
+top5Main <- sort(table(new_words_wo_stops),decreasing = TRUE)[1:5]
+barplot(top5Main,xlab = 'Word',ylab = "Count",main = "Top 5 Words in Lincoln Address")
+# Frequency of the word lengths
+barplot(table(str_length(new_words_wo_stops)),horiz = FALSE,las = 1,xlab = 'Word Length',ylab = 'Word Count')
+
+```
+
+## 2. Data Wrangling and the Tidyverse
+Download the following csv file,
+http://people.bu.edu/kalathur/usa_daily_avg_temps.csv
+locally first and use read.csv to load the data into a data frame.
+
+```{r 2 setup}
+dailyTemps <- read_csv("usa_daily_avg_temps.csv")
+
+```
+### 2 a.   Convert the data frame into a tibble and assign it to the variable
+usaDailyTemps.
+```{r 2a}
+usaDailyTemps <- as_tibble(dailyTemps)
+
+```
+
+### 2 b.  What are the maximum temperatures recorded for each year? Show the
+values and also the appropriate plot for the results.  
+```{r 2b}
+usaDailyTemps %>% 
+  group_by(year) %>%
+  summarize(tmp = max(avgtemp))%>%
+  plot_ly(x=~year,y=~tmp,type = "scatter",mode = 'lines+markers')%>%
+    layout(title = "Max Temperatures recorded every year",
+         xaxis = list(title = "Year"),
+         yaxis = list (title = "Temperature (degrees F)"))
+
+
+```
+
+### 2 c.  What are the maximum temperatures recorded for each state? Show the values and also the appropriate plot for the results.
+ 
+```{r 2c}
+usaDailyTemps %>% 
+  group_by(state) %>%
+  summarize(tmp = max(avgtemp)) %>%
+  arrange(desc(tmp)) %>%  # This portion doesn't quite work- I'd like the barplot to be ordered by temp.
+  plot_ly(x = ~state)%>%
+  add_trace(y=~tmp,name = 'Temp', type = 'bar')%>%
+    layout(title = "High Temperatures for every State",
+         xaxis = list(title = "State"),
+         yaxis = list (title = "Temperature (degrees F)"))
+
+
+```
+
+### 2 d.   Filter the Boston data from usaDailyTemps and assign it to the variable bostonDailyTemps.
+
+```{r 2d}
+bostonDailyTemps <- usaDailyTemps %>% 
+  filter(city=="Boston")
+
+```
+
+### 2 e. What are the average monthly temperatures for Boston? 
+Show the values and also the appropriate plot for the results. Use the
+bostonDailyTemps.  
+```{r 2e}
+bostonDailyTemps %>%
+  group_by(month) %>%
+  summarize(avg = mean(avgtemp)) %>%
+  plot_ly(x = ~month, y = ~avg,type = 'scatter', mode = 'lines+markers')%>%
+  layout(title = "Average Temperatures in Boston",
+         xaxis = list(title = "Month"),
+         yaxis = list (title = "Temperature (degrees F)"))
+  
+  
+
+
+```
+
+
+
+
+

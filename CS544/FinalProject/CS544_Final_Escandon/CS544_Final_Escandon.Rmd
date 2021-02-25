@@ -17,26 +17,107 @@ output:
 
 ## Introduction
 ```
-The dataset that I chose to investigate was the college major dataset from 
-
+The dataset that I chose to investigate was the college major dataset from Five Thiry Eight
+1. Exploratory 
+2. Investigation
+3. Prove
+4. Illuminate
+5. General data analysis concerns
+  5.a Reproducible
+  5.b Saved environment
+  5.c 
 
 ```
 What hypothesis do I want to investigate , prove, or illuminate.
 
 ## Exploratory Data Analysis
-```{r Load libraries, include=FALSE}
+```{r Load libraries, message=FALSE, include=FALSE}
 library(tidyverse)
 library(prob)
 library(plotly)
 library(renv)
 
 ```
-
 Loading in the data files
 
+```{r Load Data, message=FALSE}
+majors <- read_csv("college-majors/majors-list.csv")
+head(majors)
+problems(majors)
+
+allAges <- read_csv("college-majors/all-ages.csv")
+head(allAges)
+
+gradStudents <- read_csv("college-majors/grad-students.csv")
+head(gradStudents)
+
+recentGrads <- read_csv("college-majors/recent-grads.csv")
+head(recentGrads)
+
+womenStem <- read_csv("college-majors/women-stem.csv")
+head(womenStem)
+```
+
+A quick look at the dataset files appear to have employment information and Major course of study.
+Conduct a quick clean up of the datasets to join and get rid of similar variables
+```{r }
+#names(majors)[1] <- "Major_code"
+# see what the column types are
+spec(majors)
+# rename some columns so they are similiar to the other datasets
+majors <- rename(majors,Major_code = FOD1P,Major_category = Major_Category)
+# Change the Major code to be numeric
+majors <- majors %>%  mutate_at(c(1), as.numeric)
+
+spec(allAges)
+
+spec(gradStudents)
+spec(recentGrads)
+spec(womenStem)
+
+
+
+
+```
+```{r, fig.height= 8, fig.width= 10}
+
+working <- right_join(majors, allAges) 
+#working[1,]
+
+working %>%
+  group_by(Major) %>%
+  summarize(Unemployment_rate) %>%
+  arrange((Unemployment_rate))%>%
+  plot_ly(x = ~Major, y = ~Unemployment_rate,type = 'bar')
+```
+
+```{r More Exploring}
+
+# Need to plot in ascending order
+ue <- working %>%
+  group_by(Major) %>%
+  summarize(Unemployment_rate) %>%
+  arrange((Unemployment_rate))
+
+head(ue)
+# top 10
+ue[1:10,]
+# top 20
+plot_ly(ue[1:20,],x= ~Major, y=~Unemployment_rate, type = 'bar')
+
+# How do I find the bottom 20
+ueEnd <- length(ue$Major)
+bottom <- 15
+plot_ly( ue[(ueEnd-bottom):ueEnd,],x= ~Major, y=~Unemployment_rate, type = 'bar')
+
+ue[str_which(ue$Major,regex("Math",ignore_case = TRUE)),]
+
+
+```
 
 
 ### One categorical / one numerical data
+
 
 ### Two or more variables
 
