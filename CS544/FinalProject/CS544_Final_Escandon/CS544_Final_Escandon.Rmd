@@ -17,7 +17,8 @@ output:
 
 ## Introduction
 ```
-The dataset that I chose to investigate was the college major dataset from Five Thiry Eight
+The dataset that I chose to investigate was the college major dataset from Five Thiry Eight.
+This data is from 2014 and was collected from
 1. Exploratory 
 2. Investigation
 3. Prove
@@ -36,6 +37,7 @@ library(tidyverse)
 library(prob)
 library(plotly)
 library(renv)
+library(RColorBrewer)
 
 ```
 Loading in the data files
@@ -60,7 +62,7 @@ head(womenStem)
 
 A quick look at the dataset files appear to have employment information and Major course of study.
 Conduct a quick clean up of the datasets to join and get rid of similar variables
-```{r }
+```{r ,fig.height= 8, fig.width= 10}
 #names(majors)[1] <- "Major_code"
 # see what the column types are
 spec(majors)
@@ -70,7 +72,6 @@ majors <- rename(majors,Major_code = FOD1P,Major_category = Major_Category)
 majors <- majors %>%  mutate_at(c(1), as.numeric)
 
 spec(allAges)
-
 spec(gradStudents)
 spec(recentGrads)
 spec(womenStem)
@@ -91,7 +92,7 @@ working %>%
   plot_ly(x = ~Major, y = ~Unemployment_rate,type = 'bar')
 ```
 
-```{r More Exploring}
+```{r More Exploring,fig.height= 8, fig.width= 10}
 
 # Need to plot in ascending order
 ue <- working %>%
@@ -103,25 +104,77 @@ head(ue)
 # top 10
 ue[1:10,]
 # top 20
-plot_ly(ue[1:20,],x= ~Major, y=~Unemployment_rate, type = 'bar')
+plot_ly(ue[1:15,],x= ~Major, y=~Unemployment_rate, type = 'bar')%>%
+  layout(title = "2014 Lowest Unemployment among college majorsr",
+         xaxis = list(title = "Majors Category of Study"),
+         yaxis = list (title = "Unemployment"))
 
 # How do I find the bottom 20
 ueEnd <- length(ue$Major)
 bottom <- 15
-plot_ly( ue[(ueEnd-bottom):ueEnd,],x= ~Major, y=~Unemployment_rate, type = 'bar')
+plot_ly( ue[(ueEnd-bottom):ueEnd,],x= ~Major, y=~Unemployment_rate, type = 'bar') %>%
+    layout(title = "2014 Highest Unemployment among college majorsr",
+         xaxis = list(title = "Majors Category of Study"),
+         yaxis = list (title = "Unemployment"))
 
-ue[str_which(ue$Major,regex("Math",ignore_case = TRUE)),]
+rgMoney <- recentGrads[str_which(recentGrads$Major,regex("engin",ignore_case = TRUE)),]
+
+recentGrads %>% 
+  group_by(Major_category) %>%
+  summarize(ave=mean(Median)) %>%
+  plot_ly(x=~Major_category,y=~ave,type = 'bar')%>%
+  layout(title = "2014 Recent College Graduate Median Earnings",
+         xaxis = list(title = "Major Category of Study"),
+         yaxis = list (title = "Average Earning $"))
+
+
+recentGrads %>% 
+  group_by(Major_category) %>%
+  summarize(ave=mean(P25th)) %>%
+  plot_ly(x=~Major_category,y=~ave,type = 'bar')%>%
+  layout(title = "2014 Recent College Graduate Median Earnings",
+         xaxis = list(title = "Major Category of Study"),
+         yaxis = list (title = "25th Percentile Average Earning $"))
+
+
+
+```
+```
+There are winners and losers shown here in the data, some recent grads have high salaries and low unemployment figures. Others do not. Are there any other factors that we can correlate with median salaries and or unemployment.   
+```
+
+
+
+
+
+
+### One categorical / one numerical data
+recent grads dataset has the Median variable for median income.
+Numerical data: Boxplot of the median data for recent grads
+
+```{r,fig.height= 8, fig.width= 10 ,out.width='100%'}
+
+plot_ly(recentGrads,x= ~Major_category ,y= ~ recentGrads$Median, color = ~Major_category, type = 'box')
 
 
 ```
 
 
-### One categorical / one numerical data
 
 
 ### Two or more variables
+```{r}
+
+
+
+```
 
 ### Distribution of the data
+```{r}
+
+
+```
+
 
 ### Draw random samples and show applicability of the Central limit Theorem
 
