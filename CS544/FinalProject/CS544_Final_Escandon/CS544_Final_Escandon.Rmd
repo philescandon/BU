@@ -19,19 +19,30 @@ output:
 
 # DataSet Introduction
 
-The dataset that I chose to investigate was the college major dataset from Five Thiry Eight. The dataset trys to illuminate the idea of choosing a college major based on potential income level of the graduate.
+The dataset that I chose to investigate was the college major dataset from Five
+Thiry Eight. The dataset trys to illuminate the idea of choosing a college major
+based on potential income level of the graduate.
 
-Anecdotal evidence from the general public support generalities such ideas as drama majors will earn much less than an engineering major and so on. This data attempts to prove that and suggest to potential students what major course of study they might pursue if they intend to live and support themselves with a certain lifestyle.
+Anecdotal evidence from the general public support generalities such ideas as
+drama majors will earn much less than an engineering major and so on. This data
+attempts to prove that and suggest to potential students what major course of
+study they might pursue if they intend to live and support themselves with a
+certain lifestyle.
 
-This data was gathered from the Federal Reserve Bank of New York and published in 2014, so it is 7 years old and might not be as accurate as it once was.
+This data was gathered from the Federal Reserve Bank of New York and published
+in 2014, so it is 7 years old and might not be as accurate as it once was.
 
 # Objective
 
-The objective of this project is to investigate the major courses of study that earn the most after graduation as well as identify the majors that do not earn very much. This gives the audience an idea if the cost of college is worth it, or if a change in major and course study should be considered.
+The objective of this project is to investigate the major courses of study that
+earn the most after graduation as well as identify the majors that do not earn
+very much. This gives the audience an idea if the cost of college is worth it,
+or if a change in major and course study should be considered.
 
 # Dataset
 
-The dataset consists of five files that have been imported and were broken down into these categories.
+The dataset consists of five files that have been imported and were broken down
+into these categories.
 
 -   Recent Graduates
 
@@ -45,7 +56,8 @@ The datasets were merged as needed.
 
 # Examine the dataset as groups
 
-Because there were to many majors to consider for plotting purposes, the datasets were gathered into Major Categories, such as
+Because there were to many majors to consider for plotting purposes, the
+datasets were gathered into Major Categories, such as
 
 -   Engineering
 
@@ -59,17 +71,16 @@ What hypothesis do I want to investigate , prove, or illuminate.
 
 # Exploratory Data Analysis
 
-
-
 ```{r Load libraries, message=FALSE, include=FALSE}
 library(tidyverse)
 library(prob)
 library(plotly)
 library(renv)
 library(scales)
+library(RColorBrewer)
+library(corrplot)
 set.seed(5121)
 ```
-
 
 ```{r Load Data, message=FALSE}
 majors <- read_csv("college-majors/majors-list.csv")
@@ -108,9 +119,11 @@ majors <- majors %>%  mutate_at(c(1), as.numeric)
 
 
 ```
+
 # Distribution of median income
 
 This bar plot can give a better sense of the distribution of the salaries.
+
 ```{r message=FALSE, warning=FALSE, fig.height=8, fig.width=10, out.width='100%'}
 
 plot_ly(recentGrads, 
@@ -126,7 +139,9 @@ plot_ly(recentGrads,
 
 ```
 
-Below, this bar plot can give a general sense of the median salaries for the categories of study.
+Below, this bar plot can give a general sense of the median salaries for the
+categories of study.
+
 ```{r message=FALSE, warning=FALSE, fig.height=8, fig.width=10, out.width='100%'}
 recentGrads %>% 
   group_by(Major_category) %>%
@@ -137,10 +152,11 @@ recentGrads %>%
          yaxis = list (title = "Average Earning $"))
 ```
 
-Given that not all people are motivated by money or have the interest to be a Petroleum Engineer
-Another metric to consider would be the unemployment rate
+Given that not all people are motivated by money or have the interest to be a
+Petroleum Engineer Another metric to consider would be the unemployment rate
 
 ## Lowest Unemployment Rate among college majors
+
 ```{r More Exploring, message=FALSE, warning=FALSE, fig.height=8, fig.width=10, out.width='100%'}
 
 # Need to plot in ascending order .. but plotly won't do it.
@@ -162,8 +178,8 @@ plot_ly(ue[1:15,],x= ~Major, y=~Unemployment_rate*100, type = 'bar')%>%
 
 ```
 
-and converserly - 
-## Highest rate of unemployment among college Majors
+and converserly the highest unemployment rate is charted below. \#\# Highest
+rate of unemployment among college Majors
 
 ```{r,message=FALSE, warning=FALSE, fig.height=8, fig.width=10, out.width='100%' }
 
@@ -176,20 +192,22 @@ plot_ly( ue[(ueEnd-bottom):ueEnd,],x= ~Major, y=~Unemployment_rate*100, type = '
          yaxis = list (title = "Percentage of Unemployed"))
 ```
 
-
-From the plot above, parents might likely suggest to their children that they pick a different course or major to study.
-
-
-
+From the plot above, parents might likely suggest to their children that they
+pick a different course or major to study.
 
 ## The Central limit Theorem
-The Central Limit Theorem states that you are able to draw samples from a given dataset and the mean of those samples will follow a normal distribution, even if the original dataset is not a normal distribution.
 
-In the following analysis I will concentrate on the 'Engineering' Major Category.
-This category is composed of twenty nine different majors.  
+The Central Limit Theorem states that you are able to draw random samples from a
+given dataset and the mean of those samples will follow a normal distribution,
+even if the original dataset is not a normal distribution. This allows us to
+apply statistics that assume a normal distribution, even if the dataset is not
+actually normally distributed.
 
-Here is the distribution of the median salaries among the 29 sub majors in engineering.
+In the following analysis I will concentrate on the 'Engineering' Major
+Category. This category is composed of twenty nine different majors.
 
+Here is the distribution of the median salaries among the 29 sub majors in
+engineering.
 
 ```{r engineering, fig.height=8, fig.width=10, message=FALSE, warning=FALSE, out.width='100%'}
 recentGrads %>% group_by(Major_category) %>% filter(Major_category =='Engineering') -> rgEngineering
@@ -202,11 +220,12 @@ add_trace(x = fit$x, y = fit$y, type = "scatter", mode = "lines", fill = "tozero
 add_trace(x = mean(rgEngineering$Median),y = c(seq(0,12)), type = "scatter", mode = "lines", name = "Mean Salary") %>% 
   layout(yaxis2 = list(overlaying = "y", side = "right"))
 ```
-The median is `r dollar(mean(rgEngineering$Median))`
-The standard deviation is `r dollar(sd(rgEngineering$Median))`
 
+The median is `r dollar(mean(rgEngineering$Median))` The standard deviation is
+`r dollar(sd(rgEngineering$Median))`
 
 ### Simple Sampling: 500 sample of sample size 10 - 40
+
 ```{r, simple samples, fig.height=8, fig.width=10, message=FALSE, warning=FALSE, out.width='100%'}
 samples <- 500
 
@@ -218,11 +237,12 @@ for (i in 1: samples) {
 }
 fit <- density(xbar10)
 
-fig1 <- plot_ly(x = xbar10, type = "histogram",name='Histogram') %>%
+fig1 <- plot_ly(x = xbar10, type = "histogram",name='Histogram',text = ~paste('SD: ', dollar(sd(xbar10))) ) %>%
 add_trace(x = fit$x, y = fit$y, type = "scatter", mode = "lines", fill = "tozeroy", yaxis = "y2", name = "Density") %>% 
 add_trace(x = mean(xbar10),y = c(seq(0,65)), type = "scatter", mode = "lines", name = "Sample Size 10 Mean Salary") %>% 
   layout(yaxis2 = list(overlaying = "y", side = "right"))
 
+# text = ~paste('Species: ', Species))
 # Sample Size 20
 samples <- 500
 sample.size <- 20
@@ -232,7 +252,7 @@ for (i in 1: samples) {
 }
 fit <- density(xbar20)
 
-fig2 <- plot_ly(x = xbar20, type = "histogram",name='Histogram') %>%
+fig2 <- plot_ly(x = xbar20, type = "histogram",name='Histogram', text = ~paste('SD: ', dollar(sd(xbar20)))) %>%
 add_trace(x = fit$x, y = fit$y, type = "scatter", mode = "lines", fill = "tozeroy", yaxis = "y2", name = "Density") %>% 
 add_trace(x = mean(xbar20),y = c(seq(0,65)), type = "scatter", mode = "lines", name = "Sample Size 20 Mean Salary") %>% 
   layout(yaxis2 = list(overlaying = "y", side = "right"))
@@ -246,7 +266,7 @@ for (i in 1: samples) {
 }
 fit <- density(xbar30)
 
-fig3 <- plot_ly(x = xbar30, type = "histogram",name='Histogram') %>%
+fig3 <- plot_ly(x = xbar30, type = "histogram",name='Histogram',text = ~paste('SD: ', dollar(sd(xbar30)))) %>%
 add_trace(x = fit$x, y = fit$y, type = "scatter", mode = "lines", fill = "tozeroy", yaxis = "y2", name = "Density") %>%
 add_trace(x = mean(xbar30),y = c(seq(0,65)), type = "scatter", mode = "lines", name = "Sample Size 30 Mean Salary") %>%
   layout(yaxis2 = list(overlaying = "y", side = "right"))
@@ -262,26 +282,91 @@ for (i in 1: samples) {
 fit <- density(xbar40)
 
 
-fig4 <- plot_ly(x = xbar40, type = "histogram",name='Histogram') %>%
+fig4 <- plot_ly(x = xbar40, type = "histogram",name='Histogram',text = ~paste('SD: ', dollar(sd(xbar40)))) %>%
 add_trace(x = fit$x, y = fit$y, type = "scatter", mode = "lines", fill = "tozeroy", yaxis = "y2", name = "Density") %>% 
 add_trace(x = mean(xbar40),y = c(seq(0,65)), type = "scatter", mode = "lines", name = "Sample Size 40 Mean Salary") %>% 
   layout(yaxis2 = list(overlaying = "y", side = "right"))
 
+# Add all figures
 fig1
 fig2
 fig3
 fig4
-# Attempted subplots 
-# fig.1 <- subplot(fig1,fig2)
-# fig.1
-# 
-# fig.2 <- subplot(fig3,fig4)
-# fig.2
+
+
+
 ```
 
+### Stratified Sampling
+
+```{r Stratified Sampling, fig.height=8, fig.width=10, message=FALSE, warning=FALSE, out.width='100%'}
+# BU ID seed
+set.seed(5121)
+# sample size 50
+N <- nrow(rgEngineering)
+n <- 500
+
+k <- ceiling(N / n)
+#k
+r <- sample(k, 1)
+#r
+
+# select every kth item
+
+s <- seq(r, by = k, length = n)
+
+sample.3 <- rgEngineering[s, ]
+#head(sample.3)
+
+# Frequency table
+t3 <- table(sample.3$Median)
+
+#todo: Change naming convention on xaxis
+barplot(t3, main =  "Engineering salaries by Frequency - Systematic Sampling", ylab = "Counts",
+          ylim=range(pretty(c(0, t3))),
+        las = 2,
+        col="#69b3a2")
+
+# Proportion Table
+t4<- prop.table(table(sample.3$Median)) * 100
+#todo: Change naming convention on xaxis
+# Renaming the prop table using the t var from above.  
+barplot(t4, main =  "Top salaries by Percentage - Systematic Sampling", ylab = "Percent Proportion",
+          ylim=range(pretty(c(0, t4))),
+        las = 2,
+        col="#69b3a2")
+
+```
+
+## General information for choosing a major
+
+In a general sense, choosing a major is akin to determining what you want to do
+with your life, what work you would like to pursue and probably what is required
+for you
+
+To conduct some further analysis, I believe a few things should happen.
+
+-   New data set
+
+-   College costs should be factored in
+
+-   Trade School professions should be considered
+
+One simple analysis that would help expose some potential leads would be a
+correlation plot.
+
+```{r correlation, fig.height=8, fig.width=10, message=FALSE, warning=FALSE, out.width='100%'}
+# Correlation 
+
+# Remove the factors from the tibble
+recentGradsNoFactors <-recentGrads[, !sapply(recentGrads, is.character)]
+recentGradsNoFactors <- drop_na(recentGradsNoFactors)
+
+c<-cor(recentGradsNoFactors[-1])
+# different view of the corr matrix.  Only include the upper and
+# make it easy to visually see corr/ non-corr
+corrplot(c,type = "upper",order = "hclust",col = brewer.pal(n=10,name = "Paired"))
 
 
+```
 
-
-
-### Show how various sampling methods can be used on the data.
